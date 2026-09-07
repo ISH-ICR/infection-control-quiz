@@ -420,8 +420,6 @@
       </button>
 
 
-      <!-- 참가자 정보 화면 뒤로가기 -->
-
       <button
         class="btn secondary"
         style="margin-top:10px;"
@@ -464,8 +462,6 @@
 
       </div>
 
-
-      <!-- 시간 제한 표시 -->
 
       <div
         id="timer"
@@ -757,15 +753,6 @@
   =====================================================
   현재 문제의 시간 제한 가져오기
   =====================================================
-
-  관리자에서 나중에
-
-  timeLimit: 30
-
-  과 같이 저장하면 30초 제한으로 작동합니다.
-
-  0, null, undefined, 빈 값이면
-  시간 제한 없음으로 처리합니다.
   */
 
   function getQuestionTimeLimit(question) {
@@ -868,6 +855,8 @@
       seconds <= 0
     ) {
 
+      timerRemaining = 0;
+
       timer.style.display =
         "none";
 
@@ -902,11 +891,6 @@
 
             stopTimer();
 
-
-            /*
-              시간 종료 후 자동 진행
-            */
-
             await timeExpired();
 
           }
@@ -926,13 +910,19 @@
 
   async function timeExpired() {
 
-    const q =
-      session.questions[currentQuestion];
+    if (
+      !session ||
+      !Array.isArray(session.questions)
+    ) {
+
+      return;
+
+    }
 
 
     /*
-      이미 답을 선택했다면
-      그대로 유지하고 다음 문제로 이동합니다.
+      마지막 문제가 아니면
+      자동으로 다음 문제로 이동
     */
 
     if (
@@ -976,6 +966,7 @@
     if (!code) {
 
       alert("참여 코드를 입력해주세요.");
+
       return;
 
     }
@@ -985,7 +976,11 @@
 
       const snap =
         await getDoc(
-          doc(db, "sessions", code)
+          doc(
+            db,
+            "sessions",
+            code
+          )
         );
 
 
@@ -1039,6 +1034,7 @@
 
 
       hide("startView");
+
       show("infoView");
 
 
@@ -1053,6 +1049,7 @@
     }
 
   }
+
 
   /*
   =====================================================
@@ -1077,6 +1074,7 @@
     if (!participantName) {
 
       alert("이름을 입력해주세요.");
+
       return;
 
     }
@@ -1085,6 +1083,7 @@
     if (!participantAffiliation) {
 
       alert("소속을 입력해주세요.");
+
       return;
 
     }
@@ -1101,6 +1100,7 @@
 
 
     hide("infoView");
+
     show("quizView");
 
 
@@ -1116,6 +1116,11 @@
   */
 
   function renderQuestion() {
+
+    /*
+      새 문제를 표시할 때만
+      기존 타이머를 정지합니다.
+    */
 
     stopTimer();
 
@@ -1149,97 +1154,123 @@
 
 
     /*
-      혹시 기존 데이터에 options가 없을 경우
-      기존 correct 값을 이용할 수 있도록 처리
+    =====================================================
+    선택지 표시
+    =====================================================
     */
 
-    let options =
+    const options =
       Array.isArray(q.options)
         ? q.options
         : [];
 
 
+    optionsContainer.innerHTML =
+      options.map(
+        (option, index) => {
+
+          const selected =
+            answers[q.id] === option.id;
+
+
+          return `
+
+            <button
+              type="button"
+              class="option ${selected ? "selected" : ""}"
+              data-option-id="${escapeHtml(option.id)}"
+            >
+
+              <span class="option-number">
+                ${index + 1}
+              </span>
+
+              <span class="option-text">
+                ${escapeHtml(option.text)}
+              </span>
+
+            </button>
+
+          `;
+
+        }
+      ).join("");
+
+
     /*
-      정상적인 새 데이터
+    =====================================================
+    선택지 클릭
+    =====================================================
+
+    ★ 매우 중요 ★
+
+    답을 클릭할 때 renderQuestion()을 호출하지 않습니다.
+
+    따라서 현재 타이머가 절대로 리셋되지 않습니다.
     */
-
-    if (options.length > 0) {
-
-      optionsContainer.innerHTML =
-        options.map(
-          (option, index) => {
-
-            const selected =
-              answers[q.id] === option.id;
-
-
-            return `
-
-              <button
-                type="button"
-                class="option ${selected ? "selected" : ""}"
-                data-option-id="${escapeHtml(option.id)}"
-              >
-
-                <span class="option-number">
-                  ${index + 1}
-                </span>
-
-                <span class="option-text">
-                  ${escapeHtml(option.text)}
-                </span>
-
-              </button>
-
-            `;
-
-          }
-        ).join("");
-
-
-      optionsContainer
-        .querySelectorAll(".option")
-        .forEach(button => {
-
-button.addEventListener(
-  "click",
-  () => {
-
-    answers[q.id] =
-      button.dataset.optionId;
 
     optionsContainer
       .querySelectorAll(".option")
-      .forEach(optionButton => {
+      .forEach(button => {
 
-        optionButton.classList.remove("selected");
+        button.addEventListener(
+          "click",
+          () => {
+
+            /*
+              선택한 답 저장
+            */
+
+            answers[q.id] =
+              button.dataset.optionId;
+
+
+            /*
+              선택 상태만 변경합니다.
+
+              문제 전체를 다시 그리지 않기 때문에
+              타이머는 계속 진행됩니다.
+            */
+
+            optionsContainer
+              .querySelectorAll(".option")
+              .forEach(
+                optionButton => {
+
+                  optionButton.classList.remove(
+                    "selected"
+                  );
+
+                }
+              );
+
+
+            button.classList.add(
+              "selected"
+            );
+
+          }
+        );
 
       });
 
-    button.classList.add("selected");
-
-  }
-);
 
     /*
     =====================================================
     이전 버튼 처리
     =====================================================
-    
-    현재 문제에 시간 제한이 있으면
-    이전 문제로 돌아갈 수 없습니다.
-
-    시간 제한이 없는 문제라면
-    이전 문제로 돌아갈 수 있습니다.
     */
 
     const currentTimeLimit =
       getQuestionTimeLimit(q);
 
 
-    if (currentQuestion === 0) {
+    if (
+      currentQuestion === 0
+    ) {
 
-      $("prevButton").disabled = true;
+      $("prevButton").disabled =
+        true;
 
       $("prevButton").textContent =
         "이전";
@@ -1248,14 +1279,16 @@ button.addEventListener(
       currentTimeLimit > 0
     ) {
 
-      $("prevButton").disabled = true;
+      $("prevButton").disabled =
+        true;
 
       $("prevButton").textContent =
         "시간 제한 중";
 
     } else {
 
-      $("prevButton").disabled = false;
+      $("prevButton").disabled =
+        false;
 
       $("prevButton").textContent =
         "이전";
@@ -1264,7 +1297,9 @@ button.addEventListener(
 
 
     /*
+    =====================================================
     마지막 문제 버튼
+    =====================================================
     */
 
     if (
@@ -1285,7 +1320,7 @@ button.addEventListener(
 
     /*
     =====================================================
-    타이머 시작
+    새 문제의 타이머 시작
     =====================================================
     */
 
@@ -1304,8 +1339,12 @@ button.addEventListener(
 
   function previousQuestion() {
 
-    if (currentQuestion <= 0) {
+    if (
+      currentQuestion <= 0
+    ) {
+
       return;
+
     }
 
 
@@ -1322,7 +1361,9 @@ button.addEventListener(
       getQuestionTimeLimit(current);
 
 
-    if (timeLimit > 0) {
+    if (
+      timeLimit > 0
+    ) {
 
       alert(
         "시간 제한이 설정된 문제에서는 이전 문제로 돌아갈 수 없습니다."
@@ -1337,6 +1378,7 @@ button.addEventListener(
 
 
     currentQuestion--;
+
 
     renderQuestion();
 
@@ -1359,9 +1401,14 @@ button.addEventListener(
       답을 선택했는지 확인
     */
 
-    if (!answers[q.id]) {
+    if (
+      !answers[q.id]
+    ) {
 
-      alert("답을 선택해주세요.");
+      alert(
+        "답을 선택해주세요."
+      );
+
       return;
 
     }
@@ -1369,6 +1416,10 @@ button.addEventListener(
 
     stopTimer();
 
+
+    /*
+      다음 문제
+    */
 
     if (
       currentQuestion <
@@ -1397,8 +1448,9 @@ button.addEventListener(
     if (!confirmed) {
 
       /*
-        제출을 취소하면
-        현재 문제의 타이머를 다시 시작합니다.
+        제출 취소 시
+        현재 문제의 제한시간을
+        새로 시작합니다.
       */
 
       startTimer(
@@ -1430,6 +1482,7 @@ button.addEventListener(
 
     let correctCount = 0;
 
+
     const total =
       session.questions.length;
 
@@ -1443,7 +1496,7 @@ button.addEventListener(
 
         /*
           새로운 데이터 구조:
-          answerId와 참가자 선택값을 비교
+          answerId와 참가자 선택값 비교
         */
 
         if (
@@ -1462,9 +1515,7 @@ button.addEventListener(
 
 
         /*
-          혹시 예전 데이터가 남아 있는 경우
-          correct 문자열과 비교할 수 있도록
-          보조 처리
+          예전 데이터 보조 처리
         */
 
         if (
