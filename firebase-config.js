@@ -20,17 +20,17 @@ import {
 
 const firebaseConfig = {
 
-  apiKey: "여기에_API_KEY",
+  apiKey: "AIzaSyDJuaH028Hw0jbHVekhSY8hrzlmsVgHpqI",
 
-  authDomain: "여기에_AUTH_DOMAIN",
+  authDomain: "icquizgame.firebaseapp.com",
 
-  projectId: "여기에_PROJECT_ID",
+  projectId: "icquizgame",
 
-  storageBucket: "여기에_STORAGE_BUCKET",
+  storageBucket: "icquizgame.firebasestorage.app",
 
-  messagingSenderId: "여기에_MESSAGING_SENDER_ID",
+  messagingSenderId: "987272482834",
 
-  appId: "여기에_APP_ID"
+  appId: "1:987272482834:web:612b4edb47aae69ac848cb"
 
 };
 
@@ -47,6 +47,7 @@ const db = getFirestore(app);
 // 다른 파일에서 사용할 수 있도록 내보내기
 
 export {
+  firebaseConfig,
   db
 };
 
