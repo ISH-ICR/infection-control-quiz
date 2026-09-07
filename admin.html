@@ -12,385 +12,223 @@
 
     body {
       margin: 0;
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
       color: #222;
     }
 
-    button,
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
     input,
     textarea,
     select {
-      font: inherit;
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
     }
 
     button {
+      border: 0;
+      border-radius: 7px;
+      padding: 10px 15px;
       cursor: pointer;
+      font-size: 14px;
+      background: #333;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+    }
+
+    .btn-success {
+      background: #16a34a;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+    }
+
+    .btn-secondary {
+      background: #64748b;
+    }
+
+    .small {
+      padding: 7px 11px;
+      font-size: 13px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .page {
-      min-height: 100vh;
-      padding: 30px 20px;
+    .session-item {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-    }
-
-    h1,
-    h2,
-    h3 {
-      margin-top: 0;
-    }
-
-    .title {
-      font-size: 30px;
-      font-weight: 800;
+    .session-title {
+      font-size: 18px;
+      font-weight: bold;
       margin-bottom: 8px;
     }
 
-    .subtitle {
-      color: #777;
-      margin-bottom: 25px;
+    .session-info {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
     .row {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
       flex-wrap: wrap;
-    }
-
-    .between {
-      justify-content: space-between;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      border: 1px solid #d9dee8;
-      border-radius: 10px;
-      padding: 11px 13px;
-      background: white;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: #667eea;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 7px;
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 11px 16px;
-      font-weight: 700;
-      background: #667eea;
-      color: white;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
-
-    .btn.secondary {
-      background: #eef1f7;
-      color: #333;
-    }
-
-    .btn.danger {
-      background: #e74c3c;
-      color: white;
-    }
-
-    .btn.success {
-      background: #27ae60;
-      color: white;
-    }
-
-    .btn.small {
-      padding: 8px 12px;
-      font-size: 13px;
-    }
-
-    .login-box {
-      max-width: 420px;
-      margin: 100px auto;
-    }
-
-    .login-box h1 {
-      text-align: center;
-    }
-
-    .session-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .session-item {
-      border: 1px solid #e1e5ed;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .session-info strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 17px;
-    }
-
-    .session-meta {
-      color: #777;
-      font-size: 13px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-left: 5px;
-    }
-
-    .badge.open {
-      background: #e8f8ef;
-      color: #219653;
-    }
-
-    .badge.closed {
-      background: #fcebea;
-      color: #c0392b;
-    }
-
-    .badge.draft {
-      background: #fff4dc;
-      color: #a56a00;
-    }
-
-    .session-code {
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      margin: 8px 0;
-    }
-
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .code-box {
-      background: #f1f3ff;
-      border-radius: 12px;
-      padding: 15px 20px;
-      text-align: center;
-      min-width: 180px;
-    }
-
-    .code-box small {
-      display: block;
-      color: #777;
-      margin-bottom: 5px;
-    }
-
-    .code-box strong {
-      font-size: 28px;
-      letter-spacing: 4px;
     }
 
     .question-card {
-      border: 1px solid #e1e5ed;
-      border-radius: 14px;
-      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 18px;
       margin-bottom: 18px;
+      background: #fafafa;
     }
 
     .question-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
       gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .question-number {
-      font-weight: 800;
-      font-size: 18px;
-    }
-
-    .question-grid {
-      display: grid;
-      grid-template-columns: 1fr 150px;
-      gap: 15px;
-    }
-
-    .ipg-options-editor {
+    .option-row {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .ipg-option-editor {
-      display: flex;
-      align-items: center;
       gap: 8px;
-    }
-
-    .ipg-option-number {
-      width: 32px;
-      height: 32px;
-      flex: 0 0 32px;
-      border-radius: 50%;
-      background: #eef1f7;
-      display: flex;
       align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: #555;
+      margin-top: 8px;
     }
 
-    .ipg-option-input {
+    .option-row input[type="text"] {
       flex: 1;
+      margin-top: 0;
     }
 
-    .ipg-option-delete {
-      width: 34px;
-      height: 34px;
-      border: 0;
+    .option-row input[type="radio"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .option-label {
+      min-width: 25px;
+      font-weight: bold;
+    }
+
+    .code-box {
+      background: #f1f5f9;
+      padding: 12px;
       border-radius: 8px;
-      background: #fcebea;
-      color: #c0392b;
-      font-weight: 800;
+      margin-top: 10px;
+      font-size: 15px;
     }
 
-    .option-add-row {
-      margin: 8px 0 16px;
+    .code-value {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
-    .answer-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin: 14px 0 8px;
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #e5e7eb;
     }
 
-    .ipg-answer-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
+    .status.open {
+      background: #dcfce7;
+      color: #166534;
     }
 
-    .ipg-answer-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: 1px solid #dfe3eb;
-      border-radius: 9px;
-      padding: 8px 11px;
-      cursor: pointer;
-      background: #fafbfc;
+    .status.closed {
+      background: #fee2e2;
+      color: #991b1b;
     }
 
-    .ipg-answer-item:has(input:checked) {
-      border-color: #667eea;
-      background: #f1f3ff;
+    .status.draft {
+      background: #fef3c7;
+      color: #92400e;
     }
 
-    .points-input {
-      max-width: 150px;
-    }
-
-    .result-table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
+    .result-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 15px;
     }
 
-    th,
-    td {
-      padding: 12px 10px;
-      border-bottom: 1px solid #edf0f4;
+    .result-table th,
+    .result-table td {
+      border: 1px solid #ddd;
+      padding: 9px;
       text-align: center;
-      white-space: nowrap;
+      font-size: 14px;
     }
 
-    th {
-      background: #f7f8fa;
-      font-size: 13px;
-    }
-
-    .empty {
-      padding: 40px 10px;
-      text-align: center;
-      color: #888;
-    }
-
-    .top-actions {
-      margin-bottom: 20px;
-    }
-
-    .muted {
-      color: #777;
-      font-size: 13px;
+    .result-table th {
+      background: #f1f5f9;
     }
 
     @media (max-width: 700px) {
-      .page {
-        padding: 20px 12px;
+      .container {
+        padding: 15px;
       }
 
       .card {
-        padding: 18px;
+        padding: 16px;
       }
 
-      .question-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .session-item {
+      .question-header {
         align-items: flex-start;
         flex-direction: column;
       }
@@ -400,1019 +238,896 @@
 
 <body>
 
-<div id="loginView" class="page">
-  <div class="container">
-    <div class="card login-box">
-      <h1>격리주의 퀴즈 관리자</h1>
-      <p class="subtitle" style="text-align:center;">관리자 로그인</p>
+<div class="container">
 
-      <div class="field">
-        <label>관리자 비밀번호</label>
-        <input
-          id="passwordInput"
-          type="password"
-          placeholder="비밀번호 입력"
-        />
-      </div>
+  <h1>격리주의 퀴즈 관리자</h1>
 
-      <button class="btn" style="width:100%;" onclick="login()">
-        로그인
-      </button>
-    </div>
+  <!-- 로그인 -->
+  <div id="loginSection" class="card">
+    <h2>관리자 로그인</h2>
+
+    <label>관리자 비밀번호</label>
+    <input
+      id="adminPassword"
+      type="password"
+      placeholder="관리자 비밀번호"
+    />
+
+    <button
+      class="btn-primary"
+      style="margin-top:15px;"
+      onclick="adminLogin()"
+    >
+      로그인
+    </button>
   </div>
-</div>
 
 
-<div id="listView" class="page hidden">
-  <div class="container">
+  <!-- 관리자 화면 -->
+  <div id="adminSection" class="hidden">
 
+    <!-- 퀴즈 목록 -->
     <div class="card">
-      <div class="row between">
-        <div>
-          <div class="title">격리주의 퀴즈 관리자</div>
-          <div class="subtitle">퀴즈를 만들고 관리하세요.</div>
-        </div>
+      <div class="row" style="justify-content:space-between;">
+        <h2>퀴즈 목록</h2>
 
-        <button class="btn" onclick="createSession()">
+        <button
+          class="btn-primary"
+          onclick="createNewSession()"
+        >
           + 새 퀴즈 만들기
         </button>
       </div>
+
+      <div id="sessionList"></div>
     </div>
 
-    <div class="card">
-      <h2>퀴즈 목록</h2>
 
-      <div id="sessionList" class="session-list">
-        <div class="empty">불러오는 중...</div>
+    <!-- 퀴즈 편집 -->
+    <div id="editorSection" class="card hidden">
+
+      <h2>퀴즈 관리</h2>
+
+      <label>퀴즈 제목</label>
+      <input id="sessionTitle" />
+
+      <label>참가 코드</label>
+      <input
+        id="sessionCode"
+        readonly
+      />
+
+      <div class="code-box">
+        <div>참가자가 입력하는 코드</div>
+        <div
+          id="displayParticipantCode"
+          class="code-value"
+        ></div>
       </div>
-    </div>
-
-  </div>
-</div>
 
 
-<div id="dashboardView" class="page hidden">
-  <div class="container">
+      <label>관리 코드 (4자리 숫자)</label>
+      <input
+        id="managerCode"
+        type="text"
+        inputmode="numeric"
+        maxlength="4"
+        placeholder="예: 4827"
+      />
 
-    <div class="top-actions">
-      <button class="btn secondary" onclick="backToList()">
-        ← 퀴즈 목록
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="dashboard-header">
-
-        <div>
-          <h1 id="dashboardTitle">퀴즈</h1>
-
-          <div class="session-code">
-            <span id="dashboardCode"></span>
-          </div>
-
-          <div class="muted">
-            참가자에게 이 코드를 알려주세요.
-          </div>
-        </div>
-
-        <div class="code-box">
-          <small>참여 코드</small>
-          <strong id="codeBoxValue"></strong>
-
-          <div style="margin-top:10px;">
-            <button class="btn small" onclick="copyLink()">
-              참여 링크 복사
-            </button>
-          </div>
-        </div>
-
+      <div class="code-box">
+        <div>담당자가 퀴즈를 관리할 때 사용하는 코드</div>
+        <div
+          id="displayManagerCode"
+          class="code-value"
+        ></div>
       </div>
-    </div>
 
 
-    <div class="card">
-      <div class="row between">
-        <div>
-          <h2 style="margin-bottom:5px;">퀴즈 설정</h2>
-          <div class="muted">
-            제목과 문제를 수정할 수 있습니다.
-          </div>
-        </div>
+      <label>상태</label>
+      <select id="sessionStatus">
+        <option value="draft">준비중</option>
+        <option value="open">공개</option>
+        <option value="closed">종료</option>
+      </select>
+
+
+      <div
+        class="row"
+        style="margin-top:20px;"
+      >
+        <button
+          class="btn-success"
+          onclick="saveSession()"
+        >
+          퀴즈 저장
+        </button>
 
         <button
-          id="statusButton"
-          class="btn success"
-          onclick="toggleStatus()"
+          class="btn-secondary"
+          onclick="closeEditor()"
         >
-          퀴즈 열기
+          목록으로
+        </button>
+
+        <button
+          class="btn-danger"
+          onclick="deleteCurrentSession()"
+        >
+          이 퀴즈 삭제
         </button>
       </div>
 
-      <div style="height:15px;"></div>
-
-      <div class="field">
-        <label>퀴즈 제목</label>
-        <input id="sessionTitleInput" type="text" />
-      </div>
-
-      <button class="btn" onclick="saveSessionInfo()">
-        제목 저장
-      </button>
     </div>
 
 
-    <div class="card">
-      <div class="row between">
-        <div>
-          <h2>문제 관리</h2>
-          <div class="muted">
-            보기 개수는 문제마다 자유롭게 설정할 수 있습니다.
-          </div>
-        </div>
+    <!-- 문제 편집 -->
+    <div
+      id="questionSection"
+      class="card hidden"
+    >
 
-        <button class="btn" onclick="addQuestion()">
+      <div class="row" style="justify-content:space-between;">
+        <h2>문제 관리</h2>
+
+        <button
+          class="btn-primary"
+          onclick="addQuestion()"
+        >
           + 문제 추가
         </button>
       </div>
 
-      <div style="height:20px;"></div>
+      <div id="questionList"></div>
 
-      <div id="editor"></div>
+      <button
+        class="btn-success"
+        onclick="saveQuestions()"
+      >
+        문제 저장
+      </button>
 
-      <div style="margin-top:20px;">
-        <button class="btn" onclick="saveQuestions()">
-          문제 전체 저장
-        </button>
-      </div>
     </div>
 
 
-    <div class="card">
-      <div class="row between">
-        <div>
-          <h2>참가자 결과</h2>
-          <div class="muted">
-            실시간으로 참가자 점수를 확인할 수 있습니다.
-          </div>
-        </div>
+    <!-- 결과 -->
+    <div
+      id="resultSection"
+      class="card hidden"
+    >
 
-        <button class="btn secondary" onclick="downloadExcel()">
-          결과 엑셀 다운로드
+      <div class="row" style="justify-content:space-between;">
+        <h2>참가 결과</h2>
+
+        <button
+          class="btn-success"
+          onclick="downloadExcel()"
+        >
+          엑셀 다운로드
         </button>
       </div>
 
-      <div style="height:15px;"></div>
+      <div id="resultList"></div>
 
-      <div id="resultsTable"></div>
     </div>
 
   </div>
+
 </div>
 
 
 <script type="module">
 
-  import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
   import {
     getFirestore,
     doc,
     getDoc,
     setDoc,
+    deleteDoc,
     collection,
     getDocs
-  } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  import {
-    firebaseConfig,
-    ADMIN_PASSWORD
-  } from "./firebase-config.js";
+  }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-  import * as XLSX from
-    "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm";
+  /*
+  =====================================================
+  Firebase 설정
+  =====================================================
+  */
+
+  const firebaseConfig = {
+    apiKey: "여기에_기존_API_KEY",
+    authDomain: "여기에_기존_AUTH_DOMAIN",
+    projectId: "여기에_기존_PROJECT_ID",
+    storageBucket: "여기에_기존_STORAGE_BUCKET",
+    messagingSenderId: "여기에_기존_MESSAGING_SENDER_ID",
+    appId: "여기에_기존_APP_ID"
+  };
 
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
 
-  const CATS = [
-    "표준주의",
-    "접촉주의",
-    "비말주의",
-    "공기주의",
-    "접촉주의+비말주의",
-    "접촉주의+공기주의"
-  ];
+  /*
+  =====================================================
+  관리자 설정
+  =====================================================
+  */
 
+  // 기존 관리자 비밀번호
+  const ADMIN_PASSWORD = "1234";
 
-  const DEFAULT_QUESTIONS = [
-
-    {
-      id: "q1",
-      text: "환자의 혈액이나 체액에 접촉할 가능성이 있을 때 착용해야 하는 것은?",
-      correct: "장갑",
-      explain: "혈액이나 체액에 접촉할 가능성이 있는 경우 장갑을 착용합니다.",
-      points: 100,
-      options: [
-        { id: "q1o1", text: "장갑" },
-        { id: "q1o2", text: "마스크" },
-        { id: "q1o3", text: "보안경" },
-        { id: "q1o4", text: "모자" }
-      ],
-      answerId: "q1o1"
-    },
-
-    {
-      id: "q2",
-      text: "표준주의는 모든 환자에게 적용하는 감염관리 원칙이다.",
-      correct: "O",
-      explain: "표준주의는 모든 환자의 감염 여부와 관계없이 적용합니다.",
-      points: 100,
-      options: [
-        { id: "q2o1", text: "O" },
-        { id: "q2o2", text: "X" }
-      ],
-      answerId: "q2o1"
-    },
-
-    {
-      id: "q3",
-      text: "접촉주의 환자에게 필요한 보호구는?",
-      correct: "장갑과 가운",
-      explain: "접촉주의에서는 환자 및 주변 환경과 접촉할 가능성을 고려하여 장갑과 가운을 사용합니다.",
-      points: 100,
-      options: [
-        { id: "q3o1", text: "장갑과 가운" },
-        { id: "q3o2", text: "수술용 마스크만" },
-        { id: "q3o3", text: "보안경만" },
-        { id: "q3o4", text: "모자만" }
-      ],
-      answerId: "q3o1"
-    },
-
-    {
-      id: "q4",
-      text: "비말주의가 필요한 대표적인 감염병은?",
-      correct: "인플루엔자",
-      explain: "인플루엔자는 대표적으로 비말주의가 필요한 감염병입니다.",
-      points: 100,
-      options: [
-        { id: "q4o1", text: "인플루엔자" },
-        { id: "q4o2", text: "결핵" },
-        { id: "q4o3", text: "홍역" },
-        { id: "q4o4", text: "옴" }
-      ],
-      answerId: "q4o1"
-    },
-
-    {
-      id: "q5",
-      text: "공기주의가 필요한 환자에게 사용하는 호흡기 보호구는?",
-      correct: "N95 마스크",
-      explain: "공기주의 환자에게는 N95 또는 동급 이상의 호흡기 보호구가 필요합니다.",
-      points: 100,
-      options: [
-        { id: "q5o1", text: "N95 마스크" },
-        { id: "q5o2", text: "일반 마스크" },
-        { id: "q5o3", text: "면 마스크" },
-        { id: "q5o4", text: "마스크 없음" }
-      ],
-      answerId: "q5o1"
-    },
-
-    {
-      id: "q6",
-      text: "손위생은 장갑을 착용하면 생략해도 된다.",
-      correct: "X",
-      explain: "장갑을 착용하더라도 손위생은 반드시 필요합니다.",
-      points: 100,
-      options: [
-        { id: "q6o1", text: "O" },
-        { id: "q6o2", text: "X" }
-      ],
-      answerId: "q6o2"
-    },
-
-    {
-      id: "q7",
-      text: "환자와 접촉하기 전 손위생을 시행한다.",
-      correct: "O",
-      explain: "환자 접촉 전 손위생은 기본적인 감염관리 원칙입니다.",
-      points: 100,
-      options: [
-        { id: "q7o1", text: "O" },
-        { id: "q7o2", text: "X" }
-      ],
-      answerId: "q7o1"
-    },
-
-    {
-      id: "q8",
-      text: "공기주의가 필요한 감염병은?",
-      correct: "결핵",
-      explain: "결핵은 대표적인 공기주의 감염병입니다.",
-      points: 100,
-      options: [
-        { id: "q8o1", text: "결핵" },
-        { id: "q8o2", text: "인플루엔자" },
-        { id: "q8o3", text: "옴" },
-        { id: "q8o4", text: "A형간염" }
-      ],
-      answerId: "q8o1"
-    },
-
-    {
-      id: "q9",
-      text: "환자의 호흡기 분비물이 튈 가능성이 있을 때 착용할 수 있는 보호구는?",
-      correct: "보안경 또는 안면보호구",
-      explain: "눈 점막을 보호하기 위해 보안경 또는 안면보호구를 사용할 수 있습니다.",
-      points: 100,
-      options: [
-        { id: "q9o1", text: "보안경 또는 안면보호구" },
-        { id: "q9o2", text: "슬리퍼" },
-        { id: "q9o3", text: "귀마개" },
-        { id: "q9o4", text: "모자만" }
-      ],
-      answerId: "q9o1"
-    },
-
-    {
-      id: "q10",
-      text: "접촉주의 환자는 가능한 경우 전용 장비를 사용한다.",
-      correct: "O",
-      explain: "접촉주의 환자는 가능한 경우 전용 장비를 사용하는 것이 좋습니다.",
-      points: 100,
-      options: [
-        { id: "q10o1", text: "O" },
-        { id: "q10o2", text: "X" }
-      ],
-      answerId: "q10o1"
-    },
-
-    {
-      id: "q11",
-      text: "비말주의 환자에게 가장 기본적으로 필요한 보호구는?",
-      correct: "수술용 마스크",
-      explain: "비말주의에서는 일반적으로 수술용 마스크를 사용합니다.",
-      points: 100,
-      options: [
-        { id: "q11o1", text: "수술용 마스크" },
-        { id: "q11o2", text: "N95만" },
-        { id: "q11o3", text: "장화" },
-        { id: "q11o4", text: "모자만" }
-      ],
-      answerId: "q11o1"
-    },
-
-    {
-      id: "q12",
-      text: "표준주의에서 가장 중요한 기본 원칙 중 하나는?",
-      correct: "손위생",
-      explain: "손위생은 감염 전파를 예방하기 위한 가장 기본적인 방법입니다.",
-      points: 100,
-      options: [
-        { id: "q12o1", text: "손위생" },
-        { id: "q12o2", text: "환기 중단" },
-        { id: "q12o3", text: "보호구 미착용" },
-        { id: "q12o4", text: "환자 접촉 증가" }
-      ],
-      answerId: "q12o1"
-    },
-
-    {
-      id: "q13",
-      text: "공기주의 환자는 가능하면 음압격리실을 사용한다.",
-      correct: "O",
-      explain: "공기주의가 필요한 환자는 가능하면 음압격리실에서 관리합니다.",
-      points: 100,
-      options: [
-        { id: "q13o1", text: "O" },
-        { id: "q13o2", text: "X" }
-      ],
-      answerId: "q13o1"
-    },
-
-    {
-      id: "q14",
-      text: "장갑을 벗은 후에도 손위생이 필요하다.",
-      correct: "O",
-      explain: "장갑을 벗은 후에는 손에 오염이 발생할 수 있으므로 손위생을 시행합니다.",
-      points: 100,
-      options: [
-        { id: "q14o1", text: "O" },
-        { id: "q14o2", text: "X" }
-      ],
-      answerId: "q14o1"
-    },
-
-    {
-      id: "q15",
-      text: "홍역은 어떤 격리주의가 필요한 감염병인가?",
-      correct: "공기주의",
-      explain: "홍역은 공기를 통한 전파가 가능하므로 공기주의가 필요합니다.",
-      points: 100,
-      options: [
-        { id: "q15o1", text: "표준주의" },
-        { id: "q15o2", text: "접촉주의" },
-        { id: "q15o3", text: "비말주의" },
-        { id: "q15o4", text: "공기주의" },
-        { id: "q15o5", text: "주의 불필요" }
-      ],
-      answerId: "q15o4"
-    },
-
-    {
-      id: "q16",
-      text: "감염관리에서 개인보호구는 환자와 상황에 따라 선택한다.",
-      correct: "O",
-      explain: "위험도와 노출 가능성을 고려하여 적절한 개인보호구를 선택합니다.",
-      points: 100,
-      options: [
-        { id: "q16o1", text: "O" },
-        { id: "q16o2", text: "X" }
-      ],
-      answerId: "q16o1"
-    }
-
-  ];
+  // 최상위 마스터키
+  // 반드시 본인만 알고 있는 값으로 변경하세요.
+  const MASTER_KEY = "MASTER2026";
 
 
   let current = null;
-  let code = null;
-  let poll = null;
   let currentResults = [];
 
 
-  const $ = (id) => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
 
-  function show(id) {
-    $(id).classList.remove("hidden");
-  }
+  /*
+  =====================================================
+  기본 문제
+  =====================================================
+  */
 
-
-  function hide(id) {
-    $(id).classList.add("hidden");
-  }
-
-
-  function genCode() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let result = "";
-
-    for (let i = 0; i < 6; i++) {
-      result += chars[Math.floor(Math.random() * chars.length)];
+  const DEFAULT_QUESTIONS = [
+    {
+      id: makeId("q"),
+      text: "격리주의에 대한 기본적인 설명으로 가장 적절한 것은?",
+      options: [
+        {
+          id: makeId("o"),
+          text: "감염 전파를 예방하기 위한 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "환자의 식사를 제한하는 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "환자의 이동을 무조건 금지하는 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "의료진의 업무를 줄이기 위한 조치"
+        }
+      ],
+      answerId: "",
+      correct: "",
+      points: 100,
+      explain: ""
     }
+  ];
 
-    return result;
+
+  function makeId(prefix) {
+    return prefix + "_" + Math.random().toString(36).substring(2, 10);
   }
 
 
-  function newQuestionId() {
-    return "q_" + Math.random().toString(36).slice(2, 10);
-  }
+  /*
+  =====================================================
+  로그인
+  =====================================================
+  */
 
+  window.adminLogin = function() {
 
-  function newOptionId(questionId) {
-    return questionId + "_o_" + Math.random().toString(36).slice(2, 9);
-  }
+    const password = $("adminPassword").value;
 
-
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-
-  function normalizeQuestion(q) {
-
-    q = q || {};
-
-    if (!q.id) {
-      q.id = newQuestionId();
-    }
-
-    /*
-      기존 데이터에 options가 없을 경우
-      예전 CATS 값을 보기로 변환합니다.
-    */
-    if (!Array.isArray(q.options) || q.options.length < 2) {
-
-      q.options = CATS.map((text, index) => ({
-        id: newOptionId(q.id) + "_" + index,
-        text
-      }));
-
-      let answerIndex = q.options.findIndex(
-        option => option.text === q.correct
-      );
-
-      if (answerIndex < 0) {
-        answerIndex = 0;
-      }
-
-      q.answerId = q.options[answerIndex].id;
-    }
-
-    q.options = q.options.map((option, index) => {
-
-      if (!option || typeof option !== "object") {
-        return {
-          id: newOptionId(q.id),
-          text: String(option ?? "")
-        };
-      }
-
-      return {
-        id: option.id || newOptionId(q.id),
-        text: String(option.text ?? "")
-      };
-
-    });
-
-
-    /*
-      answerId가 없으면 기존 correct 값으로 정답을 찾습니다.
-    */
-    if (!q.answerId ||
-        !q.options.some(option => option.id === q.answerId)) {
-
-      const answerOption = q.options.find(
-        option => option.text === q.correct
-      );
-
-      q.answerId =
-        answerOption?.id ||
-        q.options[0]?.id ||
-        null;
-    }
-
-
-    /*
-      기존 correct 필드도 유지합니다.
-      다른 기존 코드와의 호환성을 위해 남겨둡니다.
-    */
-    const answerOption = q.options.find(
-      option => option.id === q.answerId
-    );
-
-    q.correct = answerOption?.text || "";
-
-
-    q.text = String(q.text ?? "");
-    q.explain = String(q.explain ?? "");
-    q.points = Number(q.points ?? 100);
-
-    if (!Number.isFinite(q.points)) {
-      q.points = 100;
-    }
-
-    return q;
-  }
-
-
-  function normalizeAllQuestions() {
-
-    if (!current) return;
-
-    if (!Array.isArray(current.questions)) {
-      current.questions = [];
-    }
-
-    current.questions =
-      current.questions.map(normalizeQuestion);
-  }
-
-
-  function login() {
-
-    const password = $("passwordInput").value;
-
-    if (password === ADMIN_PASSWORD) {
-
-      localStorage.setItem(
-        "quiz_admin_logged_in",
-        "true"
-      );
-
-      hide("loginView");
-      show("listView");
-
-      loadSessions();
-
-    } else {
-
-      alert("비밀번호가 올바르지 않습니다.");
-
-    }
-  }
-
-
-  $("passwordInput").addEventListener(
-    "keydown",
-    (e) => {
-
-      if (e.key === "Enter") {
-        login();
-      }
-
-    }
-  );
-
-
-  async function createSession() {
-
-    const title = prompt(
-      "새 퀴즈 제목을 입력하세요."
-    );
-
-    if (!title) return;
-
-    const newCode = genCode();
-
-    current = {
-      code: newCode,
-      title,
-      status: "draft",
-      createdAt: new Date().toISOString(),
-
-      questions:
-        structuredClone(DEFAULT_QUESTIONS)
-    };
-
-    code = newCode;
-
-    normalizeAllQuestions();
-
-    await setDoc(
-      doc(db, "sessions", code),
-      current
-    );
-
-    openDash();
-
-  }
-
-
-  async function loadSessions() {
-
-    const snapshot =
-      await getDocs(collection(db, "sessions"));
-
-    const sessions = [];
-
-    snapshot.forEach((docSnap) => {
-
-      sessions.push(docSnap.data());
-
-    });
-
-
-    sessions.sort((a, b) => {
-
-      const ad =
-        new Date(a.createdAt || 0).getTime();
-
-      const bd =
-        new Date(b.createdAt || 0).getTime();
-
-      return bd - ad;
-
-    });
-
-
-    const container = $("sessionList");
-
-    if (sessions.length === 0) {
-
-      container.innerHTML =
-        `<div class="empty">아직 만들어진 퀴즈가 없습니다.</div>`;
-
+    if (password !== ADMIN_PASSWORD) {
+      alert("관리자 비밀번호가 올바르지 않습니다.");
       return;
     }
 
+    $("loginSection").classList.add("hidden");
+    $("adminSection").classList.remove("hidden");
 
-    container.innerHTML = sessions.map(session => {
-
-      const statusClass =
-        session.status === "open"
-          ? "open"
-          : session.status === "closed"
-            ? "closed"
-            : "draft";
-
-      const statusText =
-        session.status === "open"
-          ? "진행 중"
-          : session.status === "closed"
-            ? "종료"
-            : "준비 중";
+    loadSessions();
+  };
 
 
-      return `
-        <div class="session-item">
+  /*
+  =====================================================
+  세션 코드 생성
+  =====================================================
+  */
 
-          <div class="session-info">
+  function generateParticipantCode() {
 
-            <strong>
-              ${escapeHtml(session.title || "제목 없음")}
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-              <span class="badge ${statusClass}">
-                ${statusText}
-              </span>
-            </strong>
+    let code = "";
 
-            <div class="session-meta">
-              코드: ${escapeHtml(session.code || "")}
-              · 문제 ${session.questions?.length || 0}개
-            </div>
+    for (let i = 0; i < 6; i++) {
+      code += chars[
+        Math.floor(Math.random() * chars.length)
+      ];
+    }
 
-          </div>
-
-          <button
-            class="btn small"
-            data-code="${escapeHtml(session.code || "")}"
-            onclick="openExistingSession(this.dataset.code)"
-          >
-            관리하기
-          </button>
-
-        </div>
-      `;
-
-    }).join("");
-
+    return code;
   }
 
 
-  async function openExistingSession(sessionCode) {
+  /*
+  =====================================================
+  세션 목록
+  =====================================================
+  */
 
-    const snap =
-      await getDoc(
-        doc(db, "sessions", sessionCode)
+  async function loadSessions() {
+
+    const list = $("sessionList");
+
+    list.innerHTML = "불러오는 중...";
+
+    try {
+
+      const snap = await getDocs(
+        collection(db, "sessions")
       );
+
+      const sessions = [];
+
+      snap.forEach(docSnap => {
+
+        sessions.push({
+          id: docSnap.id,
+          ...docSnap.data()
+        });
+
+      });
+
+
+      sessions.sort((a, b) =>
+        String(b.createdAt || "")
+          .localeCompare(String(a.createdAt || ""))
+      );
+
+
+      if (sessions.length === 0) {
+
+        list.innerHTML = `
+          <p>아직 만들어진 퀴즈가 없습니다.</p>
+        `;
+
+        return;
+      }
+
+
+      list.innerHTML = sessions.map(session => {
+
+        const statusClass =
+          session.status || "draft";
+
+        const statusText =
+          statusClass === "open"
+            ? "공개"
+            : statusClass === "closed"
+              ? "종료"
+              : "준비중";
+
+
+        return `
+          <div class="session-item">
+
+            <div class="session-title">
+              ${escapeHtml(session.title || "제목 없음")}
+            </div>
+
+            <div class="session-info">
+
+              참가 코드:
+              <strong>
+                ${escapeHtml(session.code || "")}
+              </strong>
+
+              <br>
+
+              관리 코드:
+              <strong>
+                ${session.managerCode ? "설정됨" : "미설정"}
+              </strong>
+
+              <br>
+
+              상태:
+              <span class="status ${statusClass}">
+                ${statusText}
+              </span>
+
+            </div>
+
+            <div
+              class="row"
+              style="margin-top:12px;"
+            >
+
+              <button
+                class="btn-primary small"
+                data-code="${escapeAttr(session.code || "")}"
+                onclick="openExistingSession(this.dataset.code)"
+              >
+                관리하기
+              </button>
+
+              <button
+                class="btn-danger small"
+                data-code="${escapeAttr(session.code || "")}"
+                onclick="deleteSession(this.dataset.code)"
+              >
+                삭제
+              </button>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+    } catch (error) {
+
+      console.error(error);
+
+      list.innerHTML =
+        "<p>퀴즈 목록을 불러오지 못했습니다.</p>";
+    }
+  }
+
+
+  /*
+  =====================================================
+  새 퀴즈
+  =====================================================
+  */
+
+  window.createNewSession = async function() {
+
+    let participantCode;
+
+    do {
+
+      participantCode =
+        generateParticipantCode();
+
+    } while (
+      await sessionExists(participantCode)
+    );
+
+
+    current = {
+
+      code: participantCode,
+
+      title: "",
+
+      managerCode: "",
+
+      status: "draft",
+
+      createdAt:
+        new Date().toISOString(),
+
+      questions:
+        structuredClone(DEFAULT_QUESTIONS)
+
+    };
+
+
+    showEditor();
+
+  };
+
+
+  async function sessionExists(code) {
+
+    const snap = await getDoc(
+      doc(db, "sessions", code)
+    );
+
+    return snap.exists();
+  }
+
+
+  /*
+  =====================================================
+  기존 퀴즈 관리하기
+  =====================================================
+  */
+
+  window.openExistingSession = async function(code) {
+
+    const snap = await getDoc(
+      doc(db, "sessions", code)
+    );
 
 
     if (!snap.exists()) {
 
-      alert("퀴즈를 찾을 수 없습니다.");
+      alert("해당 퀴즈를 찾을 수 없습니다.");
+
+      await loadSessions();
+
       return;
-
     }
 
 
-    current = snap.data();
-
-    code = sessionCode;
+    const session = snap.data();
 
 
-    if (!current.title) {
-      current.title = "격리주의 퀴즈";
+    /*
+    관리자 코드 입력
+    */
+
+    const inputCode =
+      prompt(
+        "이 퀴즈의 4자리 관리 코드를 입력하세요.\n\n마스터키를 사용하는 경우 마스터키를 입력하세요."
+      );
+
+
+    if (inputCode === null) {
+      return;
     }
 
 
-    if (!Array.isArray(current.questions)) {
+    const entered =
+      inputCode.trim();
 
-      current.questions =
-        structuredClone(DEFAULT_QUESTIONS);
 
+    const managerCode =
+      String(session.managerCode || "").trim();
+
+
+    /*
+    마스터키
+    */
+
+    const isMaster =
+      entered === MASTER_KEY;
+
+
+    /*
+    일반 관리 코드
+    */
+
+    const isManager =
+      managerCode &&
+      entered === managerCode;
+
+
+    if (!isMaster && !isManager) {
+
+      alert("관리 코드가 올바르지 않습니다.");
+
+      return;
     }
 
 
-    normalizeAllQuestions();
-
-    openDash();
-
-  }
-
-
-  function openDash() {
-
-    hide("listView");
-    hide("loginView");
-    show("dashboardView");
+    current = {
+      ...session,
+      code:
+        session.code || code,
+      questions:
+        normalizeQuestions(session.questions || [])
+    };
 
 
-    $("dashboardTitle").textContent =
-      current.title || "퀴즈";
+    showEditor();
 
-    $("dashboardCode").textContent =
-      current.code || code;
+  };
 
-    $("codeBoxValue").textContent =
-      current.code || code;
 
-    $("sessionTitleInput").value =
+  /*
+  =====================================================
+  편집 화면
+  =====================================================
+  */
+
+  function showEditor() {
+
+    $("editorSection")
+      .classList.remove("hidden");
+
+    $("questionSection")
+      .classList.remove("hidden");
+
+    $("resultSection")
+      .classList.remove("hidden");
+
+
+    $("sessionTitle").value =
       current.title || "";
 
 
-    renderStatus();
-    renderEditor();
-
-    refresh();
+    $("sessionCode").value =
+      current.code || "";
 
 
-    if (poll) {
-      clearInterval(poll);
-    }
-
-    poll = setInterval(
-      refresh,
-      5000
-    );
-
-  }
+    $("displayParticipantCode").textContent =
+      current.code || "";
 
 
-  function renderStatus() {
+    $("managerCode").value =
+      current.managerCode || "";
 
-    const button = $("statusButton");
 
-    if (current.status === "open") {
+    $("displayManagerCode").textContent =
+      current.managerCode || "미설정";
 
-      button.textContent =
-        "퀴즈 종료";
 
-      button.className =
-        "btn danger";
+    $("sessionStatus").value =
+      current.status || "draft";
 
-    } else {
 
-      button.textContent =
-        "퀴즈 열기";
+    renderQuestions();
 
-      button.className =
-        "btn success";
+    loadResults(current.code);
 
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
   }
 
 
-  async function toggleStatus() {
+  window.closeEditor = function() {
 
-    if (!current) return;
+    current = null;
 
+    $("editorSection")
+      .classList.add("hidden");
 
-    current.status =
-      current.status === "open"
-        ? "closed"
-        : "open";
+    $("questionSection")
+      .classList.add("hidden");
 
-
-    await setDoc(
-      doc(db, "sessions", code),
-      current
-    );
-
-
-    renderStatus();
+    $("resultSection")
+      .classList.add("hidden");
 
     loadSessions();
 
-  }
+  };
 
 
-  async function saveSessionInfo() {
+  /*
+  =====================================================
+  퀴즈 저장
+  =====================================================
+  */
+
+  window.saveSession = async function() {
 
     const title =
-      $("sessionTitleInput").value.trim();
+      $("sessionTitle").value.trim();
+
+
+    const managerCode =
+      $("managerCode").value.trim();
 
 
     if (!title) {
 
       alert("퀴즈 제목을 입력해주세요.");
-      return;
 
+      return;
+    }
+
+
+    if (!/^\d{4}$/.test(managerCode)) {
+
+      alert("관리 코드는 4자리 숫자로 입력해주세요.");
+
+      return;
     }
 
 
     current.title = title;
 
+    current.managerCode =
+      managerCode;
 
-    await setDoc(
-      doc(db, "sessions", code),
-      current
-    );
-
-
-    $("dashboardTitle").textContent =
-      title;
+    current.status =
+      $("sessionStatus").value;
 
 
-    alert("제목이 저장되었습니다.");
+    try {
+
+      await setDoc(
+        doc(db, "sessions", current.code),
+        current
+      );
+
+
+      $("displayManagerCode").textContent =
+        managerCode;
+
+
+      alert("퀴즈가 저장되었습니다.");
+
+      await loadSessions();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "저장 중 오류가 발생했습니다."
+      );
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
+  문제 정규화
+  =====================================================
+  */
+
+  function normalizeQuestions(questions) {
+
+    if (!Array.isArray(questions)) {
+      return [];
+    }
+
+
+    return questions.map(q => {
+
+      let options =
+        Array.isArray(q.options)
+          ? q.options
+          : [];
+
+
+      /*
+      예전 데이터에 options가 없는 경우
+      */
+
+      if (options.length < 2) {
+
+        const oldCorrect =
+          q.correct || "";
+
+
+        options = [
+          {
+            id: makeId("o"),
+            text: oldCorrect
+          },
+          {
+            id: makeId("o"),
+            text: ""
+          }
+        ];
+
+      }
+
+
+      options =
+        options.map(option => ({
+
+          id:
+            option.id ||
+            makeId("o"),
+
+          text:
+            String(option.text || "")
+
+        }));
+
+
+      let answerId =
+        q.answerId || "";
+
+
+      /*
+      기존 correct 데이터 호환
+      */
+
+      if (!answerId && q.correct) {
+
+        const found =
+          options.find(
+            o => o.text === q.correct
+          );
+
+
+        if (found) {
+          answerId = found.id;
+        }
+
+      }
+
+
+      const answerOption =
+        options.find(
+          o => o.id === answerId
+        );
+
+
+      return {
+
+        id:
+          q.id || makeId("q"),
+
+        text:
+          String(q.text || ""),
+
+        options,
+
+        answerId,
+
+        correct:
+          answerOption
+            ? answerOption.text
+            : String(q.correct || ""),
+
+        points:
+          Number(q.points || 100),
+
+        explain:
+          String(q.explain || "")
+
+      };
+
+    });
 
   }
 
 
-  function renderEditor() {
+  /*
+  =====================================================
+  문제 렌더링
+  =====================================================
+  */
 
-    normalizeAllQuestions();
+  function renderQuestions() {
 
-    const editor = $("editor");
+    const list =
+      $("questionList");
 
 
-    if (current.questions.length === 0) {
+    if (!current.questions.length) {
 
-      editor.innerHTML =
-        `<div class="empty">문제를 추가해주세요.</div>`;
+      list.innerHTML =
+        "<p>문제가 없습니다.</p>";
 
       return;
     }
 
 
-    editor.innerHTML =
+    list.innerHTML =
       current.questions.map(
         (q, index) => {
-
-          const optionsHtml =
-            q.options.map(
-              (option, optionIndex) => {
-
-                return `
-                  <div class="ipg-option-editor">
-
-                    <div class="ipg-option-number">
-                      ${optionIndex + 1}
-                    </div>
-
-                    <input
-                      class="ipg-option-input"
-                      data-qid="${escapeHtml(q.id)}"
-                      data-oid="${escapeHtml(option.id)}"
-                      value="${escapeHtml(option.text)}"
-                      placeholder="보기 ${optionIndex + 1}"
-                    />
-
-                    <button
-                      type="button"
-                      class="ipg-option-delete"
-                      data-qid="${escapeHtml(q.id)}"
-                      data-oid="${escapeHtml(option.id)}"
-                      onclick="deleteOptionFromQuestion(
-                        this.dataset.qid,
-                        this.dataset.oid
-                      )"
-                      title="보기 삭제"
-                    >
-                      ×
-                    </button>
-
-                  </div>
-                `;
-
-              }
-            ).join("");
-
-
-          const answerHtml =
-            q.options.map(
-              (option, optionIndex) => {
-
-                return `
-                  <label class="ipg-answer-item">
-
-                    <input
-                      type="radio"
-                      name="answer_${escapeHtml(q.id)}"
-                      value="${escapeHtml(option.id)}"
-                      ${option.id === q.answerId ? "checked" : ""}
-                      data-answer-qid="${escapeHtml(q.id)}"
-                    />
-
-                    ${optionIndex + 1}번
-                  </label>
-                `;
-
-              }
-            ).join("");
-
 
           return `
 
             <div
               class="question-card"
-              data-question-id="${escapeHtml(q.id)}"
+              data-question-id="${escapeAttr(q.id)}"
             >
 
               <div class="question-header">
 
-                <div class="question-number">
+                <strong>
                   문제 ${index + 1}
-                </div>
+                </strong>
 
                 <button
-                  class="btn danger small"
-                  data-qid="${escapeHtml(q.id)}"
-                  onclick="deleteQuestion(this.dataset.qid)"
+                  class="btn-danger small"
+                  onclick="removeQuestion('${escapeAttr(q.id)}')"
                 >
                   문제 삭제
                 </button>
@@ -1420,88 +1135,97 @@
               </div>
 
 
-              <div class="field">
+              <label>
+                문제
+              </label>
 
-                <label>문제 내용</label>
-
-                <textarea
-                  data-f="text"
-                  data-qid="${escapeHtml(q.id)}"
-                  placeholder="문제 내용을 입력하세요."
-                >${escapeHtml(q.text)}</textarea>
-
-              </div>
+              <textarea
+                class="question-text"
+              >${escapeHtml(q.text)}</textarea>
 
 
-              <div class="field">
+              <label>
+                배점
+              </label>
 
-                <label>보기</label>
-
-                <div class="ipg-options-editor">
-                  ${optionsHtml}
-                </div>
-
-                <div class="option-add-row">
-
-                  <button
-                    type="button"
-                    class="btn secondary small"
-                    data-qid="${escapeHtml(q.id)}"
-                    onclick="addOptionToQuestion(this.dataset.qid)"
-                  >
-                    + 보기 추가
-                  </button>
-
-                  <span class="muted">
-                    최소 2개
-                  </span>
-
-                </div>
+              <input
+                class="question-points"
+                type="number"
+                min="0"
+                value="${Number(q.points || 100)}"
+              />
 
 
-                <div class="answer-title">
-                  정답 선택
-                </div>
-
-                <div class="ipg-answer-list">
-                  ${answerHtml}
-                </div>
-
-              </div>
+              <label>
+                보기
+              </label>
 
 
-              <div class="question-grid">
+              <div class="options-container">
 
-                <div class="field">
+                ${
+                  q.options.map(
+                    (option, optionIndex) => `
 
-                  <label>배점</label>
+                      <div
+                        class="option-row"
+                        data-option-id="${escapeAttr(option.id)}"
+                      >
 
-                  <input
-                    class="points-input"
-                    type="number"
-                    min="0"
-                    step="1"
-                    data-f="points"
-                    data-qid="${escapeHtml(q.id)}"
-                    value="${escapeHtml(q.points)}"
-                  />
+                        <input
+                          type="radio"
+                          name="answer-${escapeAttr(q.id)}"
+                          ${
+                            q.answerId === option.id
+                              ? "checked"
+                              : ""
+                          }
+                        />
 
-                </div>
+                        <span class="option-label">
+                          ${String.fromCharCode(65 + optionIndex)}
+                        </span>
 
-              </div>
+                        <input
+                          type="text"
+                          class="option-text"
+                          value="${escapeAttr(option.text)}"
+                          placeholder="보기 ${optionIndex + 1}"
+                        />
 
+                        <button
+                          class="btn-danger small"
+                          onclick="removeOption('${escapeAttr(q.id)}','${escapeAttr(option.id)}')"
+                        >
+                          삭제
+                        </button>
 
-              <div class="field">
+                      </div>
 
-                <label>해설</label>
-
-                <textarea
-                  data-f="explain"
-                  data-qid="${escapeHtml(q.id)}"
-                  placeholder="정답 해설을 입력하세요."
-                >${escapeHtml(q.explain)}</textarea>
+                    `
+                  ).join("")
+                }
 
               </div>
+
+
+              <button
+                class="btn-secondary small"
+                style="margin-top:10px;"
+                onclick="addOption('${escapeAttr(q.id)}')"
+              >
+                + 보기 추가
+              </button>
+
+
+              <label>
+                해설
+              </label>
+
+              <textarea
+                class="question-explain"
+                placeholder="정답에 대한 해설"
+              >${escapeHtml(q.explain || "")}</textarea>
 
             </div>
 
@@ -1513,137 +1237,40 @@
   }
 
 
-  function addOptionToQuestion(questionId) {
+  /*
+  =====================================================
+  문제 추가
+  =====================================================
+  */
 
-    const q =
-      current.questions.find(
-        question => question.id === questionId
-      );
-
-
-    if (!q) return;
-
-
-    q.options.push({
-
-      id: newOptionId(questionId),
-
-      text: ""
-
-    });
-
-
-    renderEditor();
-
-  }
-
-
-  function deleteOptionFromQuestion(
-    questionId,
-    optionId
-  ) {
-
-    const q =
-      current.questions.find(
-        question => question.id === questionId
-      );
-
-
-    if (!q) return;
-
-
-    if (q.options.length <= 2) {
-
-      alert("보기는 최소 2개가 필요합니다.");
-      return;
-
-    }
-
-
-    const deletedWasAnswer =
-      q.answerId === optionId;
-
-
-    q.options =
-      q.options.filter(
-        option => option.id !== optionId
-      );
-
-
-    if (deletedWasAnswer) {
-
-      q.answerId =
-        q.options[0]?.id || null;
-
-    }
-
-
-    const answerOption =
-      q.options.find(
-        option => option.id === q.answerId
-      );
-
-
-    q.correct =
-      answerOption?.text || "";
-
-
-    renderEditor();
-
-  }
-
-
-  function updateCorrectText(q) {
-
-    const answerOption =
-      q.options.find(
-        option => option.id === q.answerId
-      );
-
-
-    q.correct =
-      answerOption?.text || "";
-
-  }
-
-
-  function addQuestion() {
-
-    const id =
-      newQuestionId();
-
+  window.addQuestion = function() {
 
     current.questions.push({
 
-      id,
+      id: makeId("q"),
 
       text: "",
 
       options: [
-
         {
-          id: newOptionId(id),
+          id: makeId("o"),
           text: ""
         },
-
         {
-          id: newOptionId(id),
+          id: makeId("o"),
           text: ""
         },
-
         {
-          id: newOptionId(id),
+          id: makeId("o"),
           text: ""
         },
-
         {
-          id: newOptionId(id),
+          id: makeId("o"),
           text: ""
         }
-
       ],
 
-      answerId: null,
+      answerId: "",
 
       correct: "",
 
@@ -1654,37 +1281,24 @@
     });
 
 
-    normalizeQuestion(
-      current.questions[
-        current.questions.length - 1
-      ]
-    );
+    renderQuestions();
+
+  };
 
 
-    renderEditor();
+  /*
+  =====================================================
+  문제 삭제
+  =====================================================
+  */
 
+  window.removeQuestion = function(questionId) {
 
-    setTimeout(() => {
-
-      const cards =
-        document.querySelectorAll(
-          ".question-card"
-        );
-
-      cards[cards.length - 1]
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
-    }, 100);
-
-  }
-
-
-  function deleteQuestion(questionId) {
-
-    if (!confirm("이 문제를 삭제할까요?")) {
+    if (
+      !confirm(
+        "이 문제를 삭제할까요?"
+      )
+    ) {
       return;
     }
 
@@ -1695,222 +1309,277 @@
       );
 
 
-    renderEditor();
+    renderQuestions();
 
-  }
-
-
-  async function saveQuestions() {
-
-    if (!current) return;
+  };
 
 
-    /*
-      문제 내용 / 배점 / 해설
-    */
-    document
-      .querySelectorAll("[data-f]")
-      .forEach(el => {
+  /*
+  =====================================================
+  보기 추가
+  =====================================================
+  */
 
-        const q =
-          current.questions.find(
-            item => item.id === el.dataset.qid
-          );
+  window.addOption = function(questionId) {
 
-
-        if (!q) return;
-
-
-        if (el.dataset.f === "points") {
-
-          q.points =
-            Number(el.value || 0);
-
-        } else {
-
-          q[el.dataset.f] =
-            el.value;
-
-        }
-
-      });
-
-
-    /*
-      보기 내용
-    */
-    document
-      .querySelectorAll(".ipg-option-input")
-      .forEach(input => {
-
-        const q =
-          current.questions.find(
-            item => item.id === input.dataset.qid
-          );
-
-
-        if (!q) return;
-
-
-        const option =
-          q.options.find(
-            item => item.id === input.dataset.oid
-          );
-
-
-        if (option) {
-          option.text = input.value;
-        }
-
-      });
-
-
-    /*
-      정답
-    */
-    document
-      .querySelectorAll(
-        'input[type="radio"][data-answer-qid]:checked'
-      )
-      .forEach(radio => {
-
-        const q =
-          current.questions.find(
-            item => item.id === radio.dataset.answerQid
-          );
-
-
-        if (!q) return;
-
-
-        q.answerId =
-          radio.value;
-
-      });
-
-
-    /*
-      데이터 정리
-    */
-    current.questions =
-      current.questions.map(q => {
-
-        normalizeQuestion(q);
-
-        updateCorrectText(q);
-
-        return q;
-
-      });
-
-
-    await setDoc(
-      doc(db, "sessions", code),
-      current
-    );
-
-
-    renderEditor();
-
-
-    alert("문제가 저장되었습니다.");
-
-  }
-
-
-  function copyLink() {
-
-    const url =
-      `${location.origin}${location.pathname.replace(
-        /admin\.html$/,
-        "index.html"
-      )}?code=${encodeURIComponent(code)}`;
-
-
-    navigator.clipboard.writeText(url)
-      .then(() => {
-
-        alert(
-          "참여 링크가 복사되었습니다."
-        );
-
-      })
-      .catch(() => {
-
-        prompt(
-          "아래 링크를 복사하세요.",
-          url
-        );
-
-      });
-
-  }
-
-
-  async function getResults() {
-
-    if (!code) return [];
-
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "sessions",
-          code,
-          "results"
-        )
+    const question =
+      current.questions.find(
+        q => q.id === questionId
       );
 
 
-    const results = [];
+    if (!question) return;
 
 
-    snapshot.forEach(docSnap => {
+    question.options.push({
 
-      results.push({
-        id: docSnap.id,
-        ...docSnap.data()
-      });
+      id: makeId("o"),
+
+      text: ""
 
     });
 
 
-    return results;
+    renderQuestions();
 
-  }
+  };
 
 
-  async function refresh() {
+  /*
+  =====================================================
+  보기 삭제
+  =====================================================
+  */
+
+  window.removeOption =
+    function(questionId, optionId) {
+
+      const question =
+        current.questions.find(
+          q => q.id === questionId
+        );
+
+
+      if (!question) return;
+
+
+      if (question.options.length <= 2) {
+
+        alert(
+          "보기는 최소 2개가 필요합니다."
+        );
+
+        return;
+      }
+
+
+      if (
+        question.answerId === optionId
+      ) {
+
+        question.answerId = "";
+
+      }
+
+
+      question.options =
+        question.options.filter(
+          o => o.id !== optionId
+        );
+
+
+      renderQuestions();
+
+    };
+
+
+  /*
+  =====================================================
+  문제 저장
+  =====================================================
+  */
+
+  window.saveQuestions = async function() {
+
+    const cards =
+      document.querySelectorAll(
+        ".question-card"
+      );
+
+
+    cards.forEach(card => {
+
+      const questionId =
+        card.dataset.questionId;
+
+
+      const question =
+        current.questions.find(
+          q => q.id === questionId
+        );
+
+
+      if (!question) return;
+
+
+      question.text =
+        card
+          .querySelector(".question-text")
+          .value.trim();
+
+
+      question.points =
+        Number(
+          card
+            .querySelector(".question-points")
+            .value || 0
+        );
+
+
+      const optionRows =
+        card.querySelectorAll(
+          ".option-row"
+        );
+
+
+      question.options =
+        Array.from(optionRows).map(
+          row => {
+
+            const id =
+              row.dataset.optionId;
+
+            const text =
+              row
+                .querySelector(".option-text")
+                .value.trim();
+
+
+            return {
+              id,
+              text
+            };
+
+          }
+        );
+
+
+      const checked =
+        card.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+
+      question.answerId =
+        checked
+          ? checked.closest(".option-row").dataset.optionId
+          : "";
+
+
+      const answerOption =
+        question.options.find(
+          o => o.id === question.answerId
+        );
+
+
+      question.correct =
+        answerOption
+          ? answerOption.text
+          : "";
+
+
+      question.explain =
+        card
+          .querySelector(".question-explain")
+          .value.trim();
+
+    });
+
 
     try {
 
-      currentResults =
-        await getResults();
+      await setDoc(
+        doc(db, "sessions", current.code),
+        current
+      );
+
+
+      alert(
+        "문제가 저장되었습니다."
+      );
+
+
+      await loadResults(
+        current.code
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "문제 저장 중 오류가 발생했습니다."
+      );
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
+  결과 불러오기
+  =====================================================
+  */
+
+  async function loadResults(code) {
+
+    const list =
+      $("resultList");
+
+
+    list.innerHTML =
+      "결과를 불러오는 중...";
+
+
+    try {
+
+      const snap =
+        await getDocs(
+          collection(
+            db,
+            "sessions",
+            code,
+            "results"
+          )
+        );
+
+
+      currentResults = [];
+
+
+      snap.forEach(docSnap => {
+
+        currentResults.push({
+
+          id: docSnap.id,
+
+          ...docSnap.data()
+
+        });
+
+      });
 
 
       currentResults.sort(
-        (a, b) => {
-
-          if (
-            Number(b.score || 0) !==
-            Number(a.score || 0)
-          ) {
-
-            return (
-              Number(b.score || 0) -
-              Number(a.score || 0)
-            );
-
-          }
-
-
-          return (
-            Number(b.correctCount || 0) -
-            Number(a.correctCount || 0)
-          );
-
-        }
+        (a, b) =>
+          String(
+            b.createdAt || ""
+          ).localeCompare(
+            String(
+              a.createdAt || ""
+            )
+          )
       );
 
 
@@ -1918,302 +1587,330 @@
 
     } catch (error) {
 
-      console.error(
-        "결과 불러오기 실패:",
-        error
-      );
+      console.error(error);
+
+      list.innerHTML =
+        "<p>결과를 불러오지 못했습니다.</p>";
 
     }
 
   }
 
 
-  function formatDateTime(value) {
-
-    if (!value) return "";
-
-
-    if (
-      typeof value.toDate === "function"
-    ) {
-
-      return value
-        .toDate()
-        .toLocaleString("ko-KR");
-
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(date.getTime())
-    ) {
-
-      return "";
-
-    }
-
-
-    return date.toLocaleString("ko-KR");
-
-  }
-
+  /*
+  =====================================================
+  결과 표시
+  =====================================================
+  */
 
   function renderResults() {
 
-    const container =
-      $("resultsTable");
+    const list =
+      $("resultList");
 
 
-    if (currentResults.length === 0) {
+    if (!currentResults.length) {
 
-      container.innerHTML =
-        `<div class="empty">
-          아직 제출한 참가자가 없습니다.
-        </div>`;
+      list.innerHTML =
+        "<p>아직 참가 결과가 없습니다.</p>";
 
       return;
-
     }
 
 
-    const total =
-      current.questions?.length || 0;
+    list.innerHTML = `
 
+      <table class="result-table">
 
-    container.innerHTML = `
+        <thead>
 
-      <div class="result-table-wrap">
+          <tr>
 
-        <table>
+            <th>이름</th>
 
-          <thead>
+            <th>소속</th>
 
-            <tr>
+            <th>점수</th>
 
-              <th>순위</th>
-              <th>이름</th>
-              <th>소속</th>
-              <th>점수</th>
-              <th>정답</th>
-              <th>전체</th>
-              <th>제출시간</th>
+            <th>제출시간</th>
 
-            </tr>
+          </tr>
 
-          </thead>
+        </thead>
 
-          <tbody>
+        <tbody>
 
-            ${currentResults.map(
-              (result, index) => {
+          ${
+            currentResults.map(
+              result => `
 
-                return `
+                <tr>
 
-                  <tr>
+                  <td>
+                    ${escapeHtml(
+                      result.name || ""
+                    )}
+                  </td>
 
-                    <td>
-                      ${index + 1}
-                    </td>
+                  <td>
+                    ${escapeHtml(
+                      result.affiliation || ""
+                    )}
+                  </td>
 
-                    <td>
-                      ${escapeHtml(
-                        result.name || ""
-                      )}
-                    </td>
+                  <td>
+                    ${Number(
+                      result.score || 0
+                    )}
+                  </td>
 
-                    <td>
-                      ${escapeHtml(
-                        result.affiliation || ""
-                      )}
-                    </td>
+                  <td>
+                    ${escapeHtml(
+                      result.createdAt || ""
+                    )}
+                  </td>
 
-                    <td>
-                      <strong>
-                        ${Number(
-                          result.score || 0
-                        )}
-                      </strong>
-                    </td>
+                </tr>
 
-                    <td>
-                      ${Number(
-                        result.correctCount || 0
-                      )}
-                    </td>
+              `
+            ).join("")
+          }
 
-                    <td>
-                      ${Number(
-                        result.total || total
-                      )}
-                    </td>
+        </tbody>
 
-                    <td>
-                      ${escapeHtml(
-                        formatDateTime(
-                          result.submittedAt
-                        )
-                      )}
-                    </td>
-
-                  </tr>
-
-                `;
-
-              }
-            ).join("")}
-
-          </tbody>
-
-        </table>
-
-      </div>
+      </table>
 
     `;
 
   }
 
 
-  function downloadExcel() {
+  /*
+  =====================================================
+  현재 퀴즈 삭제
+  =====================================================
+  */
 
-    if (currentResults.length === 0) {
+  window.deleteCurrentSession =
+    async function() {
 
-      alert(
-        "다운로드할 결과가 없습니다."
+      if (!current) return;
+
+      await deleteSession(
+        current.code
       );
 
-      return;
-
-    }
+    };
 
 
-    const rows =
-      currentResults.map(
-        (result, index) => {
+  /*
+  =====================================================
+  퀴즈 삭제
+  =====================================================
+  */
 
-          return {
+  window.deleteSession =
+    async function(sessionCode) {
 
-            순위:
-              index + 1,
+      const snap =
+        await getDoc(
+          doc(db, "sessions", sessionCode)
+        );
 
-            이름:
-              result.name || "",
 
-            소속:
-              result.affiliation || "",
+      if (!snap.exists()) {
 
-            점수:
-              Number(result.score || 0),
+        alert(
+          "이미 삭제된 퀴즈입니다."
+        );
 
-            정답수:
-              Number(
-                result.correctCount || 0
-              ),
+        await loadSessions();
 
-            전체문제수:
-              Number(
-                result.total ||
-                current.questions?.length ||
-                0
-              ),
+        return;
+      }
 
-            제출시간:
-              formatDateTime(
-                result.submittedAt
-              )
 
-          };
+      const session =
+        snap.data();
+
+
+      const confirmed =
+        confirm(
+          `"${session.title || "제목 없음"}" 퀴즈를 삭제할까요?\n\n참가 코드: ${sessionCode}\n\n삭제하면 되돌릴 수 없습니다.`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        await deleteDoc(
+          doc(
+            db,
+            "sessions",
+            sessionCode
+          )
+        );
+
+
+        alert(
+          "퀴즈가 삭제되었습니다."
+        );
+
+
+        if (
+          current &&
+          current.code === sessionCode
+        ) {
+
+          current = null;
+
+          $("editorSection")
+            .classList.add("hidden");
+
+          $("questionSection")
+            .classList.add("hidden");
+
+          $("resultSection")
+            .classList.add("hidden");
 
         }
-      );
 
 
-    const worksheet =
-      XLSX.utils.json_to_sheet(rows);
+        await loadSessions();
 
+      } catch (error) {
 
-    const workbook =
-      XLSX.utils.book_new();
+        console.error(error);
 
+        alert(
+          "퀴즈 삭제 중 오류가 발생했습니다."
+        );
 
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      "결과"
-    );
+      }
 
-
-    XLSX.writeFile(
-      workbook,
-      `${current.title || "퀴즈"}_결과.xlsx`
-    );
-
-  }
-
-
-  function backToList() {
-
-    if (poll) {
-
-      clearInterval(poll);
-      poll = null;
-
-    }
-
-
-    current = null;
-    code = null;
-    currentResults = [];
-
-
-    hide("dashboardView");
-    show("listView");
-
-
-    loadSessions();
-
-  }
+    };
 
 
   /*
-    이미 로그인한 경우 바로 관리자 화면으로 이동
+  =====================================================
+  엑셀 다운로드
+  =====================================================
   */
-  if (
-    localStorage.getItem(
-      "quiz_admin_logged_in"
-    ) === "true"
-  ) {
 
-    hide("loginView");
-    show("listView");
+  window.downloadExcel =
+    function() {
 
-    loadSessions();
+      if (!currentResults.length) {
+
+        alert(
+          "다운로드할 결과가 없습니다."
+        );
+
+        return;
+      }
+
+
+      const headers = [
+        "이름",
+        "소속",
+        "점수",
+        "제출시간"
+      ];
+
+
+      const rows =
+        currentResults.map(
+          result => [
+
+            result.name || "",
+
+            result.affiliation || "",
+
+            result.score || 0,
+
+            result.createdAt || ""
+
+          ]
+        );
+
+
+      const csv = [
+
+        headers,
+
+        ...rows
+
+      ]
+      .map(
+        row =>
+          row.map(
+            value =>
+              `"${String(value)
+                .replace(/"/g, '""')}"`
+          ).join(",")
+      )
+      .join("\n");
+
+
+      const blob =
+        new Blob(
+          ["\ufeff" + csv],
+          {
+            type:
+              "text/csv;charset=utf-8;"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(blob);
+
+
+      const a =
+        document.createElement("a");
+
+
+      a.href = url;
+
+      a.download =
+        `${current.title || "퀴즈"}_결과.csv`;
+
+      a.click();
+
+
+      URL.revokeObjectURL(url);
+
+    };
+
+
+  /*
+  =====================================================
+  유틸
+  =====================================================
+  */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
   }
 
 
-  /*
-    HTML onclick에서 사용할 수 있도록
-    전역 함수로 등록
-  */
-  window.login = login;
-  window.createSession = createSession;
-  window.openExistingSession = openExistingSession;
-  window.toggleStatus = toggleStatus;
-  window.saveSessionInfo = saveSessionInfo;
-  window.renderEditor = renderEditor;
-  window.addQuestion = addQuestion;
-  window.deleteQuestion = deleteQuestion;
-  window.addOptionToQuestion = addOptionToQuestion;
-  window.deleteOptionFromQuestion =
-    deleteOptionFromQuestion;
-  window.saveQuestions = saveQuestions;
-  window.copyLink = copyLink;
-  window.downloadExcel = downloadExcel;
-  window.backToList = backToList;
+  function escapeAttr(value) {
+
+    return escapeHtml(value);
+
+  }
+
 
 </script>
 
