@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>감염관리실 퀴즈</title>
+  <title>감염관리실 퀴즈 관리자 모드</title>
 
   <style>
     * {
@@ -13,314 +12,225 @@
 
     body {
       margin: 0;
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
       color: #222;
     }
 
-    button,
-    input {
-      font: inherit;
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
     }
 
     button {
+      border: 0;
+      border-radius: 7px;
+      padding: 10px 15px;
       cursor: pointer;
+      font-size: 14px;
+      background: #333;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+    }
+
+    .btn-success {
+      background: #16a34a;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+    }
+
+    .btn-secondary {
+      background: #64748b;
+    }
+
+    .small {
+      padding: 7px 11px;
+      font-size: 13px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .page {
-      min-height: 100vh;
-      padding: 30px 16px;
+    .session-item {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
     }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
+    .session-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 26px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    .session-info {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
-    h1,
-    h2,
-    h3 {
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .question-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fafafa;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .option-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .option-row input[type="text"] {
+      flex: 1;
       margin-top: 0;
     }
 
-    .title {
-      font-size: 30px;
-      font-weight: 800;
-      margin-bottom: 8px;
+    .option-row input[type="radio"] {
+      width: auto;
+      margin: 0;
     }
 
-    .subtitle {
-      color: #777;
-      margin-bottom: 25px;
-      line-height: 1.6;
+    .option-label {
+      min-width: 25px;
+      font-weight: bold;
     }
 
-    .field {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 7px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid #d9dee8;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #667eea;
-    }
-
-    .btn {
-      width: 100%;
-      border: 0;
-      border-radius: 11px;
-      padding: 14px 18px;
-      background: #667eea;
-      color: white;
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
-
-    .btn.secondary {
-      background: #eef1f7;
-      color: #333;
-    }
-
-    .btn.success {
-      background: #27ae60;
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .login-box {
-      max-width: 460px;
-      margin: 80px auto;
-    }
-
-    .login-box h1 {
-      text-align: center;
-    }
-
-    .code-input {
-      text-align: center;
-      font-size: 22px;
-      letter-spacing: 5px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .quiz-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .quiz-title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .progress {
-      color: #777;
-      font-size: 14px;
-    }
-
-    /* 시간 제한 표시 */
-    .timer {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 7px 14px;
-      border-radius: 20px;
-      background: #f1f3ff;
-      color: #667eea;
-      font-weight: 800;
+    .code-box {
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
       font-size: 15px;
     }
 
-    .timer.warning {
-      background: #fff3e6;
-      color: #e67e22;
-    }
-
-    .timer.danger {
-      background: #fdecec;
-      color: #c0392b;
-    }
-
-    .question-number {
-      color: #667eea;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .question-text {
+    .code-value {
       font-size: 22px;
-      line-height: 1.55;
-      font-weight: 800;
-      margin-bottom: 24px;
-      white-space: pre-wrap;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #e5e7eb;
     }
 
-    .option {
+    .status.open {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.closed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status.draft {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .result-table {
       width: 100%;
-      padding: 16px;
-      border: 2px solid #e0e4ec;
-      border-radius: 13px;
-      background: white;
-      text-align: left;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      transition: 0.15s;
+      border-collapse: collapse;
+      margin-top: 15px;
     }
 
-    .option:hover {
-      border-color: #667eea;
-      background: #f8f9ff;
-    }
-
-    .option.selected {
-      border-color: #667eea;
-      background: #f1f3ff;
-    }
-
-    .option-number {
-      width: 32px;
-      height: 32px;
-      min-width: 32px;
-      border-radius: 50%;
-      background: #eef1f7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-    }
-
-    .option.selected .option-number {
-      background: #667eea;
-      color: white;
-    }
-
-    .option-text {
-      flex: 1;
-      line-height: 1.5;
-      padding-top: 5px;
-      word-break: keep-all;
-    }
-
-    .navigation {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
-    }
-
-    .navigation button {
-      flex: 1;
-    }
-
-    .result-score {
+    .result-table th,
+    .result-table td {
+      border: 1px solid #ddd;
+      padding: 9px;
       text-align: center;
-      font-size: 42px;
-      font-weight: 900;
-      margin: 20px 0;
+      font-size: 14px;
     }
 
-    .result-message {
-      text-align: center;
-      color: #666;
-      line-height: 1.7;
-      margin-bottom: 25px;
+    .result-table th {
+      background: #f1f5f9;
     }
 
-    .result-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .result-box {
-      background: #f7f8fa;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .result-box small {
-      display: block;
-      color: #777;
-      margin-bottom: 6px;
-    }
-
-    .result-box strong {
-      font-size: 22px;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 50px 10px;
-      color: #777;
-    }
-
-    .error {
-      text-align: center;
-      padding: 30px 10px;
-      color: #c0392b;
-      line-height: 1.7;
-    }
-
-    @media (max-width: 600px) {
-      .page {
-        padding: 18px 12px;
+    @media (max-width: 700px) {
+      .container {
+        padding: 15px;
       }
 
       .card {
-        padding: 20px;
+        padding: 16px;
       }
 
-      .title {
-        font-size: 25px;
-      }
-
-      .question-text {
-        font-size: 19px;
-      }
-
-      .result-summary {
-        grid-template-columns: 1fr;
+      .question-header {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
   </style>
@@ -328,283 +238,176 @@
 
 <body>
 
-<!-- =========================
-     시작 화면
-========================= -->
+<div class="container">
 
-<div id="startView" class="page">
-  <div class="container">
+  <h1>감염관리실 퀴즈 관리자 모드</h1>
 
-    <div class="card login-box">
+  <!-- 로그인 -->
+  <div id="loginSection" class="card">
+    <h2>관리자 로그인</h2>
 
-      <h1>감염관리실 퀴즈</h1>
+    <label>관리자 비밀번호</label>
+    <input
+      id="adminPassword"
+      type="password"
+      placeholder="관리자 비밀번호"
+    />
 
-      <p class="subtitle" style="text-align:center;">
-        참여 코드를 입력해주세요.
-      </p>
-
-      <div class="field">
-        <label>참여 코드</label>
-
-        <input
-          id="codeInput"
-          class="code-input"
-          type="text"
-          maxlength="6"
-          placeholder="예: ABC123"
-        />
-      </div>
-
-      <button
-        class="btn"
-        onclick="findQuiz()"
-      >
-        퀴즈 시작
-      </button>
-
-    </div>
-
+    <button
+      class="btn-primary"
+      style="margin-top:15px;"
+      onclick="adminLogin()"
+    >
+      로그인
+    </button>
   </div>
-</div>
 
 
-<!-- =========================
-     참가자 정보
-========================= -->
+  <!-- 관리자 화면 -->
+  <div id="adminSection" class="hidden">
 
-<div id="infoView" class="page hidden">
-  <div class="container">
-
+    <!-- 퀴즈 목록 -->
     <div class="card">
-
-      <h1 id="infoTitle">
-        퀴즈
-      </h1>
-
-      <p class="subtitle">
-        참가자 정보를 입력해주세요.
-      </p>
-
-      <div class="field">
-
-        <label>이름</label>
-
-        <input
-          id="nameInput"
-          type="text"
-          placeholder="이름을 입력하세요."
-        />
-
-      </div>
-
-
-      <div class="field">
-
-        <label>소속</label>
-
-        <input
-          id="affiliationInput"
-          type="text"
-          placeholder="소속을 입력하세요."
-        />
-
-      </div>
-
-
-      <button
-        class="btn"
-        onclick="startQuiz()"
-      >
-        퀴즈 시작
-      </button>
-
-
-      <button
-        class="btn secondary"
-        onclick="backToStart()"
-        style="margin-top:10px;"
-      >
-        뒤로 가기
-      </button>
-
-    </div>
-
-  </div>
-</div>
-
-
-<!-- =========================
-     퀴즈 화면
-========================= -->
-
-<div id="quizView" class="page hidden">
-
-  <div class="container">
-
-    <div class="card">
-
-      <div class="quiz-header">
-
-        <div
-          id="quizTitle"
-          class="quiz-title"
-        >
-          퀴즈
-        </div>
-
-        <div
-          id="progress"
-          class="progress"
-        >
-          1 / 1
-        </div>
-
-        <!-- 시간 제한이 있을 때만 표시 -->
-        <div
-          id="timer"
-          class="timer hidden"
-        >
-          남은 시간: 0초
-        </div>
-
-      </div>
-
-
-      <div
-        id="questionNumber"
-        class="question-number"
-      >
-        문제 1
-      </div>
-
-
-      <div
-        id="questionText"
-        class="question-text"
-      ></div>
-
-
-      <div
-        id="options"
-        class="options"
-      ></div>
-
-
-      <div class="navigation">
+      <div class="row" style="justify-content:space-between;">
+        <h2>퀴즈 목록</h2>
 
         <button
-          id="prevButton"
-          class="btn secondary"
-          onclick="previousQuestion()"
+          class="btn-primary"
+          onclick="createNewSession()"
         >
-          이전
+          + 새 퀴즈 만들기
+        </button>
+      </div>
+
+      <div id="sessionList"></div>
+    </div>
+
+
+    <!-- 퀴즈 편집 -->
+    <div id="editorSection" class="card hidden">
+
+      <h2>퀴즈 관리</h2>
+
+      <label>퀴즈 제목</label>
+      <input id="sessionTitle" />
+
+      <label>참가 코드</label>
+      <input
+        id="sessionCode"
+        readonly
+      />
+
+      <div class="code-box">
+        <div>참가자가 입력하는 코드</div>
+        <div
+          id="displayParticipantCode"
+          class="code-value"
+        ></div>
+      </div>
+
+
+      <label>관리 코드 (4자리 숫자)</label>
+      <input
+        id="managerCode"
+        type="text"
+        inputmode="numeric"
+        maxlength="4"
+        placeholder="예: 4827"
+      />
+
+      <div class="code-box">
+        <div>담당자가 퀴즈를 관리할 때 사용하는 코드</div>
+        <div
+          id="displayManagerCode"
+          class="code-value"
+        ></div>
+      </div>
+
+
+      <label>상태</label>
+      <select id="sessionStatus">
+        <option value="draft">준비중</option>
+        <option value="open">공개</option>
+        <option value="closed">종료</option>
+      </select>
+
+
+      <div
+        class="row"
+        style="margin-top:20px;"
+      >
+        <button
+          class="btn-success"
+          onclick="saveSession()"
+        >
+          퀴즈 저장
         </button>
 
         <button
-          id="nextButton"
-          class="btn"
-          onclick="nextQuestion()"
+          class="btn-secondary"
+          onclick="closeEditor()"
         >
-          다음
+          목록으로
         </button>
 
+        <button
+          class="btn-danger"
+          onclick="deleteCurrentSession()"
+        >
+          이 퀴즈 삭제
+        </button>
       </div>
 
+    </div>
 
-      <!--
-        시간 제한이 없을 때:
-        이전 문제로 이동
 
-        시간 제한이 있을 때:
-        이전 문제로 돌아가지 못하도록 비활성화
-      -->
+    <!-- 문제 편집 -->
+    <div
+      id="questionSection"
+      class="card hidden"
+    >
+
+      <div class="row" style="justify-content:space-between;">
+        <h2>문제 관리</h2>
+
+        <button
+          class="btn-primary"
+          onclick="addQuestion()"
+        >
+          + 문제 추가
+        </button>
+      </div>
+
+      <div id="questionList"></div>
+
       <button
-        id="backQuestionButton"
-        class="btn secondary"
-        onclick="backQuestion()"
-        style="margin-top:10px;"
+        class="btn-success"
+        onclick="saveQuestions()"
       >
-        뒤로 가기
+        문제 저장
       </button>
 
     </div>
 
-  </div>
 
-</div>
+    <!-- 결과 -->
+    <div
+      id="resultSection"
+      class="card hidden"
+    >
 
+      <div class="row" style="justify-content:space-between;">
+        <h2>참가 결과</h2>
 
-<!-- =========================
-     결과 화면
-========================= -->
-
-<div id="resultView" class="page hidden">
-
-  <div class="container">
-
-    <div class="card">
-
-      <h1 style="text-align:center;">
-        퀴즈 완료
-      </h1>
-
-      <div
-        id="resultScore"
-        class="result-score"
-      >
-        0점
+        <button
+          class="btn-success"
+          onclick="downloadExcel()"
+        >
+          엑셀 다운로드
+        </button>
       </div>
 
-
-      <div
-        id="resultMessage"
-        class="result-message"
-      ></div>
-
-
-      <div class="result-summary">
-
-        <div class="result-box">
-
-          <small>정답</small>
-
-          <strong id="resultCorrect">
-            0
-          </strong>
-
-        </div>
-
-
-        <div class="result-box">
-
-          <small>전체 문제</small>
-
-          <strong id="resultTotal">
-            0
-          </strong>
-
-        </div>
-
-
-        <div class="result-box">
-
-          <small>점수</small>
-
-          <strong id="resultScoreSmall">
-            0
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="btn"
-        onclick="location.reload()"
-      >
-        처음으로
-      </button>
+      <div id="resultList"></div>
 
     </div>
 
@@ -615,66 +418,1590 @@
 
 <script type="module">
 
-  import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
   import {
     getFirestore,
     doc,
     getDoc,
-    setDoc
-  } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  import {
-    firebaseConfig
-  } from "./firebase-config.js";
-
-
-  const app =
-    initializeApp(firebaseConfig);
-
-  const db =
-    getFirestore(app);
-
-
-  let session = null;
-
-  let code = null;
-
-  let currentQuestion = 0;
-
-  let answers = {};
-
-  let participantName = "";
-
-  let participantAffiliation = "";
+    setDoc,
+    deleteDoc,
+    collection,
+    getDocs
+  }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
   /*
-    시간 제한 관련 변수
+  =====================================================
+  Firebase 설정
+  =====================================================
   */
 
-  let timerInterval = null;
+  const firebaseConfig = {
 
-  let remainingSeconds = 0;
+  apiKey: "AIzaSyDJuaH028Hw0jbHVekhSY8hrzlmsVgHpqI",
 
-  let quizSubmitting = false;
+  authDomain: "icquizgame.firebaseapp.com",
+
+  projectId: "icquizgame",
+
+  storageBucket: "icquizgame.firebasestorage.app",
+
+  messagingSenderId: "987272482834",
+
+  appId: "1:987272482834:web:612b4edb47aae69ac848cb"
+  };
 
 
-  const $ = (id) =>
-    document.getElementById(id);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
 
-  function show(id) {
-    $(id).classList.remove("hidden");
+  /*
+  =====================================================
+  관리자 설정
+  =====================================================
+  */
+
+  // 기존 관리자 비밀번호
+  const ADMIN_PASSWORD = "ISH2801";
+
+  // 최상위 마스터키
+  // 반드시 본인만 알고 있는 값으로 변경하세요.
+  const MASTER_KEY = "ISH2801";
+
+
+  let current = null;
+  let currentResults = [];
+
+
+  const $ = id => document.getElementById(id);
+
+
+  /*
+  =====================================================
+  기본 문제
+  =====================================================
+  */
+
+  const DEFAULT_QUESTIONS = [
+    {
+      id: makeId("q"),
+      text: "격리주의에 대한 기본적인 설명으로 가장 적절한 것은?",
+      options: [
+        {
+          id: makeId("o"),
+          text: "감염 전파를 예방하기 위한 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "환자의 식사를 제한하는 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "환자의 이동을 무조건 금지하는 조치"
+        },
+        {
+          id: makeId("o"),
+          text: "의료진의 업무를 줄이기 위한 조치"
+        }
+      ],
+      answerId: "",
+      correct: "",
+      points: 100,
+      explain: ""
+    }
+  ];
+
+
+  function makeId(prefix) {
+    return prefix + "_" + Math.random().toString(36).substring(2, 10);
   }
 
 
-  function hide(id) {
-    $(id).classList.add("hidden");
+  /*
+  =====================================================
+  로그인
+  =====================================================
+  */
+
+  window.adminLogin = function() {
+
+    const password = $("adminPassword").value;
+
+    if (password !== ADMIN_PASSWORD) {
+      alert("관리자 비밀번호가 올바르지 않습니다.");
+      return;
+    }
+
+    $("loginSection").classList.add("hidden");
+    $("adminSection").classList.remove("hidden");
+
+    loadSessions();
+  };
+
+
+  /*
+  =====================================================
+  참가 코드 생성
+  =====================================================
+  */
+
+  function generateParticipantCode() {
+
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let code = "";
+
+    for (let i = 0; i < 6; i++) {
+      code += chars[
+        Math.floor(Math.random() * chars.length)
+      ];
+    }
+
+    return code;
   }
 
+
+  /*
+  =====================================================
+  세션 목록
+  =====================================================
+  */
+
+  async function loadSessions() {
+
+    const list = $("sessionList");
+
+    list.innerHTML = "불러오는 중...";
+
+    try {
+
+      const snap = await getDocs(
+        collection(db, "sessions")
+      );
+
+      const sessions = [];
+
+      snap.forEach(docSnap => {
+
+        sessions.push({
+          id: docSnap.id,
+          ...docSnap.data()
+        });
+
+      });
+
+
+      sessions.sort((a, b) =>
+        String(b.createdAt || "")
+          .localeCompare(String(a.createdAt || ""))
+      );
+
+
+      if (sessions.length === 0) {
+
+        list.innerHTML = `
+          <p>아직 만들어진 퀴즈가 없습니다.</p>
+        `;
+
+        return;
+      }
+
+
+      list.innerHTML = sessions.map(session => {
+
+        const statusClass =
+          session.status || "draft";
+
+        const statusText =
+          statusClass === "open"
+            ? "공개"
+            : statusClass === "closed"
+              ? "종료"
+              : "준비중";
+
+
+        return `
+          <div class="session-item">
+
+            <div class="session-title">
+              ${escapeHtml(session.title || "제목 없음")}
+            </div>
+
+            <div class="session-info">
+
+              참가 코드:
+              <strong>
+                ${escapeHtml(session.code || "")}
+              </strong>
+
+              <br>
+
+              관리 코드:
+              <strong>
+                ${session.managerCode ? "설정됨" : "미설정"}
+              </strong>
+
+              <br>
+
+              상태:
+              <span class="status ${statusClass}">
+                ${statusText}
+              </span>
+
+            </div>
+
+            <div
+              class="row"
+              style="margin-top:12px;"
+            >
+
+              <button
+                class="btn-primary small"
+                data-code="${escapeAttr(session.code || "")}"
+                onclick="openExistingSession(this.dataset.code)"
+              >
+                관리하기
+              </button>
+
+              <button
+                class="btn-danger small"
+                data-code="${escapeAttr(session.code || "")}"
+                onclick="deleteSession(this.dataset.code)"
+              >
+                삭제
+              </button>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+    } catch (error) {
+
+      console.error("퀴즈 목록 불러오기 오류:", error);
+
+      list.innerHTML = `
+        <p>
+          퀴즈 목록을 불러오지 못했습니다.
+        </p>
+        <p style="color:#dc2626;font-size:13px;">
+          ${escapeHtml(error.message || error)}
+        </p>
+      `;
+
+    }
+
+  }
+
+
+  /*
+  =====================================================
+  새 퀴즈
+  =====================================================
+  */
+
+  window.createNewSession = async function() {
+
+    try {
+
+      let participantCode;
+
+      do {
+
+        participantCode =
+          generateParticipantCode();
+
+      } while (
+        await sessionExists(participantCode)
+      );
+
+
+      current = {
+
+        code: participantCode,
+
+        title: "",
+
+        managerCode: "",
+
+        status: "draft",
+
+        createdAt:
+          new Date().toISOString(),
+
+        questions:
+          structuredClone(DEFAULT_QUESTIONS)
+
+      };
+
+
+      showEditor();
+
+    } catch (error) {
+
+      console.error(
+        "새 퀴즈 생성 오류:",
+        error
+      );
+
+      alert(
+        "새 퀴즈를 만들 수 없습니다.\n\n" +
+        (error.message || error)
+      );
+
+    }
+
+  };
+
+
+  async function sessionExists(code) {
+
+    const snap = await getDoc(
+      doc(db, "sessions", code)
+    );
+
+    return snap.exists();
+
+  }
+
+
+  /*
+  =====================================================
+  기존 퀴즈 관리하기
+  =====================================================
+  */
+
+  window.openExistingSession = async function(code) {
+
+    try {
+
+      const snap = await getDoc(
+        doc(db, "sessions", code)
+      );
+
+
+      if (!snap.exists()) {
+
+        alert("해당 퀴즈를 찾을 수 없습니다.");
+
+        await loadSessions();
+
+        return;
+      }
+
+
+      const session = snap.data();
+
+
+      /*
+      관리자 코드 입력
+      */
+
+      const inputCode =
+        prompt(
+          "이 퀴즈의 4자리 관리 코드를 입력하세요.\n\n마스터키를 사용하는 경우 마스터키를 입력하세요."
+        );
+
+
+      if (inputCode === null) {
+        return;
+      }
+
+
+      const entered =
+        inputCode.trim();
+
+
+      const managerCode =
+        String(session.managerCode || "").trim();
+
+
+      /*
+      마스터키
+      */
+
+      const isMaster =
+        entered === MASTER_KEY;
+
+
+      /*
+      일반 관리 코드
+      */
+
+      const isManager =
+        managerCode &&
+        entered === managerCode;
+
+
+      if (!isMaster && !isManager) {
+
+        alert("관리 코드가 올바르지 않습니다.");
+
+        return;
+      }
+
+
+      /*
+      =================================================
+      중요:
+      기존에 정상적인 options 구조를 가진 문제는
+      데이터를 다시 만들지 않고 그대로 사용합니다.
+      =================================================
+      */
+
+      const rawQuestions =
+        Array.isArray(session.questions)
+          ? session.questions
+          : [];
+
+
+      const needsNormalization =
+        rawQuestions.some(
+          q =>
+            !q ||
+            !Array.isArray(q.options) ||
+            q.options.length < 2
+        );
+
+
+      current = {
+
+        ...session,
+
+        code:
+          session.code || code,
+
+        questions:
+          needsNormalization
+            ? normalizeQuestions(rawQuestions)
+            : rawQuestions
+
+      };
+
+
+      showEditor();
+
+    } catch (error) {
+
+      console.error(
+        "퀴즈 불러오기 오류:",
+        error
+      );
+
+      alert(
+        "퀴즈를 불러오는 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
+      );
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
+  편집 화면
+  =====================================================
+  */
+
+  function showEditor() {
+
+    $("editorSection")
+      .classList.remove("hidden");
+
+    $("questionSection")
+      .classList.remove("hidden");
+
+    $("resultSection")
+      .classList.remove("hidden");
+
+
+    $("sessionTitle").value =
+      current.title || "";
+
+
+    $("sessionCode").value =
+      current.code || "";
+
+
+    $("displayParticipantCode").textContent =
+      current.code || "";
+
+
+    $("managerCode").value =
+      current.managerCode || "";
+
+
+    $("displayManagerCode").textContent =
+      current.managerCode || "미설정";
+
+
+    $("sessionStatus").value =
+      current.status || "draft";
+
+
+    renderQuestions();
+
+    loadResults(current.code);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  window.closeEditor = function() {
+
+    current = null;
+
+    $("editorSection")
+      .classList.add("hidden");
+
+    $("questionSection")
+      .classList.add("hidden");
+
+    $("resultSection")
+      .classList.add("hidden");
+
+    loadSessions();
+
+  };
+
+
+  /*
+  =====================================================
+  퀴즈 저장
+  =====================================================
+  */
+
+  window.saveSession = async function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
+    const title =
+      $("sessionTitle").value.trim();
+
+
+    const managerCode =
+      $("managerCode").value.trim();
+
+
+    if (!title) {
+
+      alert("퀴즈 제목을 입력해주세요.");
+
+      return;
+    }
+
+
+    if (!/^\d{4}$/.test(managerCode)) {
+
+      alert("관리 코드는 4자리 숫자로 입력해주세요.");
+
+      return;
+    }
+
+
+    /*
+    현재 화면에서 변경된 값만 반영
+    */
+
+    current.title =
+      title;
+
+    current.managerCode =
+      managerCode;
+
+    current.status =
+      $("sessionStatus").value;
+
+
+    try {
+
+      await setDoc(
+        doc(db, "sessions", current.code),
+        current
+      );
+
+
+      $("displayManagerCode").textContent =
+        managerCode;
+
+
+      alert("퀴즈가 저장되었습니다.");
+
+      await loadSessions();
+
+    } catch (error) {
+
+      console.error(
+        "퀴즈 저장 오류:",
+        error
+      );
+
+      alert(
+        "저장 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
+      );
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
+  문제 정규화
+  =====================================================
+  */
+
+  function normalizeQuestions(questions) {
+
+    if (!Array.isArray(questions)) {
+      return [];
+    }
+
+
+    return questions.map(q => {
+
+      /*
+      정상적인 최신 데이터는 최대한 그대로 유지
+      */
+
+      if (
+        q &&
+        Array.isArray(q.options) &&
+        q.options.length >= 2
+      ) {
+
+        return q;
+
+      }
+
+
+      /*
+      예전 데이터에 options가 없는 경우에만
+      기존 correct 값을 이용해 최소한의 호환 처리
+      */
+
+      const oldCorrect =
+        q && q.correct
+          ? q.correct
+          : "";
+
+
+      const options = [
+
+        {
+          id: makeId("o"),
+          text: oldCorrect
+        },
+
+        {
+          id: makeId("o"),
+          text: ""
+        }
+
+      ];
+
+
+      return {
+
+        ...(q || {}),
+
+        id:
+          q && q.id
+            ? q.id
+            : makeId("q"),
+
+        text:
+          q && q.text
+            ? String(q.text)
+            : "",
+
+        options,
+
+        answerId:
+          q && q.answerId
+            ? q.answerId
+            : (
+                oldCorrect
+                  ? options[0].id
+                  : ""
+              ),
+
+        correct:
+          oldCorrect,
+
+        points:
+          q && q.points != null
+            ? Number(q.points)
+            : 100,
+
+        explain:
+          q && q.explain
+            ? String(q.explain)
+            : ""
+
+      };
+
+    });
+
+  }
+
+
+  /*
+  =====================================================
+  문제 렌더링
+  =====================================================
+  */
+
+  function renderQuestions() {
+
+    const list =
+      $("questionList");
+
+
+    if (!current.questions.length) {
+
+      list.innerHTML =
+        "<p>문제가 없습니다.</p>";
+
+      return;
+    }
+
+
+    list.innerHTML =
+      current.questions.map(
+        (q, index) => {
+
+          return `
+
+            <div
+              class="question-card"
+              data-question-id="${escapeAttr(q.id)}"
+            >
+
+              <div class="question-header">
+
+                <strong>
+                  문제 ${index + 1}
+                </strong>
+
+                <button
+                  class="btn-danger small"
+                  onclick="removeQuestion('${escapeAttr(q.id)}')"
+                >
+                  문제 삭제
+                </button>
+
+              </div>
+
+
+              <label>
+                문제
+              </label>
+
+              <textarea
+                class="question-text"
+              >${escapeHtml(q.text)}</textarea>
+
+
+              <label>
+                배점
+              </label>
+
+              <input
+                class="question-points"
+                type="number"
+                min="0"
+                value="${Number(q.points || 100)}"
+              />
+
+
+              <label>
+                보기
+              </label>
+
+
+              <div class="options-container">
+
+                ${
+                  Array.isArray(q.options)
+                    ? q.options.map(
+                        (option, optionIndex) => `
+
+                          <div
+                            class="option-row"
+                            data-option-id="${escapeAttr(option.id)}"
+                          >
+
+                            <input
+                              type="radio"
+                              name="answer-${escapeAttr(q.id)}"
+                              ${
+                                q.answerId === option.id
+                                  ? "checked"
+                                  : ""
+                              }
+                            />
+
+                            <span class="option-label">
+                              ${String.fromCharCode(65 + optionIndex)}
+                            </span>
+
+                            <input
+                              type="text"
+                              class="option-text"
+                              value="${escapeAttr(option.text)}"
+                              placeholder="보기 ${optionIndex + 1}"
+                            />
+
+                            <button
+                              class="btn-danger small"
+                              onclick="removeOption('${escapeAttr(q.id)}','${escapeAttr(option.id)}')"
+                            >
+                              삭제
+                            </button>
+
+                          </div>
+
+                        `
+                      ).join("")
+                    : ""
+                }
+
+              </div>
+
+
+              <button
+                class="btn-secondary small"
+                style="margin-top:10px;"
+                onclick="addOption('${escapeAttr(q.id)}')"
+              >
+                + 보기 추가
+              </button>
+
+
+              <label>
+                해설
+              </label>
+
+              <textarea
+                class="question-explain"
+                placeholder="정답에 대한 해설"
+              >${escapeHtml(q.explain || "")}</textarea>
+
+            </div>
+
+          `;
+
+        }
+      ).join("");
+
+  }
+
+
+  /*
+  =====================================================
+  문제 추가
+  =====================================================
+  */
+
+  window.addQuestion = function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
+    current.questions.push({
+
+      id: makeId("q"),
+
+      text: "",
+
+      options: [
+        {
+          id: makeId("o"),
+          text: ""
+        },
+        {
+          id: makeId("o"),
+          text: ""
+        },
+        {
+          id: makeId("o"),
+          text: ""
+        },
+        {
+          id: makeId("o"),
+          text: ""
+        }
+      ],
+
+      answerId: "",
+
+      correct: "",
+
+      points: 100,
+
+      explain: ""
+
+    });
+
+
+    renderQuestions();
+
+  };
+
+
+  /*
+  =====================================================
+  문제 삭제
+  =====================================================
+  */
+
+  window.removeQuestion = function(questionId) {
+
+    if (
+      !confirm(
+        "이 문제를 삭제할까요?"
+      )
+    ) {
+      return;
+    }
+
+
+    current.questions =
+      current.questions.filter(
+        q => q.id !== questionId
+      );
+
+
+    renderQuestions();
+
+  };
+
+
+  /*
+  =====================================================
+  보기 추가
+  =====================================================
+  */
+
+  window.addOption = function(questionId) {
+
+    const question =
+      current.questions.find(
+        q => q.id === questionId
+      );
+
+
+    if (!question) return;
+
+
+    question.options.push({
+
+      id: makeId("o"),
+
+      text: ""
+
+    });
+
+
+    renderQuestions();
+
+  };
+
+
+  /*
+  =====================================================
+  보기 삭제
+  =====================================================
+  */
+
+  window.removeOption =
+    function(questionId, optionId) {
+
+      const question =
+        current.questions.find(
+          q => q.id === questionId
+        );
+
+
+      if (!question) return;
+
+
+      if (question.options.length <= 2) {
+
+        alert(
+          "보기는 최소 2개가 필요합니다."
+        );
+
+        return;
+      }
+
+
+      if (
+        question.answerId === optionId
+      ) {
+
+        question.answerId = "";
+
+      }
+
+
+      question.options =
+        question.options.filter(
+          o => o.id !== optionId
+        );
+
+
+      renderQuestions();
+
+    };
+
+
+  /*
+  =====================================================
+  문제 저장
+  =====================================================
+  */
+
+  window.saveQuestions = async function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
+    const cards =
+      document.querySelectorAll(
+        ".question-card"
+      );
+
+
+    cards.forEach(card => {
+
+      const questionId =
+        card.dataset.questionId;
+
+
+      const question =
+        current.questions.find(
+          q => q.id === questionId
+        );
+
+
+      if (!question) return;
+
+
+      question.text =
+        card
+          .querySelector(".question-text")
+          .value.trim();
+
+
+      question.points =
+        Number(
+          card
+            .querySelector(".question-points")
+            .value || 0
+        );
+
+
+      const optionRows =
+        card.querySelectorAll(
+          ".option-row"
+        );
+
+
+      question.options =
+        Array.from(optionRows).map(
+          row => {
+
+            const id =
+              row.dataset.optionId;
+
+            const text =
+              row
+                .querySelector(".option-text")
+                .value.trim();
+
+
+            return {
+              id,
+              text
+            };
+
+          }
+        );
+
+
+      const checked =
+        card.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+
+      question.answerId =
+        checked
+          ? checked.closest(".option-row").dataset.optionId
+          : "";
+
+
+      const answerOption =
+        question.options.find(
+          o => o.id === question.answerId
+        );
+
+
+      question.correct =
+        answerOption
+          ? answerOption.text
+          : "";
+
+
+      question.explain =
+        card
+          .querySelector(".question-explain")
+          .value.trim();
+
+    });
+
+
+    try {
+
+      await setDoc(
+        doc(db, "sessions", current.code),
+        current
+      );
+
+
+      alert(
+        "문제가 저장되었습니다."
+      );
+
+
+      await loadResults(
+        current.code
+      );
+
+    } catch (error) {
+
+      console.error(
+        "문제 저장 오류:",
+        error
+      );
+
+      alert(
+        "문제 저장 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
+      );
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
+  결과 불러오기
+  =====================================================
+  */
+
+  async function loadResults(code) {
+
+    const list =
+      $("resultList");
+
+
+    list.innerHTML =
+      "결과를 불러오는 중...";
+
+
+    try {
+
+      const snap =
+        await getDocs(
+          collection(
+            db,
+            "sessions",
+            code,
+            "results"
+          )
+        );
+
+
+      currentResults = [];
+
+
+      snap.forEach(docSnap => {
+
+        currentResults.push({
+
+          id: docSnap.id,
+
+          ...docSnap.data()
+
+        });
+
+      });
+
+
+      currentResults.sort(
+        (a, b) =>
+          String(
+            b.createdAt || ""
+          ).localeCompare(
+            String(
+              a.createdAt || ""
+            )
+          )
+      );
+
+
+      renderResults();
+
+    } catch (error) {
+
+      console.error(
+        "결과 불러오기 오류:",
+        error
+      );
+
+      list.innerHTML = `
+        <p>결과를 불러오지 못했습니다.</p>
+        <p style="color:#dc2626;font-size:13px;">
+          ${escapeHtml(error.message || error)}
+        </p>
+      `;
+
+    }
+
+  }
+
+
+  /*
+  =====================================================
+  결과 표시
+  =====================================================
+  */
+
+  function renderResults() {
+
+    const list =
+      $("resultList");
+
+
+    if (!currentResults.length) {
+
+      list.innerHTML =
+        "<p>아직 참가 결과가 없습니다.</p>";
+
+      return;
+    }
+
+
+    list.innerHTML = `
+
+      <table class="result-table">
+
+        <thead>
+
+          <tr>
+
+            <th>이름</th>
+
+            <th>소속</th>
+
+            <th>점수</th>
+
+            <th>제출시간</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            currentResults.map(
+              result => `
+
+                <tr>
+
+                  <td>
+                    ${escapeHtml(
+                      result.name || ""
+                    )}
+                  </td>
+
+                  <td>
+                    ${escapeHtml(
+                      result.affiliation || ""
+                    )}
+                  </td>
+
+                  <td>
+                    ${Number(
+                      result.score || 0
+                    )}
+                  </td>
+
+                  <td>
+                    ${escapeHtml(
+                      result.createdAt || ""
+                    )}
+                  </td>
+
+                </tr>
+
+              `
+            ).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+  }
+
+
+  /*
+  =====================================================
+  현재 퀴즈 삭제
+  =====================================================
+  */
+
+  window.deleteCurrentSession =
+    async function() {
+
+      if (!current) return;
+
+      await deleteSession(
+        current.code
+      );
+
+    };
+
+
+  /*
+  =====================================================
+  퀴즈 삭제
+  =====================================================
+  */
+
+  window.deleteSession =
+    async function(sessionCode) {
+
+      try {
+
+        const snap =
+          await getDoc(
+            doc(db, "sessions", sessionCode)
+          );
+
+
+        if (!snap.exists()) {
+
+          alert(
+            "이미 삭제된 퀴즈입니다."
+          );
+
+          await loadSessions();
+
+          return;
+        }
+
+
+        const session =
+          snap.data();
+
+
+        const confirmed =
+          confirm(
+            `"${session.title || "제목 없음"}" 퀴즈를 삭제할까요?\n\n참가 코드: ${sessionCode}\n\n삭제하면 되돌릴 수 없습니다.`
+          );
+
+
+        if (!confirmed) {
+          return;
+        }
+
+
+        await deleteDoc(
+          doc(
+            db,
+            "sessions",
+            sessionCode
+          )
+        );
+
+
+        alert(
+          "퀴즈가 삭제되었습니다."
+        );
+
+
+        if (
+          current &&
+          current.code === sessionCode
+        ) {
+
+          current = null;
+
+          $("editorSection")
+            .classList.add("hidden");
+
+          $("questionSection")
+            .classList.add("hidden");
+
+          $("resultSection")
+            .classList.add("hidden");
+
+        }
+
+
+        await loadSessions();
+
+      } catch (error) {
+
+        console.error(
+          "퀴즈 삭제 오류:",
+          error
+        );
+
+        alert(
+          "퀴즈 삭제 중 오류가 발생했습니다.\n\n" +
+          (error.message || error)
+        );
+
+      }
+
+    };
+
+
+  /*
+  =====================================================
+  엑셀 다운로드
+  =====================================================
+  */
+
+  window.downloadExcel =
+    function() {
+
+      if (!currentResults.length) {
+
+        alert(
+          "다운로드할 결과가 없습니다."
+        );
+
+        return;
+      }
+
+
+      const headers = [
+        "이름",
+        "소속",
+        "점수",
+        "제출시간"
+      ];
+
+
+      const rows =
+        currentResults.map(
+          result => [
+
+            result.name || "",
+
+            result.affiliation || "",
+
+            result.score || 0,
+
+            result.createdAt || ""
+
+          ]
+        );
+
+
+      const csv = [
+
+        headers,
+
+        ...rows
+
+      ]
+      .map(
+        row =>
+          row.map(
+            value =>
+              `"${String(value)
+                .replace(/"/g, '""')}"`
+          ).join(",")
+      )
+      .join("\n");
+
+
+      const blob =
+        new Blob(
+          ["\ufeff" + csv],
+          {
+            type:
+              "text/csv;charset=utf-8;"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(blob);
+
+
+      const a =
+        document.createElement("a");
+
+
+      a.href = url;
+
+      a.download =
+        `${current.title || "퀴즈"}_결과.csv`;
+
+      a.click();
+
+
+      URL.revokeObjectURL(url);
+
+    };
+
+
+  /*
+  =====================================================
+  유틸
+  =====================================================
+  */
 
   function escapeHtml(value) {
 
@@ -688,1022 +2015,12 @@
   }
 
 
-  /*
-    시간 제한 확인
+  function escapeAttr(value) {
 
-    관리자 화면에서 앞으로 저장할 구조:
-      timeLimitEnabled: true/false
-      timeLimitSeconds: 숫자
-
-    기존 데이터와의 호환을 위해
-      timeLimit
-      timeLimitSeconds
-    도 함께 인식
-  */
-
-  function hasTimeLimit() {
-
-    if (!session) {
-      return false;
-    }
-
-
-    if (
-      session.timeLimitEnabled === false
-    ) {
-      return false;
-    }
-
-
-    if (
-      session.timeLimitEnabled === true
-    ) {
-      return (
-        Number(session.timeLimitSeconds) > 0
-      );
-    }
-
-
-    if (
-      Number(session.timeLimitSeconds) > 0
-    ) {
-      return true;
-    }
-
-
-    if (
-      Number(session.timeLimit) > 0
-    ) {
-      return true;
-    }
-
-
-    return false;
+    return escapeHtml(value);
 
   }
 
-
-  function getTimeLimitSeconds() {
-
-    if (!session) {
-      return 0;
-    }
-
-
-    if (
-      Number(session.timeLimitSeconds) > 0
-    ) {
-
-      return Number(
-        session.timeLimitSeconds
-      );
-
-    }
-
-
-    if (
-      Number(session.timeLimit) > 0
-    ) {
-
-      return Number(
-        session.timeLimit
-      );
-
-    }
-
-
-    return 0;
-
-  }
-
-
-  /*
-    타이머 정리
-  */
-
-  function stopTimer() {
-
-    if (timerInterval) {
-
-      clearInterval(
-        timerInterval
-      );
-
-      timerInterval = null;
-
-    }
-
-  }
-
-
-  /*
-    타이머 표시
-  */
-
-  function updateTimerDisplay() {
-
-    const timer =
-      $("timer");
-
-
-    if (!hasTimeLimit()) {
-
-      hide("timer");
-      return;
-
-    }
-
-
-    show("timer");
-
-
-    timer.textContent =
-      `남은 시간: ${remainingSeconds}초`;
-
-
-    timer.classList.remove(
-      "warning",
-      "danger"
-    );
-
-
-    if (remainingSeconds <= 5) {
-
-      timer.classList.add(
-        "danger"
-      );
-
-    } else if (remainingSeconds <= 10) {
-
-      timer.classList.add(
-        "warning"
-      );
-
-    }
-
-  }
-
-
-  /*
-    문제별 타이머 시작
-
-    시간 제한이 있는 경우
-    문제에 진입할 때마다 새로 시작한다.
-  */
-
-  function startTimer() {
-
-    stopTimer();
-
-
-    if (!hasTimeLimit()) {
-
-      hide("timer");
-      return;
-
-    }
-
-
-    remainingSeconds =
-      getTimeLimitSeconds();
-
-
-    updateTimerDisplay();
-
-
-    timerInterval =
-      setInterval(
-        () => {
-
-          remainingSeconds--;
-
-          updateTimerDisplay();
-
-
-          if (
-            remainingSeconds <= 0
-          ) {
-
-            stopTimer();
-
-            handleTimeExpired();
-
-          }
-
-        },
-        1000
-      );
-
-  }
-
-
-  /*
-    시간 종료 처리
-  */
-
-  async function handleTimeExpired() {
-
-    if (quizSubmitting) {
-      return;
-    }
-
-
-    alert(
-      "시간이 종료되었습니다."
-    );
-
-
-    const total =
-      session.questions.length;
-
-
-    /*
-      마지막 문제라면 자동 제출
-    */
-
-    if (
-      currentQuestion >= total - 1
-    ) {
-
-      quizSubmitting = true;
-
-      await submitQuiz();
-
-      return;
-
-    }
-
-
-    /*
-      마지막 문제가 아니라면
-      답을 선택하지 않았더라도 다음 문제로 이동
-    */
-
-    currentQuestion++;
-
-    renderQuestion();
-
-  }
-
-
-  /*
-    URL에 ?code=ABC123 이 있는 경우
-    자동으로 코드 입력
-  */
-
-  const urlParams =
-    new URLSearchParams(
-      location.search
-    );
-
-
-  const urlCode =
-    urlParams.get("code");
-
-
-  if (urlCode) {
-
-    $("codeInput").value =
-      urlCode.toUpperCase();
-
-  }
-
-
-  /*
-    엔터키로 퀴즈 찾기
-  */
-
-  $("codeInput").addEventListener(
-    "keydown",
-    (event) => {
-
-      if (event.key === "Enter") {
-        findQuiz();
-      }
-
-    }
-  );
-
-
-  /*
-    퀴즈 불러오기
-  */
-
-  async function findQuiz() {
-
-    code =
-      $("codeInput")
-        .value
-        .trim()
-        .toUpperCase();
-
-
-    if (!code) {
-
-      alert("참여 코드를 입력해주세요.");
-      return;
-
-    }
-
-
-    try {
-
-      const snap =
-        await getDoc(
-          doc(db, "sessions", code)
-        );
-
-
-      if (!snap.exists()) {
-
-        alert(
-          "해당 참여 코드의 퀴즈를 찾을 수 없습니다."
-        );
-
-        return;
-
-      }
-
-
-      session =
-        snap.data();
-
-
-      if (
-        session.status !== "open"
-      ) {
-
-        alert(
-          "현재 참여할 수 없는 퀴즈입니다."
-        );
-
-        return;
-
-      }
-
-
-      if (
-        !Array.isArray(
-          session.questions
-        ) ||
-        session.questions.length === 0
-      ) {
-
-        alert(
-          "등록된 문제가 없습니다."
-        );
-
-        return;
-
-      }
-
-
-      $("infoTitle").textContent =
-        session.title ||
-        "감염관리실 퀴즈";
-
-
-      hide("startView");
-      show("infoView");
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "퀴즈를 불러오는 중 오류가 발생했습니다."
-      );
-
-    }
-
-  }
-
-
-  /*
-    참가자 정보 입력 후 시작
-  */
-
-  function startQuiz() {
-
-    participantName =
-      $("nameInput")
-        .value
-        .trim();
-
-
-    participantAffiliation =
-      $("affiliationInput")
-        .value
-        .trim();
-
-
-    if (!participantName) {
-
-      alert("이름을 입력해주세요.");
-      return;
-
-    }
-
-
-    if (!participantAffiliation) {
-
-      alert("소속을 입력해주세요.");
-      return;
-
-    }
-
-
-    currentQuestion = 0;
-
-    answers = {};
-
-    quizSubmitting = false;
-
-
-    $("quizTitle").textContent =
-      session.title ||
-      "감염관리실 퀴즈";
-
-
-    hide("infoView");
-    show("quizView");
-
-
-    renderQuestion();
-
-  }
-
-
-  /*
-    시작 화면으로 돌아가기
-  */
-
-  function backToStart() {
-
-    hide("infoView");
-    show("startView");
-
-  }
-
-
-  /*
-    문제 화면의 뒤로 가기
-
-    시간 제한이 없는 경우:
-      이전 문제로 이동
-
-    시간 제한이 있는 경우:
-      이동하지 못하게 한다.
-  */
-
-  function backQuestion() {
-
-    if (hasTimeLimit()) {
-
-      alert(
-        "시간 제한이 있는 퀴즈에서는 이전 문제로 돌아갈 수 없습니다."
-      );
-
-      return;
-
-    }
-
-
-    previousQuestion();
-
-  }
-
-
-  /*
-    문제 화면 표시
-  */
-
-  function renderQuestion() {
-
-    stopTimer();
-
-
-    const questions =
-      session.questions;
-
-
-    const q =
-      questions[currentQuestion];
-
-
-    const total =
-      questions.length;
-
-
-    $("progress").textContent =
-      `${currentQuestion + 1} / ${total}`;
-
-
-    $("questionNumber").textContent =
-      `문제 ${currentQuestion + 1}`;
-
-
-    $("questionText").textContent =
-      q.text || "";
-
-
-    const optionsContainer =
-      $("options");
-
-
-    /*
-      혹시 기존 데이터에 options가 없을 경우
-      기존 correct 값을 이용할 수 있도록 처리
-    */
-
-    let options =
-      Array.isArray(q.options)
-        ? q.options
-        : [];
-
-
-    /*
-      정상적인 새 데이터
-    */
-
-    if (options.length > 0) {
-
-      optionsContainer.innerHTML =
-        options.map(
-          (option, index) => {
-
-            const selected =
-              answers[q.id] === option.id;
-
-
-            return `
-
-              <button
-                type="button"
-                class="option ${selected ? "selected" : ""}"
-                data-option-id="${escapeHtml(option.id)}"
-              >
-
-                <span class="option-number">
-                  ${index + 1}
-                </span>
-
-                <span class="option-text">
-                  ${escapeHtml(option.text)}
-                </span>
-
-              </button>
-
-            `;
-
-          }
-        ).join("");
-
-
-      optionsContainer
-        .querySelectorAll(".option")
-        .forEach(button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              answers[q.id] =
-                button.dataset.optionId;
-
-
-              renderQuestion();
-
-            }
-          );
-
-        });
-
-    }
-
-
-    /*
-      기존 이전 버튼
-    */
-
-    $("prevButton").disabled =
-      currentQuestion === 0;
-
-
-    /*
-      별도 뒤로 가기 버튼
-
-      시간 제한이 없으면
-      첫 문제를 제외하고 활성화
-
-      시간 제한이 있으면
-      항상 비활성화
-    */
-
-    const backButton =
-      $("backQuestionButton");
-
-
-    if (hasTimeLimit()) {
-
-      backButton.disabled =
-        true;
-
-      backButton.textContent =
-        "뒤로 가기";
-
-    } else {
-
-      backButton.disabled =
-        currentQuestion === 0;
-
-      backButton.textContent =
-        "뒤로 가기";
-
-    }
-
-
-    /*
-      마지막 문제에서는 제출하기
-    */
-
-    if (
-      currentQuestion ===
-      total - 1
-    ) {
-
-      $("nextButton").textContent =
-        "제출하기";
-
-    } else {
-
-      $("nextButton").textContent =
-        "다음";
-
-    }
-
-
-    /*
-      시간 제한이 있다면
-      문제를 표시한 뒤 타이머 시작
-    */
-
-    startTimer();
-
-  }
-
-
-  /*
-    이전 문제
-
-    시간 제한이 있는 퀴즈에서는
-    이전 문제 이동을 막는다.
-  */
-
-  function previousQuestion() {
-
-    if (hasTimeLimit()) {
-
-      alert(
-        "시간 제한이 있는 퀴즈에서는 이전 문제로 돌아갈 수 없습니다."
-      );
-
-      return;
-
-    }
-
-
-    if (currentQuestion <= 0) {
-
-      return;
-
-    }
-
-
-    currentQuestion--;
-
-    renderQuestion();
-
-  }
-
-
-  /*
-    다음 문제 / 제출
-  */
-
-  async function nextQuestion() {
-
-    if (quizSubmitting) {
-      return;
-    }
-
-
-    const q =
-      session.questions[currentQuestion];
-
-
-    /*
-      답을 선택했는지 확인
-
-      시간 종료로 자동 이동하는 경우에는
-      이 함수를 사용하지 않으므로
-      답이 없어도 다음 문제로 넘어갈 수 있다.
-    */
-
-    if (!answers[q.id]) {
-
-      alert("답을 선택해주세요.");
-      return;
-
-    }
-
-
-    if (
-      currentQuestion <
-      session.questions.length - 1
-    ) {
-
-      currentQuestion++;
-
-      renderQuestion();
-
-      return;
-
-    }
-
-
-    /*
-      마지막 문제
-    */
-
-    const confirmed =
-      confirm(
-        "답안을 제출하시겠습니까?"
-      );
-
-
-    if (!confirmed) {
-      return;
-    }
-
-
-    stopTimer();
-
-    quizSubmitting = true;
-
-    await submitQuiz();
-
-  }
-
-
-  /*
-    채점
-  */
-
-  async function submitQuiz() {
-
-    stopTimer();
-
-
-    let score = 0;
-
-    let correctCount = 0;
-
-    const total =
-      session.questions.length;
-
-
-    session.questions.forEach(
-      q => {
-
-        const selectedAnswer =
-          answers[q.id];
-
-
-        /*
-          새로운 데이터 구조:
-          answerId와 참가자 선택값을 비교
-        */
-
-        if (
-          q.answerId &&
-          selectedAnswer === q.answerId
-        ) {
-
-          correctCount++;
-
-          score +=
-            Number(q.points || 0);
-
-          return;
-
-        }
-
-
-        /*
-          혹시 예전 데이터가 남아 있는 경우
-          correct 문자열과 비교할 수 있도록
-          보조 처리
-        */
-
-        if (
-          !q.answerId &&
-          Array.isArray(q.options)
-        ) {
-
-          const selectedOption =
-            q.options.find(
-              option =>
-                option.id === selectedAnswer
-            );
-
-
-          if (
-            selectedOption &&
-            selectedOption.text === q.correct
-          ) {
-
-            correctCount++;
-
-            score +=
-              Number(q.points || 0);
-
-          }
-
-        }
-
-      }
-    );
-
-
-    /*
-      결과 문서 ID 생성
-    */
-
-    const resultId =
-      "participant_" +
-      Date.now() +
-      "_" +
-      Math.random()
-        .toString(36)
-        .slice(2, 8);
-
-
-    const result = {
-
-      name:
-        participantName,
-
-      affiliation:
-        participantAffiliation,
-
-      score:
-        score,
-
-      correctCount:
-        correctCount,
-
-      total:
-        total,
-
-      answers:
-        answers,
-
-      submittedAt:
-        new Date().toISOString()
-
-    };
-
-
-    try {
-
-      await setDoc(
-        doc(
-          db,
-          "sessions",
-          code,
-          "results",
-          resultId
-        ),
-        result
-      );
-
-
-      showResult(
-        score,
-        correctCount,
-        total
-      );
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      quizSubmitting = false;
-
-      alert(
-        "결과 제출 중 오류가 발생했습니다."
-      );
-
-    }
-
-  }
-
-
-  /*
-    결과 표시
-  */
-
-  function showResult(
-    score,
-    correctCount,
-    total
-  ) {
-
-    stopTimer();
-
-    hide("quizView");
-
-    show("resultView");
-
-
-    $("resultScore").textContent =
-      `${score}점`;
-
-
-    $("resultScoreSmall").textContent =
-      `${score}`;
-
-
-    $("resultCorrect").textContent =
-      `${correctCount}`;
-
-
-    $("resultTotal").textContent =
-      `${total}`;
-
-
-    let message = "";
-
-
-    if (
-      correctCount === total
-    ) {
-
-      message =
-        "모든 문제를 맞혔습니다! 🎉";
-
-    } else if (
-      correctCount >= total * 0.8
-    ) {
-
-      message =
-        "아주 잘하셨습니다!";
-
-    } else if (
-      correctCount >= total * 0.6
-    ) {
-
-      message =
-        "잘하셨습니다. 조금만 더 복습해보세요.";
-
-    } else {
-
-      message =
-        "문제를 다시 한번 복습해보세요.";
-
-    }
-
-
-    $("resultMessage").textContent =
-      message;
-
-  }
-
-
-  /*
-    전역 함수 등록
-  */
-
-  window.findQuiz =
-    findQuiz;
-
-  window.startQuiz =
-    startQuiz;
-
-  window.previousQuestion =
-    previousQuestion;
-
-  window.nextQuestion =
-    nextQuestion;
-
-  window.backToStart =
-    backToStart;
-
-  window.backQuestion =
-    backQuestion;
 
 </script>
 
