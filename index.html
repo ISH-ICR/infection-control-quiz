@@ -114,6 +114,11 @@
       background: #27ae60;
     }
 
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
     .login-box {
       max-width: 460px;
       margin: 80px auto;
@@ -145,6 +150,28 @@
     .progress {
       color: #777;
       font-size: 14px;
+    }
+
+    /* 시간 제한 표시 */
+    .timer {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: #f1f3ff;
+      color: #667eea;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .timer.warning {
+      background: #fff3e6;
+      color: #e67e22;
+    }
+
+    .timer.danger {
+      background: #fdecec;
+      color: #c0392b;
     }
 
     .question-number {
@@ -391,7 +418,7 @@
         퀴즈 시작
       </button>
 
-      <!-- 뒤로 가기 버튼 추가 -->
+
       <button
         class="btn secondary"
         onclick="backToStart()"
@@ -430,6 +457,14 @@
           class="progress"
         >
           1 / 1
+        </div>
+
+        <!-- 시간 제한이 있을 때만 표시 -->
+        <div
+          id="timer"
+          class="timer hidden"
+        >
+          남은 시간: 0초
         </div>
 
       </div>
@@ -475,10 +510,18 @@
 
       </div>
 
-      <!-- 퀴즈 전체에서 참가자 정보 화면으로 돌아가기 -->
+
+      <!--
+        시간 제한이 없을 때:
+        이전 문제로 이동
+
+        시간 제한이 있을 때:
+        이전 문제로 돌아가지 못하도록 비활성화
+      -->
       <button
+        id="backQuestionButton"
         class="btn secondary"
-        onclick="backToInfo()"
+        onclick="backQuestion()"
         style="margin-top:10px;"
       >
         뒤로 가기
@@ -608,6 +651,17 @@
   let participantAffiliation = "";
 
 
+  /*
+    시간 제한 관련 변수
+  */
+
+  let timerInterval = null;
+
+  let remainingSeconds = 0;
+
+  let quizSubmitting = false;
+
+
   const $ = (id) =>
     document.getElementById(id);
 
@@ -630,6 +684,264 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
+  }
+
+
+  /*
+    시간 제한 확인
+
+    관리자 화면에서 앞으로 저장할 구조:
+      timeLimitEnabled: true/false
+      timeLimitSeconds: 숫자
+
+    기존 데이터와의 호환을 위해
+      timeLimit
+      timeLimitSeconds
+    도 함께 인식
+  */
+
+  function hasTimeLimit() {
+
+    if (!session) {
+      return false;
+    }
+
+
+    if (
+      session.timeLimitEnabled === false
+    ) {
+      return false;
+    }
+
+
+    if (
+      session.timeLimitEnabled === true
+    ) {
+      return (
+        Number(session.timeLimitSeconds) > 0
+      );
+    }
+
+
+    if (
+      Number(session.timeLimitSeconds) > 0
+    ) {
+      return true;
+    }
+
+
+    if (
+      Number(session.timeLimit) > 0
+    ) {
+      return true;
+    }
+
+
+    return false;
+
+  }
+
+
+  function getTimeLimitSeconds() {
+
+    if (!session) {
+      return 0;
+    }
+
+
+    if (
+      Number(session.timeLimitSeconds) > 0
+    ) {
+
+      return Number(
+        session.timeLimitSeconds
+      );
+
+    }
+
+
+    if (
+      Number(session.timeLimit) > 0
+    ) {
+
+      return Number(
+        session.timeLimit
+      );
+
+    }
+
+
+    return 0;
+
+  }
+
+
+  /*
+    타이머 정리
+  */
+
+  function stopTimer() {
+
+    if (timerInterval) {
+
+      clearInterval(
+        timerInterval
+      );
+
+      timerInterval = null;
+
+    }
+
+  }
+
+
+  /*
+    타이머 표시
+  */
+
+  function updateTimerDisplay() {
+
+    const timer =
+      $("timer");
+
+
+    if (!hasTimeLimit()) {
+
+      hide("timer");
+      return;
+
+    }
+
+
+    show("timer");
+
+
+    timer.textContent =
+      `남은 시간: ${remainingSeconds}초`;
+
+
+    timer.classList.remove(
+      "warning",
+      "danger"
+    );
+
+
+    if (remainingSeconds <= 5) {
+
+      timer.classList.add(
+        "danger"
+      );
+
+    } else if (remainingSeconds <= 10) {
+
+      timer.classList.add(
+        "warning"
+      );
+
+    }
+
+  }
+
+
+  /*
+    문제별 타이머 시작
+
+    시간 제한이 있는 경우
+    문제에 진입할 때마다 새로 시작한다.
+  */
+
+  function startTimer() {
+
+    stopTimer();
+
+
+    if (!hasTimeLimit()) {
+
+      hide("timer");
+      return;
+
+    }
+
+
+    remainingSeconds =
+      getTimeLimitSeconds();
+
+
+    updateTimerDisplay();
+
+
+    timerInterval =
+      setInterval(
+        () => {
+
+          remainingSeconds--;
+
+          updateTimerDisplay();
+
+
+          if (
+            remainingSeconds <= 0
+          ) {
+
+            stopTimer();
+
+            handleTimeExpired();
+
+          }
+
+        },
+        1000
+      );
+
+  }
+
+
+  /*
+    시간 종료 처리
+  */
+
+  async function handleTimeExpired() {
+
+    if (quizSubmitting) {
+      return;
+    }
+
+
+    alert(
+      "시간이 종료되었습니다."
+    );
+
+
+    const total =
+      session.questions.length;
+
+
+    /*
+      마지막 문제라면 자동 제출
+    */
+
+    if (
+      currentQuestion >= total - 1
+    ) {
+
+      quizSubmitting = true;
+
+      await submitQuiz();
+
+      return;
+
+    }
+
+
+    /*
+      마지막 문제가 아니라면
+      답을 선택하지 않았더라도 다음 문제로 이동
+    */
+
+    currentQuestion++;
+
+    renderQuestion();
 
   }
 
@@ -806,6 +1118,8 @@
 
     answers = {};
 
+    quizSubmitting = false;
+
 
     $("quizTitle").textContent =
       session.title ||
@@ -834,13 +1148,29 @@
 
 
   /*
-    참가자 정보 화면으로 돌아가기
+    문제 화면의 뒤로 가기
+
+    시간 제한이 없는 경우:
+      이전 문제로 이동
+
+    시간 제한이 있는 경우:
+      이동하지 못하게 한다.
   */
 
-  function backToInfo() {
+  function backQuestion() {
 
-    hide("quizView");
-    show("infoView");
+    if (hasTimeLimit()) {
+
+      alert(
+        "시간 제한이 있는 퀴즈에서는 이전 문제로 돌아갈 수 없습니다."
+      );
+
+      return;
+
+    }
+
+
+    previousQuestion();
 
   }
 
@@ -850,6 +1180,9 @@
   */
 
   function renderQuestion() {
+
+    stopTimer();
+
 
     const questions =
       session.questions;
@@ -950,9 +1283,50 @@
     }
 
 
+    /*
+      기존 이전 버튼
+    */
+
     $("prevButton").disabled =
       currentQuestion === 0;
 
+
+    /*
+      별도 뒤로 가기 버튼
+
+      시간 제한이 없으면
+      첫 문제를 제외하고 활성화
+
+      시간 제한이 있으면
+      항상 비활성화
+    */
+
+    const backButton =
+      $("backQuestionButton");
+
+
+    if (hasTimeLimit()) {
+
+      backButton.disabled =
+        true;
+
+      backButton.textContent =
+        "뒤로 가기";
+
+    } else {
+
+      backButton.disabled =
+        currentQuestion === 0;
+
+      backButton.textContent =
+        "뒤로 가기";
+
+    }
+
+
+    /*
+      마지막 문제에서는 제출하기
+    */
 
     if (
       currentQuestion ===
@@ -969,17 +1343,41 @@
 
     }
 
+
+    /*
+      시간 제한이 있다면
+      문제를 표시한 뒤 타이머 시작
+    */
+
+    startTimer();
+
   }
 
 
   /*
     이전 문제
+
+    시간 제한이 있는 퀴즈에서는
+    이전 문제 이동을 막는다.
   */
 
   function previousQuestion() {
 
-    if (currentQuestion <= 0) {
+    if (hasTimeLimit()) {
+
+      alert(
+        "시간 제한이 있는 퀴즈에서는 이전 문제로 돌아갈 수 없습니다."
+      );
+
       return;
+
+    }
+
+
+    if (currentQuestion <= 0) {
+
+      return;
+
     }
 
 
@@ -996,12 +1394,21 @@
 
   async function nextQuestion() {
 
+    if (quizSubmitting) {
+      return;
+    }
+
+
     const q =
       session.questions[currentQuestion];
 
 
     /*
       답을 선택했는지 확인
+
+      시간 종료로 자동 이동하는 경우에는
+      이 함수를 사용하지 않으므로
+      답이 없어도 다음 문제로 넘어갈 수 있다.
     */
 
     if (!answers[q.id]) {
@@ -1041,6 +1448,10 @@
     }
 
 
+    stopTimer();
+
+    quizSubmitting = true;
+
     await submitQuiz();
 
   }
@@ -1051,6 +1462,9 @@
   */
 
   async function submitQuiz() {
+
+    stopTimer();
+
 
     let score = 0;
 
@@ -1187,6 +1601,8 @@
 
       console.error(error);
 
+      quizSubmitting = false;
+
       alert(
         "결과 제출 중 오류가 발생했습니다."
       );
@@ -1205,6 +1621,8 @@
     correctCount,
     total
   ) {
+
+    stopTimer();
 
     hide("quizView");
 
@@ -1284,8 +1702,8 @@
   window.backToStart =
     backToStart;
 
-  window.backToInfo =
-    backToInfo;
+  window.backQuestion =
+    backQuestion;
 
 </script>
 
