@@ -1,191 +1,1245 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>격리주의 지침 트레이닝</title><style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-.ipg-root {
-  --bg-deep: #071a26;
-  --bg-panel: #0f2a3a;
-  --bg-panel-raised: #14344768;
-  --line: #1f4a5e;
-  --mint: #3ddc97;
-  --mint-dim: #2a9c6e;
-  --amber: #ffb84c;
-  --coral: #ff6b6b;
-  --text-hi: #eaf4f4;
-  --text-mid: #a9c4cc;
-  --text-dim: #5f8894;
-  --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+  <title>격리주의 퀴즈</title>
 
-  font-family: var(--font-sans);
-  background: radial-gradient(ellipse at 50% -10%, #103244 0%, var(--bg-deep) 55%);
-  color: var(--text-hi);
-  min-height: 100%;
-  padding: 28px 16px 40px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-}
-.ipg-root * { box-sizing: border-box; }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.ipg-shell { width: 100%; max-width: 640px; }
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
 
-.ipg-frame {
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: linear-gradient(180deg, #0d2534 0%, #0a1f2c 100%);
-  box-shadow: 0 0 0 1px rgba(61,220,151,0.04), 0 30px 60px -30px rgba(0,0,0,0.7);
-  overflow: hidden;
-  position: relative;
-}
+    button,
+    input {
+      font: inherit;
+    }
 
-/* ---------- shared bits ---------- */
-.hidden { display: none !important; }
-.ipg-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--mint);
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
-}
-.ipg-overlay { padding: 36px 26px 30px; text-align: center; }
-.ipg-overlay h1 { font-size: 21px; line-height: 1.4; margin: 0 0 14px; font-weight: 700; color: var(--text-hi); }
-.ipg-overlay p { font-size: 13.5px; line-height: 1.7; color: var(--text-mid); margin: 0 auto 24px; max-width: 440px; }
-.ipg-btn {
-  padding: 13px 30px; border-radius: 9px; border: none; background: var(--mint);
-  color: #06251b; font-family: var(--font-sans); font-weight: 700; font-size: 14.5px; cursor: pointer;
-}
-.ipg-btn:hover { background: #4fe8a8; }
-.ipg-btn:disabled { opacity: 0.4; cursor: default; }
-.ipg-btn-ghost {
-  padding: 12px 24px; border-radius: 9px; border: 1px solid var(--line); background: transparent;
-  color: var(--text-hi); font-family: var(--font-sans); font-weight: 600; font-size: 13.5px; cursor: pointer;
-}
-.ipg-btn-ghost:hover { border-color: var(--mint-dim); color: var(--mint); }
-.ipg-btn-block { width: 100%; }
-.ipg-btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-.ipg-stack-btns { display: flex; flex-direction: column; gap: 10px; max-width: 320px; margin: 0 auto; }
+    button {
+      cursor: pointer;
+    }
 
-.ipg-field { text-align: left; margin-bottom: 14px; }
-.ipg-field label { display: block; font-size: 12px; color: var(--text-mid); margin-bottom: 6px; }
-.ipg-input, .ipg-textarea, .ipg-select {
-  width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--line);
-  background: rgba(255,255,255,0.02); color: var(--text-hi); font-family: var(--font-sans); font-size: 14px;
-}
-.ipg-input:focus, .ipg-textarea:focus, .ipg-select:focus { outline: none; border-color: var(--mint-dim); }
-.ipg-textarea { resize: vertical; min-height: 56px; line-height: 1.5; }
-.ipg-code-input { text-align: center; font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.3em; text-transform: uppercase; }
-.ipg-error-text { color: var(--coral); font-size: 12.5px; margin-top: 8px; min-height: 16px; }
-.ipg-hint { font-size: 12px; color: var(--text-dim); margin-top: -6px; margin-bottom: 16px; }
+    .hidden {
+      display: none !important;
+    }
 
-/* code display */
-.ipg-code-badge {
-  font-family: var(--font-mono); font-size: 34px; font-weight: 700; letter-spacing: 0.28em;
-  color: var(--mint); background: rgba(61,220,151,0.08); border: 1px dashed var(--mint-dim);
-  border-radius: 10px; padding: 16px 10px; margin: 6px 0 16px; user-select: all;
-}
-.ipg-status-pill {
-  display: inline-block; font-family: var(--font-mono); font-size: 11px; padding: 4px 10px;
-  border-radius: 20px; border: 1px solid var(--line); color: var(--text-mid); margin-bottom: 16px;
-}
-.ipg-status-pill.open { color: var(--mint); border-color: var(--mint-dim); }
-.ipg-status-pill.closed { color: var(--coral); border-color: var(--coral); }
+    .page {
+      min-height: 100vh;
+      padding: 30px 16px;
+    }
 
-/* header hud during quiz */
-.ipg-hud { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.015); }
-.ipg-hud-title { font-size: 12.5px; color: var(--text-mid); display: flex; flex-direction: column; gap: 2px; }
-.ipg-hud-title b { font-size: 15px; color: var(--text-hi); font-weight: 600; }
-.ipg-hud-stats { display: flex; align-items: center; gap: 18px; font-family: var(--font-mono); }
-.ipg-stat { text-align: right; }
-.ipg-stat-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; }
-.ipg-stat-value { font-size: 17px; font-weight: 600; color: var(--mint); }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
 
-.ipg-timer-track { height: 4px; background: #0a1f2c; position: relative; }
-.ipg-timer-fill { height: 100%; width: 100%; background: var(--mint); transition: width 0.2s linear, background 0.4s ease; }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 26px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
 
-.ipg-stage { padding: 26px 22px 22px; min-height: 320px; position: relative; }
-.ipg-progress { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-bottom: 14px; letter-spacing: 0.04em; }
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+    }
 
-.ipg-card { border: 1px solid var(--line); background: var(--bg-panel); border-radius: 10px; padding: 20px 20px 22px; position: relative; }
-.ipg-card::before {
-  content: "환자 상황"; position: absolute; top: -9px; left: 16px; background: var(--bg-deep);
-  padding: 0 8px; font-size: 10.5px; color: var(--text-dim); letter-spacing: 0.08em;
-}
-.ipg-card-text { font-size: 16px; line-height: 1.6; color: var(--text-hi); }
-.ipg-question-label { margin: 20px 0 12px; font-size: 13px; color: var(--text-mid); }
+    .title {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
 
-.ipg-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 480px) { .ipg-options { grid-template-columns: 1fr; } }
-.ipg-opt {
-  border: 1px solid var(--line); background: rgba(255,255,255,0.02); color: var(--text-hi);
-  font-family: var(--font-sans); font-size: 14.5px; font-weight: 500; padding: 14px 14px; border-radius: 8px;
-  cursor: pointer; text-align: left; transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
-}
-.ipg-opt:hover:not(:disabled) { border-color: var(--mint-dim); background: rgba(61,220,151,0.06); }
-.ipg-opt:active:not(:disabled) { transform: scale(0.98); }
-.ipg-opt:disabled { cursor: default; }
-.ipg-opt.correct { border-color: var(--mint); background: rgba(61,220,151,0.14); color: var(--mint); }
-.ipg-opt.wrong { border-color: var(--coral); background: rgba(255,107,107,0.12); color: #ffb0b0; }
-.ipg-opt.dim { opacity: 0.4; }
+    .subtitle {
+      color: #777;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
 
-.ipg-feedback { margin-top: 18px; border-radius: 10px; padding: 15px 16px; border: 1px solid var(--line); background: var(--bg-panel-raised); display: none; }
-.ipg-feedback.show { display: block; animation: ipgFadeUp 0.25s ease; }
-.ipg-feedback-head { font-family: var(--font-mono); font-size: 12px; font-weight: 600; margin-bottom: 6px; }
-.ipg-feedback-head.ok { color: var(--mint); }
-.ipg-feedback-head.no { color: var(--coral); }
-.ipg-feedback-body { font-size: 13.5px; line-height: 1.6; color: var(--text-mid); }
-.ipg-next-btn { margin-top: 14px; width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--mint); color: #06251b; font-family: var(--font-sans); font-weight: 700; font-size: 14px; cursor: pointer; }
-.ipg-next-btn:hover { background: #4fe8a8; }
-@keyframes ipgFadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .field {
+      margin-bottom: 18px;
+    }
 
-.ipg-result-score { font-family: var(--font-mono); font-size: 44px; font-weight: 700; color: var(--mint); margin: 6px 0 2px; }
-.ipg-result-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 22px; }
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
 
-.ipg-review { text-align: left; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-panel); padding: 14px 16px; margin-bottom: 22px; }
-.ipg-review-title { font-size: 12px; color: var(--text-dim); letter-spacing: 0.05em; margin-bottom: 10px; font-family: var(--font-mono); }
-.ipg-review-item { font-size: 13px; line-height: 1.6; color: var(--text-mid); padding: 8px 0; border-top: 1px solid var(--line); }
-.ipg-review-item:first-child { border-top: none; }
-.ipg-review-item .tag { color: var(--mint); font-family: var(--font-mono); font-size: 11.5px; }
-.ipg-review-empty { font-size: 13px; color: var(--text-mid); text-align: center; padding: 6px 0; }
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d9dee8;
+      border-radius: 10px;
+      outline: none;
+    }
 
-/* editor */
-.ipg-editor-list { text-align: left; max-height: 420px; overflow-y: auto; padding-right: 4px; margin-bottom: 16px; }
-.ipg-editor-card { border: 1px solid var(--line); background: var(--bg-panel); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
-.ipg-editor-card-head { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-bottom: 10px; letter-spacing: 0.05em; }
-.ipg-editor-row { display: flex; gap: 10px; }
-.ipg-editor-row .ipg-field { flex: 1; }
-.ipg-points-input { width: 100%; }
+    input:focus {
+      border-color: #667eea;
+    }
 
-/* leaderboard */
-.ipg-lb-wrap { text-align: left; border: 1px solid var(--line); background: var(--bg-panel); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
-.ipg-lb-row { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-top: 1px solid var(--line); font-size: 13.5px; }
-.ipg-lb-row:first-child { border-top: none; }
-.ipg-lb-rank { font-family: var(--font-mono); font-weight: 700; color: var(--mint); width: 26px; flex-shrink: 0; }
-.ipg-lb-name { flex: 1; color: var(--text-hi); font-weight: 600; }
-.ipg-lb-aff { font-size: 11.5px; color: var(--text-dim); }
-.ipg-lb-score { font-family: var(--font-mono); color: var(--mint); font-weight: 700; }
-.ipg-lb-empty { padding: 20px; text-align: center; color: var(--text-mid); font-size: 13px; }
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      padding: 14px 18px;
+      background: #667eea;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+    }
 
-.ipg-panel-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: var(--text-hi); }
-.ipg-panel-sub { font-size: 12.5px; color: var(--text-mid); margin-bottom: 20px; }
-</style></head><body>
-<div class="ipg-root"><div class="ipg-shell"><div class="ipg-frame">
-<div id="join" class="ipg-overlay"><div class="ipg-eyebrow">ISOLATION PRECAUTION DRILL</div><h1>격리주의 지침 순간판단 트레이닝</h1><p>관리자가 공유한 참여코드를 입력하세요.</p><input id="code" class="ipg-input ipg-code-input" maxlength="6" placeholder="ABC123"><div id="err" class="ipg-error-text"></div><button class="ipg-btn ipg-btn-block" onclick="joinSession()">입장하기</button></div>
-<div id="info" class="ipg-overlay hidden"><div class="ipg-eyebrow">PARTICIPANT</div><h1>참여자 정보</h1><div class="ipg-field"><label>이름</label><input id="name" class="ipg-input"></div><div class="ipg-field"><label>소속</label><input id="aff" class="ipg-input"></div><div id="infoerr" class="ipg-error-text"></div><button class="ipg-btn ipg-btn-block" onclick="startQuiz()">훈련 시작</button></div>
-<div id="game" class="hidden"><div class="ipg-hud"><div class="ipg-hud-title"><b>격리주의 지침 트레이닝</b><span id="sub"></span></div><div class="ipg-hud-stats"><div class="ipg-stat"><div class="ipg-stat-label">SCORE</div><div id="score" class="ipg-stat-value">0</div></div></div></div><div class="ipg-timer-track"><div id="timer" class="ipg-timer-fill"></div></div><div class="ipg-stage"><div id="progress" class="ipg-progress"></div><div class="ipg-card"><div id="case" class="ipg-card-text"></div></div><div class="ipg-question-label">이 환자에게 적용해야 할 격리주의는?</div><div id="options" class="ipg-options"></div><div id="feedback" class="ipg-feedback"><div id="fbhead" class="ipg-feedback-head"></div><div id="fbbody" class="ipg-feedback-body"></div><button id="next" class="ipg-next-btn" onclick="nextQ()">다음 케이스</button></div></div></div>
-<div id="result" class="ipg-overlay hidden"><div class="ipg-eyebrow">RESULT SUBMITTED</div><h1>훈련 결과가 제출되었습니다</h1><div id="finalscore" class="ipg-result-score"></div><div id="finalsub" class="ipg-result-sub"></div><div id="rank" class="ipg-panel-sub"></div><button class="ipg-btn-ghost" onclick="location.reload()">처음으로</button></div>
-</div></div></div>
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn.secondary {
+      background: #eef1f7;
+      color: #333;
+    }
+
+    .btn.success {
+      background: #27ae60;
+    }
+
+    .login-box {
+      max-width: 460px;
+      margin: 80px auto;
+    }
+
+    .login-box h1 {
+      text-align: center;
+    }
+
+    .code-input {
+      text-align: center;
+      font-size: 22px;
+      letter-spacing: 5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .quiz-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .question-number {
+      color: #667eea;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 22px;
+      line-height: 1.55;
+      font-weight: 800;
+      margin-bottom: 24px;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #e0e4ec;
+      border-radius: 13px;
+      background: white;
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: 0.15s;
+    }
+
+    .option:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+
+    .option.selected {
+      border-color: #667eea;
+      background: #f1f3ff;
+    }
+
+    .option-number {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      background: #eef1f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .option.selected .option-number {
+      background: #667eea;
+      color: white;
+    }
+
+    .option-text {
+      flex: 1;
+      line-height: 1.5;
+      padding-top: 5px;
+      word-break: keep-all;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .navigation button {
+      flex: 1;
+    }
+
+    .result-score {
+      text-align: center;
+      font-size: 42px;
+      font-weight: 900;
+      margin: 20px 0;
+    }
+
+    .result-message {
+      text-align: center;
+      color: #666;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .result-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .result-box {
+      background: #f7f8fa;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .result-box small {
+      display: block;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .result-box strong {
+      font-size: 22px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px 10px;
+      color: #777;
+    }
+
+    .error {
+      text-align: center;
+      padding: 30px 10px;
+      color: #c0392b;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 18px 12px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .title {
+        font-size: 25px;
+      }
+
+      .question-text {
+        font-size: 19px;
+      }
+
+      .result-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     시작 화면
+========================= -->
+
+<div id="startView" class="page">
+  <div class="container">
+
+    <div class="card login-box">
+
+      <h1>격리주의 퀴즈</h1>
+
+      <p class="subtitle" style="text-align:center;">
+        참여 코드를 입력해주세요.
+      </p>
+
+      <div class="field">
+        <label>참여 코드</label>
+
+        <input
+          id="codeInput"
+          class="code-input"
+          type="text"
+          maxlength="6"
+          placeholder="예: ABC123"
+        />
+      </div>
+
+      <button
+        class="btn"
+        onclick="findQuiz()"
+      >
+        퀴즈 시작
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =========================
+     참가자 정보
+========================= -->
+
+<div id="infoView" class="page hidden">
+  <div class="container">
+
+    <div class="card">
+
+      <h1 id="infoTitle">
+        퀴즈
+      </h1>
+
+      <p class="subtitle">
+        참가자 정보를 입력해주세요.
+      </p>
+
+      <div class="field">
+
+        <label>이름</label>
+
+        <input
+          id="nameInput"
+          type="text"
+          placeholder="이름을 입력하세요."
+        />
+
+      </div>
+
+
+      <div class="field">
+
+        <label>소속</label>
+
+        <input
+          id="affiliationInput"
+          type="text"
+          placeholder="소속을 입력하세요."
+        />
+
+      </div>
+
+
+      <button
+        class="btn"
+        onclick="startQuiz()"
+      >
+        퀴즈 시작
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =========================
+     퀴즈 화면
+========================= -->
+
+<div id="quizView" class="page hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="quiz-header">
+
+        <div
+          id="quizTitle"
+          class="quiz-title"
+        >
+          퀴즈
+        </div>
+
+        <div
+          id="progress"
+          class="progress"
+        >
+          1 / 1
+        </div>
+
+      </div>
+
+
+      <div
+        id="questionNumber"
+        class="question-number"
+      >
+        문제 1
+      </div>
+
+
+      <div
+        id="questionText"
+        class="question-text"
+      ></div>
+
+
+      <div
+        id="options"
+        class="options"
+      ></div>
+
+
+      <div class="navigation">
+
+        <button
+          id="prevButton"
+          class="btn secondary"
+          onclick="previousQuestion()"
+        >
+          이전
+        </button>
+
+        <button
+          id="nextButton"
+          class="btn"
+          onclick="nextQuestion()"
+        >
+          다음
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     결과 화면
+========================= -->
+
+<div id="resultView" class="page hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 style="text-align:center;">
+        퀴즈 완료
+      </h1>
+
+      <div
+        id="resultScore"
+        class="result-score"
+      >
+        0점
+      </div>
+
+
+      <div
+        id="resultMessage"
+        class="result-message"
+      ></div>
+
+
+      <div class="result-summary">
+
+        <div class="result-box">
+
+          <small>정답</small>
+
+          <strong id="resultCorrect">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <small>전체 문제</small>
+
+          <strong id="resultTotal">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <small>점수</small>
+
+          <strong id="resultScoreSmall">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn"
+        onclick="location.reload()"
+      >
+        처음으로
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getFirestore,doc,getDoc,collection,setDoc,getDocs,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-import {firebaseConfig} from './firebase-config.js';
-const app=initializeApp(firebaseConfig), db=getFirestore(app); const CATS=["표준주의","접촉주의","비말주의","공기주의","접촉주의+비말주의","접촉주의+공기주의"]; let session,code,participant,qs=[],i=0,score=0,correct=0,answered=false,timer;
-const $=id=>document.getElementById(id), hide=(...ids)=>ids.forEach(x=>$(x).classList.add('hidden')), show=id=>$(id).classList.remove('hidden');
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-const urlCode=new URLSearchParams(location.search).get('code'); if(urlCode) $('code').value=urlCode.toUpperCase();
-window.joinSession=async()=>{code=$('code').value.trim().toUpperCase();$('err').textContent='';if(!code)return $('err').textContent='참여코드를 입력해주세요.';try{const s=await getDoc(doc(db,'sessions',code));if(!s.exists())throw 0;session=s.data();if(session.status!=='open')return $('err').textContent='현재 참여할 수 없는 세션입니다.';hide('join');show('info')}catch(e){$('err').textContent='존재하지 않거나 연결할 수 없는 참여코드입니다.'}};
-window.startQuiz=()=>{const name=$('name').value.trim(),aff=$('aff').value.trim();if(!name)return $('infoerr').textContent='이름을 입력해주세요.';participant={id:crypto.randomUUID(),name,affiliation:aff};qs=shuffle(session.questions);hide('info');show('game');$('sub').textContent=name+(aff?' · '+aff:'');loadQ()};
-function loadQ(){answered=false;const q=qs[i];$('progress').textContent=`CASE ${i+1} / ${qs.length} · 배점 ${q.points}점`;$('case').textContent=q.text;$('feedback').classList.remove('show');$('options').innerHTML='';shuffle([q.correct,...shuffle(CATS.filter(c=>c!==q.correct)).slice(0,3)]).forEach(o=>{const b=document.createElement('button');b.className='ipg-opt';b.textContent=o;b.onclick=()=>answer(o);$('options').appendChild(b)});let left=20;$('timer').style.width='100%';clearInterval(timer);timer=setInterval(()=>{left-=.1;$('timer').style.width=Math.max(0,left/20*100)+'%';if(left<=0){clearInterval(timer);answer(null)}},100)}
-function answer(sel){if(answered)return;answered=true;clearInterval(timer);const q=qs[i],ok=sel===q.correct;if(ok){score+=Number(q.points)||0;correct++}[...$('options').children].forEach(b=>{b.disabled=true;if(b.textContent===q.correct)b.classList.add('correct');else if(b.textContent===sel)b.classList.add('wrong');else b.classList.add('dim')});$('score').textContent=score;$('fbhead').textContent=ok?'정답 · +'+q.points+'점':sel?'오답':'시간 초과';$('fbhead').className='ipg-feedback-head '+(ok?'ok':'no');$('fbbody').textContent=q.explain;$('next').textContent=i===qs.length-1?'결과 보기':'다음 케이스';$('feedback').classList.add('show')}
-window.nextQ=()=>{if(++i>=qs.length)finish();else loadQ()};
-async function finish(){const result={...participant,score,correctCount:correct,total:qs.length,finishedAt:Date.now(),createdAt:serverTimestamp()};await setDoc(doc(db,'sessions',code,'results',participant.id),result);const snap=await getDocs(collection(db,'sessions',code,'results'));const rows=snap.docs.map(d=>d.data()).sort((a,b)=>b.score-a.score||b.correctCount-a.correctCount);const rank=rows.findIndex(x=>x.id===participant.id)+1;hide('game');show('result');$('finalscore').textContent=`${score} / ${qs.reduce((s,q)=>s+(+q.points||0),0)}`;$('finalsub').textContent=`정답 ${correct} / ${qs.length}`;$('rank').textContent=`현재 순위 ${rank} / ${rows.length}명`}
-</script></body></html>
+
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  import {
+    firebaseConfig
+  } from "./firebase-config.js";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const db =
+    getFirestore(app);
+
+
+  let session = null;
+
+  let code = null;
+
+  let currentQuestion = 0;
+
+  let answers = {};
+
+  let participantName = "";
+
+  let participantAffiliation = "";
+
+
+  const $ = (id) =>
+    document.getElementById(id);
+
+
+  function show(id) {
+    $(id).classList.remove("hidden");
+  }
+
+
+  function hide(id) {
+    $(id).classList.add("hidden");
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /*
+    URL에 ?code=ABC123 이 있는 경우
+    자동으로 코드 입력
+  */
+
+  const urlParams =
+    new URLSearchParams(
+      location.search
+    );
+
+
+  const urlCode =
+    urlParams.get("code");
+
+
+  if (urlCode) {
+
+    $("codeInput").value =
+      urlCode.toUpperCase();
+
+  }
+
+
+  /*
+    엔터키로 퀴즈 찾기
+  */
+
+  $("codeInput").addEventListener(
+    "keydown",
+    (event) => {
+
+      if (event.key === "Enter") {
+        findQuiz();
+      }
+
+    }
+  );
+
+
+  /*
+    퀴즈 불러오기
+  */
+
+  async function findQuiz() {
+
+    code =
+      $("codeInput")
+        .value
+        .trim()
+        .toUpperCase();
+
+
+    if (!code) {
+
+      alert("참여 코드를 입력해주세요.");
+      return;
+
+    }
+
+
+    try {
+
+      const snap =
+        await getDoc(
+          doc(db, "sessions", code)
+        );
+
+
+      if (!snap.exists()) {
+
+        alert(
+          "해당 참여 코드의 퀴즈를 찾을 수 없습니다."
+        );
+
+        return;
+
+      }
+
+
+      session =
+        snap.data();
+
+
+      if (
+        session.status !== "open"
+      ) {
+
+        alert(
+          "현재 참여할 수 없는 퀴즈입니다."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !Array.isArray(
+          session.questions
+        ) ||
+        session.questions.length === 0
+      ) {
+
+        alert(
+          "등록된 문제가 없습니다."
+        );
+
+        return;
+
+      }
+
+
+      $("infoTitle").textContent =
+        session.title ||
+        "격리주의 퀴즈";
+
+
+      hide("startView");
+      show("infoView");
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "퀴즈를 불러오는 중 오류가 발생했습니다."
+      );
+
+    }
+
+  }
+
+
+  /*
+    참가자 정보 입력 후 시작
+  */
+
+  function startQuiz() {
+
+    participantName =
+      $("nameInput")
+        .value
+        .trim();
+
+
+    participantAffiliation =
+      $("affiliationInput")
+        .value
+        .trim();
+
+
+    if (!participantName) {
+
+      alert("이름을 입력해주세요.");
+      return;
+
+    }
+
+
+    if (!participantAffiliation) {
+
+      alert("소속을 입력해주세요.");
+      return;
+
+    }
+
+
+    currentQuestion = 0;
+
+    answers = {};
+
+
+    $("quizTitle").textContent =
+      session.title ||
+      "격리주의 퀴즈";
+
+
+    hide("infoView");
+    show("quizView");
+
+
+    renderQuestion();
+
+  }
+
+
+  /*
+    문제 화면 표시
+  */
+
+  function renderQuestion() {
+
+    const questions =
+      session.questions;
+
+
+    const q =
+      questions[currentQuestion];
+
+
+    const total =
+      questions.length;
+
+
+    $("progress").textContent =
+      `${currentQuestion + 1} / ${total}`;
+
+
+    $("questionNumber").textContent =
+      `문제 ${currentQuestion + 1}`;
+
+
+    $("questionText").textContent =
+      q.text || "";
+
+
+    const optionsContainer =
+      $("options");
+
+
+    /*
+      혹시 기존 데이터에 options가 없을 경우
+      기존 correct 값을 이용할 수 있도록 처리
+    */
+
+    let options =
+      Array.isArray(q.options)
+        ? q.options
+        : [];
+
+
+    /*
+      정상적인 새 데이터
+    */
+
+    if (options.length > 0) {
+
+      optionsContainer.innerHTML =
+        options.map(
+          (option, index) => {
+
+            const selected =
+              answers[q.id] === option.id;
+
+
+            return `
+
+              <button
+                type="button"
+                class="option ${selected ? "selected" : ""}"
+                data-option-id="${escapeHtml(option.id)}"
+              >
+
+                <span class="option-number">
+                  ${index + 1}
+                </span>
+
+                <span class="option-text">
+                  ${escapeHtml(option.text)}
+                </span>
+
+              </button>
+
+            `;
+
+          }
+        ).join("");
+
+
+      optionsContainer
+        .querySelectorAll(".option")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              answers[q.id] =
+                button.dataset.optionId;
+
+
+              renderQuestion();
+
+            }
+          );
+
+        });
+
+    }
+
+
+    $("prevButton").disabled =
+      currentQuestion === 0;
+
+
+    if (
+      currentQuestion ===
+      total - 1
+    ) {
+
+      $("nextButton").textContent =
+        "제출하기";
+
+    } else {
+
+      $("nextButton").textContent =
+        "다음";
+
+    }
+
+  }
+
+
+  /*
+    이전 문제
+  */
+
+  function previousQuestion() {
+
+    if (currentQuestion <= 0) {
+      return;
+    }
+
+
+    currentQuestion--;
+
+    renderQuestion();
+
+  }
+
+
+  /*
+    다음 문제 / 제출
+  */
+
+  async function nextQuestion() {
+
+    const q =
+      session.questions[currentQuestion];
+
+
+    /*
+      답을 선택했는지 확인
+    */
+
+    if (!answers[q.id]) {
+
+      alert("답을 선택해주세요.");
+      return;
+
+    }
+
+
+    if (
+      currentQuestion <
+      session.questions.length - 1
+    ) {
+
+      currentQuestion++;
+
+      renderQuestion();
+
+      return;
+
+    }
+
+
+    /*
+      마지막 문제
+    */
+
+    const confirmed =
+      confirm(
+        "답안을 제출하시겠습니까?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    await submitQuiz();
+
+  }
+
+
+  /*
+    채점
+  */
+
+  async function submitQuiz() {
+
+    let score = 0;
+
+    let correctCount = 0;
+
+    const total =
+      session.questions.length;
+
+
+    session.questions.forEach(
+      q => {
+
+        const selectedAnswer =
+          answers[q.id];
+
+
+        /*
+          새로운 데이터 구조:
+          answerId와 참가자 선택값을 비교
+        */
+
+        if (
+          q.answerId &&
+          selectedAnswer === q.answerId
+        ) {
+
+          correctCount++;
+
+          score +=
+            Number(q.points || 0);
+
+          return;
+
+        }
+
+
+        /*
+          혹시 예전 데이터가 남아 있는 경우
+          correct 문자열과 비교할 수 있도록
+          보조 처리
+        */
+
+        if (
+          !q.answerId &&
+          Array.isArray(q.options)
+        ) {
+
+          const selectedOption =
+            q.options.find(
+              option =>
+                option.id === selectedAnswer
+            );
+
+
+          if (
+            selectedOption &&
+            selectedOption.text === q.correct
+          ) {
+
+            correctCount++;
+
+            score +=
+              Number(q.points || 0);
+
+          }
+
+        }
+
+      }
+    );
+
+
+    /*
+      결과 문서 ID 생성
+    */
+
+    const resultId =
+      "participant_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2, 8);
+
+
+    const result = {
+
+      name:
+        participantName,
+
+      affiliation:
+        participantAffiliation,
+
+      score:
+        score,
+
+      correctCount:
+        correctCount,
+
+      total:
+        total,
+
+      answers:
+        answers,
+
+      submittedAt:
+        new Date().toISOString()
+
+    };
+
+
+    try {
+
+      await setDoc(
+        doc(
+          db,
+          "sessions",
+          code,
+          "results",
+          resultId
+        ),
+        result
+      );
+
+
+      showResult(
+        score,
+        correctCount,
+        total
+      );
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "결과 제출 중 오류가 발생했습니다."
+      );
+
+    }
+
+  }
+
+
+  /*
+    결과 표시
+  */
+
+  function showResult(
+    score,
+    correctCount,
+    total
+  ) {
+
+    hide("quizView");
+
+    show("resultView");
+
+
+    $("resultScore").textContent =
+      `${score}점`;
+
+
+    $("resultScoreSmall").textContent =
+      `${score}`;
+
+
+    $("resultCorrect").textContent =
+      `${correctCount}`;
+
+
+    $("resultTotal").textContent =
+      `${total}`;
+
+
+    let message = "";
+
+
+    if (
+      correctCount === total
+    ) {
+
+      message =
+        "모든 문제를 맞혔습니다! 🎉";
+
+    } else if (
+      correctCount >= total * 0.8
+    ) {
+
+      message =
+        "아주 잘하셨습니다!";
+
+    } else if (
+      correctCount >= total * 0.6
+    ) {
+
+      message =
+        "잘하셨습니다. 조금만 더 복습해보세요.";
+
+    } else {
+
+      message =
+        "문제를 다시 한번 복습해보세요.";
+
+    }
+
+
+    $("resultMessage").textContent =
+      message;
+
+  }
+
+
+  /*
+    전역 함수 등록
+  */
+
+  window.findQuiz =
+    findQuiz;
+
+  window.startQuiz =
+    startQuiz;
+
+  window.previousQuestion =
+    previousQuestion;
+
+  window.nextQuestion =
+    nextQuestion;
+
+</script>
+
+</body>
+</html>
