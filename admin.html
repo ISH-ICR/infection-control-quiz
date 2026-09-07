@@ -219,6 +219,35 @@
       background: #f1f5f9;
     }
 
+    /* =========================
+       시간 제한 설정
+    ========================= */
+
+    .time-limit-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .time-limit-row select {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .custom-time-input {
+      flex: 1;
+      margin-top: 0;
+      display: none;
+    }
+
+    .time-limit-help {
+      color: #777;
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
     @media (max-width: 700px) {
       .container {
         padding: 15px;
@@ -231,6 +260,11 @@
       .question-header {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .time-limit-row {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   </style>
@@ -441,17 +475,18 @@
 
   const firebaseConfig = {
 
-  apiKey: "AIzaSyDJuaH028Hw0jbHVekhSY8hrzlmsVgHpqI",
+    apiKey: "AIzaSyDJuaH028Hw0jbHVekhSY8hrzlmsVgHpqI",
 
-  authDomain: "icquizgame.firebaseapp.com",
+    authDomain: "icquizgame.firebaseapp.com",
 
-  projectId: "icquizgame",
+    projectId: "icquizgame",
 
-  storageBucket: "icquizgame.firebasestorage.app",
+    storageBucket: "icquizgame.firebasestorage.app",
 
-  messagingSenderId: "987272482834",
+    messagingSenderId: "987272482834",
 
-  appId: "1:987272482834:web:612b4edb47aae69ac848cb"
+    appId: "1:987272482834:web:612b4edb47aae69ac848cb"
+
   };
 
 
@@ -465,11 +500,8 @@
   =====================================================
   */
 
-  // 기존 관리자 비밀번호
   const ADMIN_PASSWORD = "ISH2801";
 
-  // 최상위 마스터키
-  // 반드시 본인만 알고 있는 값으로 변경하세요.
   const MASTER_KEY = "ISH2801";
 
 
@@ -511,7 +543,13 @@
       answerId: "",
       correct: "",
       points: 100,
-      explain: ""
+      explain: "",
+
+      /*
+        시간 제한
+        0 = 제한 없음
+      */
+      timeLimit: 0
     }
   ];
 
@@ -799,10 +837,6 @@
       const session = snap.data();
 
 
-      /*
-      관리자 코드 입력
-      */
-
       const inputCode =
         prompt(
           "이 퀴즈의 4자리 관리 코드를 입력하세요.\n\n마스터키를 사용하는 경우 마스터키를 입력하세요."
@@ -822,17 +856,9 @@
         String(session.managerCode || "").trim();
 
 
-      /*
-      마스터키
-      */
-
       const isMaster =
         entered === MASTER_KEY;
 
-
-      /*
-      일반 관리 코드
-      */
 
       const isManager =
         managerCode &&
@@ -846,14 +872,6 @@
         return;
       }
 
-
-      /*
-      =================================================
-      중요:
-      기존에 정상적인 options 구조를 가진 문제는
-      데이터를 다시 만들지 않고 그대로 사용합니다.
-      =================================================
-      */
 
       const rawQuestions =
         Array.isArray(session.questions)
@@ -1016,10 +1034,6 @@
     }
 
 
-    /*
-    현재 화면에서 변경된 값만 반영
-    */
-
     current.title =
       title;
 
@@ -1078,25 +1092,34 @@
 
     return questions.map(q => {
 
-      /*
-      정상적인 최신 데이터는 최대한 그대로 유지
-      */
-
       if (
         q &&
         Array.isArray(q.options) &&
         q.options.length >= 2
       ) {
 
+        /*
+          기존 문제에 시간 제한 값이 없으면
+          제한 없음으로만 보완합니다.
+        */
+
+        if (
+          q.timeLimit === undefined ||
+          q.timeLimit === null
+        ) {
+
+          return {
+            ...q,
+            timeLimit: 0
+          };
+
+        }
+
+
         return q;
 
       }
 
-
-      /*
-      예전 데이터에 options가 없는 경우에만
-      기존 correct 값을 이용해 최소한의 호환 처리
-      */
 
       const oldCorrect =
         q && q.correct
@@ -1155,7 +1178,12 @@
         explain:
           q && q.explain
             ? String(q.explain)
-            : ""
+            : "",
+
+        timeLimit:
+          q && q.timeLimit != null
+            ? Number(q.timeLimit)
+            : 0
 
       };
 
@@ -1188,6 +1216,10 @@
     list.innerHTML =
       current.questions.map(
         (q, index) => {
+
+          const timeLimit =
+            Number(q.timeLimit || 0);
+
 
           return `
 
@@ -1231,6 +1263,119 @@
                 min="0"
                 value="${Number(q.points || 100)}"
               />
+
+
+              <!-- =========================
+                   시간 제한
+              ========================= -->
+
+              <label>
+                시간 제한
+              </label>
+
+              <div class="time-limit-row">
+
+                <select
+                  class="question-time-limit"
+                  data-current-time="${timeLimit}"
+                  onchange="handleTimeLimitChange(this)"
+                >
+
+                  <option
+                    value="0"
+                    ${timeLimit === 0 ? "selected" : ""}
+                  >
+                    제한 없음
+                  </option>
+
+                  <option
+                    value="10"
+                    ${timeLimit === 10 ? "selected" : ""}
+                  >
+                    10초
+                  </option>
+
+                  <option
+                    value="20"
+                    ${timeLimit === 20 ? "selected" : ""}
+                  >
+                    20초
+                  </option>
+
+                  <option
+                    value="30"
+                    ${timeLimit === 30 ? "selected" : ""}
+                  >
+                    30초
+                  </option>
+
+                  <option
+                    value="60"
+                    ${timeLimit === 60 ? "selected" : ""}
+                  >
+                    60초
+                  </option>
+
+                  <option
+                    value="90"
+                    ${timeLimit === 90 ? "selected" : ""}
+                  >
+                    90초
+                  </option>
+
+                  <option
+                    value="120"
+                    ${timeLimit === 120 ? "selected" : ""}
+                  >
+                    120초
+                  </option>
+
+                  <option
+                    value="custom"
+                    ${(
+                      timeLimit > 0 &&
+                      ![10,20,30,60,90,120]
+                        .includes(timeLimit)
+                    ) ? "selected" : ""}
+                  >
+                    직접 입력
+                  </option>
+
+                </select>
+
+
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  class="custom-time-input"
+                  placeholder="초 입력"
+                  value="${
+                    (
+                      timeLimit > 0 &&
+                      ![10,20,30,60,90,120]
+                        .includes(timeLimit)
+                    )
+                      ? timeLimit
+                      : ""
+                  }"
+                  style="${
+                    (
+                      timeLimit > 0 &&
+                      ![10,20,30,60,90,120]
+                        .includes(timeLimit)
+                    )
+                      ? "display:block;"
+                      : "display:none;"
+                  }"
+                />
+
+              </div>
+
+              <div class="time-limit-help">
+                제한 없음으로 설정하면 참가자가 원하는 만큼
+                문제를 풀 수 있습니다.
+              </div>
 
 
               <label>
@@ -1318,6 +1463,41 @@
 
   /*
   =====================================================
+  시간 제한 선택 변경
+  =====================================================
+  */
+
+  window.handleTimeLimitChange =
+    function(select) {
+
+      const customInput =
+        select.parentElement
+          .querySelector(".custom-time-input");
+
+
+      if (
+        select.value === "custom"
+      ) {
+
+        customInput.style.display =
+          "block";
+
+        customInput.focus();
+
+      } else {
+
+        customInput.style.display =
+          "none";
+
+        customInput.value = "";
+
+      }
+
+    };
+
+
+  /*
+  =====================================================
   문제 추가
   =====================================================
   */
@@ -1363,7 +1543,13 @@
 
       points: 100,
 
-      explain: ""
+      explain: "",
+
+      /*
+        새 문제의 기본값:
+        시간 제한 없음
+      */
+      timeLimit: 0
 
     });
 
@@ -1477,7 +1663,7 @@
 
       renderQuestions();
 
-    };
+  };
 
 
   /*
@@ -1530,6 +1716,74 @@
             .value || 0
         );
 
+
+      /*
+      =================================================
+      시간 제한 저장
+      =================================================
+      */
+
+      const timeLimitSelect =
+        card.querySelector(
+          ".question-time-limit"
+        );
+
+
+      const customTimeInput =
+        card.querySelector(
+          ".custom-time-input"
+        );
+
+
+      let timeLimit = 0;
+
+
+      if (
+        timeLimitSelect.value === "custom"
+      ) {
+
+        timeLimit =
+          Number(
+            customTimeInput.value || 0
+          );
+
+      } else {
+
+        timeLimit =
+          Number(
+            timeLimitSelect.value || 0
+          );
+
+      }
+
+
+      /*
+        잘못된 값 방지
+      */
+
+      if (
+        !Number.isFinite(timeLimit) ||
+        timeLimit < 0
+      ) {
+
+        timeLimit = 0;
+
+      }
+
+
+      timeLimit =
+        Math.floor(timeLimit);
+
+
+      question.timeLimit =
+        timeLimit;
+
+
+      /*
+      =================================================
+      보기 저장
+      =================================================
+      */
 
       const optionRows =
         card.querySelectorAll(
