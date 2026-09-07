@@ -1201,23 +1201,25 @@
         .querySelectorAll(".option")
         .forEach(button => {
 
-          button.addEventListener(
-            "click",
-            () => {
+button.addEventListener(
+  "click",
+  () => {
 
-              answers[q.id] =
-                button.dataset.optionId;
+    answers[q.id] =
+      button.dataset.optionId;
 
+    optionsContainer
+      .querySelectorAll(".option")
+      .forEach(optionButton => {
 
-              renderQuestion();
+        optionButton.classList.remove("selected");
 
-            }
-          );
+      });
 
-        });
+    button.classList.add("selected");
 
-    }
-
+  }
+);
 
     /*
     =====================================================
