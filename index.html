@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>격리주의 퀴즈</title>
+  <title>감염관리실 퀴즈</title>
 
   <style>
     * {
@@ -310,7 +310,7 @@
 
     <div class="card login-box">
 
-      <h1>격리주의 퀴즈</h1>
+      <h1>감염관리실 퀴즈</h1>
 
       <p class="subtitle" style="text-align:center;">
         참여 코드를 입력해주세요.
@@ -391,6 +391,15 @@
         퀴즈 시작
       </button>
 
+      <!-- 뒤로 가기 버튼 추가 -->
+      <button
+        class="btn secondary"
+        onclick="backToStart()"
+        style="margin-top:10px;"
+      >
+        뒤로 가기
+      </button>
+
     </div>
 
   </div>
@@ -465,6 +474,15 @@
         </button>
 
       </div>
+
+      <!-- 퀴즈 전체에서 참가자 정보 화면으로 돌아가기 -->
+      <button
+        class="btn secondary"
+        onclick="backToInfo()"
+        style="margin-top:10px;"
+      >
+        뒤로 가기
+      </button>
 
     </div>
 
@@ -730,7 +748,7 @@
 
       $("infoTitle").textContent =
         session.title ||
-        "격리주의 퀴즈";
+        "감염관리실 퀴즈";
 
 
       hide("startView");
@@ -791,7 +809,7 @@
 
     $("quizTitle").textContent =
       session.title ||
-      "격리주의 퀴즈";
+      "감염관리실 퀴즈";
 
 
     hide("infoView");
@@ -799,6 +817,30 @@
 
 
     renderQuestion();
+
+  }
+
+
+  /*
+    시작 화면으로 돌아가기
+  */
+
+  function backToStart() {
+
+    hide("infoView");
+    show("startView");
+
+  }
+
+
+  /*
+    참가자 정보 화면으로 돌아가기
+  */
+
+  function backToInfo() {
+
+    hide("quizView");
+    show("infoView");
 
   }
 
@@ -1238,6 +1280,12 @@
 
   window.nextQuestion =
     nextQuestion;
+
+  window.backToStart =
+    backToStart;
+
+  window.backToInfo =
+    backToInfo;
 
 </script>
 
