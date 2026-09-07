@@ -240,7 +240,7 @@
 
 <div class="container">
 
-  <h1>감염관리실 퀴즈 관리자 모드</h1>
+  <h1>격리주의 퀴즈 관리자</h1>
 
   <!-- 로그인 -->
   <div id="loginSection" class="card">
@@ -460,11 +460,11 @@
   */
 
   // 기존 관리자 비밀번호
-  const ADMIN_PASSWORD = "ISH2801";
+  const ADMIN_PASSWORD = "1234";
 
   // 최상위 마스터키
   // 반드시 본인만 알고 있는 값으로 변경하세요.
-  const MASTER_KEY = "ISH2801";
+  const MASTER_KEY = "MASTER2026";
 
 
   let current = null;
@@ -539,7 +539,7 @@
 
   /*
   =====================================================
-  세션 코드 생성
+  참가 코드 생성
   =====================================================
   */
 
@@ -678,11 +678,19 @@
 
     } catch (error) {
 
-      console.error(error);
+      console.error("퀴즈 목록 불러오기 오류:", error);
 
-      list.innerHTML =
-        "<p>퀴즈 목록을 불러오지 못했습니다.</p>";
+      list.innerHTML = `
+        <p>
+          퀴즈 목록을 불러오지 못했습니다.
+        </p>
+        <p style="color:#dc2626;font-size:13px;">
+          ${escapeHtml(error.message || error)}
+        </p>
+      `;
+
     }
+
   }
 
 
@@ -694,38 +702,54 @@
 
   window.createNewSession = async function() {
 
-    let participantCode;
+    try {
 
-    do {
+      let participantCode;
 
-      participantCode =
-        generateParticipantCode();
+      do {
 
-    } while (
-      await sessionExists(participantCode)
-    );
+        participantCode =
+          generateParticipantCode();
 
-
-    current = {
-
-      code: participantCode,
-
-      title: "",
-
-      managerCode: "",
-
-      status: "draft",
-
-      createdAt:
-        new Date().toISOString(),
-
-      questions:
-        structuredClone(DEFAULT_QUESTIONS)
-
-    };
+      } while (
+        await sessionExists(participantCode)
+      );
 
 
-    showEditor();
+      current = {
+
+        code: participantCode,
+
+        title: "",
+
+        managerCode: "",
+
+        status: "draft",
+
+        createdAt:
+          new Date().toISOString(),
+
+        questions:
+          structuredClone(DEFAULT_QUESTIONS)
+
+      };
+
+
+      showEditor();
+
+    } catch (error) {
+
+      console.error(
+        "새 퀴즈 생성 오류:",
+        error
+      );
+
+      alert(
+        "새 퀴즈를 만들 수 없습니다.\n\n" +
+        (error.message || error)
+      );
+
+    }
 
   };
 
@@ -737,6 +761,7 @@
     );
 
     return snap.exists();
+
   }
 
 
@@ -748,82 +773,127 @@
 
   window.openExistingSession = async function(code) {
 
-    const snap = await getDoc(
-      doc(db, "sessions", code)
-    );
+    try {
 
-
-    if (!snap.exists()) {
-
-      alert("해당 퀴즈를 찾을 수 없습니다.");
-
-      await loadSessions();
-
-      return;
-    }
-
-
-    const session = snap.data();
-
-
-    /*
-    관리자 코드 입력
-    */
-
-    const inputCode =
-      prompt(
-        "이 퀴즈의 4자리 관리 코드를 입력하세요.\n\n마스터키를 사용하는 경우 마스터키를 입력하세요."
+      const snap = await getDoc(
+        doc(db, "sessions", code)
       );
 
 
-    if (inputCode === null) {
-      return;
+      if (!snap.exists()) {
+
+        alert("해당 퀴즈를 찾을 수 없습니다.");
+
+        await loadSessions();
+
+        return;
+      }
+
+
+      const session = snap.data();
+
+
+      /*
+      관리자 코드 입력
+      */
+
+      const inputCode =
+        prompt(
+          "이 퀴즈의 4자리 관리 코드를 입력하세요.\n\n마스터키를 사용하는 경우 마스터키를 입력하세요."
+        );
+
+
+      if (inputCode === null) {
+        return;
+      }
+
+
+      const entered =
+        inputCode.trim();
+
+
+      const managerCode =
+        String(session.managerCode || "").trim();
+
+
+      /*
+      마스터키
+      */
+
+      const isMaster =
+        entered === MASTER_KEY;
+
+
+      /*
+      일반 관리 코드
+      */
+
+      const isManager =
+        managerCode &&
+        entered === managerCode;
+
+
+      if (!isMaster && !isManager) {
+
+        alert("관리 코드가 올바르지 않습니다.");
+
+        return;
+      }
+
+
+      /*
+      =================================================
+      중요:
+      기존에 정상적인 options 구조를 가진 문제는
+      데이터를 다시 만들지 않고 그대로 사용합니다.
+      =================================================
+      */
+
+      const rawQuestions =
+        Array.isArray(session.questions)
+          ? session.questions
+          : [];
+
+
+      const needsNormalization =
+        rawQuestions.some(
+          q =>
+            !q ||
+            !Array.isArray(q.options) ||
+            q.options.length < 2
+        );
+
+
+      current = {
+
+        ...session,
+
+        code:
+          session.code || code,
+
+        questions:
+          needsNormalization
+            ? normalizeQuestions(rawQuestions)
+            : rawQuestions
+
+      };
+
+
+      showEditor();
+
+    } catch (error) {
+
+      console.error(
+        "퀴즈 불러오기 오류:",
+        error
+      );
+
+      alert(
+        "퀴즈를 불러오는 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
+      );
+
     }
-
-
-    const entered =
-      inputCode.trim();
-
-
-    const managerCode =
-      String(session.managerCode || "").trim();
-
-
-    /*
-    마스터키
-    */
-
-    const isMaster =
-      entered === MASTER_KEY;
-
-
-    /*
-    일반 관리 코드
-    */
-
-    const isManager =
-      managerCode &&
-      entered === managerCode;
-
-
-    if (!isMaster && !isManager) {
-
-      alert("관리 코드가 올바르지 않습니다.");
-
-      return;
-    }
-
-
-    current = {
-      ...session,
-      code:
-        session.code || code,
-      questions:
-        normalizeQuestions(session.questions || [])
-    };
-
-
-    showEditor();
 
   };
 
@@ -908,6 +978,14 @@
 
   window.saveSession = async function() {
 
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
     const title =
       $("sessionTitle").value.trim();
 
@@ -932,7 +1010,12 @@
     }
 
 
-    current.title = title;
+    /*
+    현재 화면에서 변경된 값만 반영
+    */
+
+    current.title =
+      title;
 
     current.managerCode =
       managerCode;
@@ -959,10 +1042,14 @@
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "퀴즈 저장 오류:",
+        error
+      );
 
       alert(
-        "저장 중 오류가 발생했습니다."
+        "저장 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
       );
 
     }
@@ -985,100 +1072,84 @@
 
     return questions.map(q => {
 
-      let options =
-        Array.isArray(q.options)
-          ? q.options
-          : [];
-
-
       /*
-      예전 데이터에 options가 없는 경우
+      정상적인 최신 데이터는 최대한 그대로 유지
       */
 
-      if (options.length < 2) {
+      if (
+        q &&
+        Array.isArray(q.options) &&
+        q.options.length >= 2
+      ) {
 
-        const oldCorrect =
-          q.correct || "";
-
-
-        options = [
-          {
-            id: makeId("o"),
-            text: oldCorrect
-          },
-          {
-            id: makeId("o"),
-            text: ""
-          }
-        ];
+        return q;
 
       }
 
 
-      options =
-        options.map(option => ({
-
-          id:
-            option.id ||
-            makeId("o"),
-
-          text:
-            String(option.text || "")
-
-        }));
-
-
-      let answerId =
-        q.answerId || "";
-
-
       /*
-      기존 correct 데이터 호환
+      예전 데이터에 options가 없는 경우에만
+      기존 correct 값을 이용해 최소한의 호환 처리
       */
 
-      if (!answerId && q.correct) {
-
-        const found =
-          options.find(
-            o => o.text === q.correct
-          );
+      const oldCorrect =
+        q && q.correct
+          ? q.correct
+          : "";
 
 
-        if (found) {
-          answerId = found.id;
+      const options = [
+
+        {
+          id: makeId("o"),
+          text: oldCorrect
+        },
+
+        {
+          id: makeId("o"),
+          text: ""
         }
 
-      }
-
-
-      const answerOption =
-        options.find(
-          o => o.id === answerId
-        );
+      ];
 
 
       return {
 
+        ...(q || {}),
+
         id:
-          q.id || makeId("q"),
+          q && q.id
+            ? q.id
+            : makeId("q"),
 
         text:
-          String(q.text || ""),
+          q && q.text
+            ? String(q.text)
+            : "",
 
         options,
 
-        answerId,
+        answerId:
+          q && q.answerId
+            ? q.answerId
+            : (
+                oldCorrect
+                  ? options[0].id
+                  : ""
+              ),
 
         correct:
-          answerOption
-            ? answerOption.text
-            : String(q.correct || ""),
+          oldCorrect,
 
         points:
-          Number(q.points || 100),
+          q && q.points != null
+            ? Number(q.points)
+            : 100,
 
         explain:
-          String(q.explain || "")
+          q && q.explain
+            ? String(q.explain)
+            : ""
 
       };
 
@@ -1164,46 +1235,48 @@
               <div class="options-container">
 
                 ${
-                  q.options.map(
-                    (option, optionIndex) => `
+                  Array.isArray(q.options)
+                    ? q.options.map(
+                        (option, optionIndex) => `
 
-                      <div
-                        class="option-row"
-                        data-option-id="${escapeAttr(option.id)}"
-                      >
+                          <div
+                            class="option-row"
+                            data-option-id="${escapeAttr(option.id)}"
+                          >
 
-                        <input
-                          type="radio"
-                          name="answer-${escapeAttr(q.id)}"
-                          ${
-                            q.answerId === option.id
-                              ? "checked"
-                              : ""
-                          }
-                        />
+                            <input
+                              type="radio"
+                              name="answer-${escapeAttr(q.id)}"
+                              ${
+                                q.answerId === option.id
+                                  ? "checked"
+                                  : ""
+                              }
+                            />
 
-                        <span class="option-label">
-                          ${String.fromCharCode(65 + optionIndex)}
-                        </span>
+                            <span class="option-label">
+                              ${String.fromCharCode(65 + optionIndex)}
+                            </span>
 
-                        <input
-                          type="text"
-                          class="option-text"
-                          value="${escapeAttr(option.text)}"
-                          placeholder="보기 ${optionIndex + 1}"
-                        />
+                            <input
+                              type="text"
+                              class="option-text"
+                              value="${escapeAttr(option.text)}"
+                              placeholder="보기 ${optionIndex + 1}"
+                            />
 
-                        <button
-                          class="btn-danger small"
-                          onclick="removeOption('${escapeAttr(q.id)}','${escapeAttr(option.id)}')"
-                        >
-                          삭제
-                        </button>
+                            <button
+                              class="btn-danger small"
+                              onclick="removeOption('${escapeAttr(q.id)}','${escapeAttr(option.id)}')"
+                            >
+                              삭제
+                            </button>
 
-                      </div>
+                          </div>
 
-                    `
-                  ).join("")
+                        `
+                      ).join("")
+                    : ""
                 }
 
               </div>
@@ -1244,6 +1317,14 @@
   */
 
   window.addQuestion = function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
 
     current.questions.push({
 
@@ -1401,6 +1482,14 @@
 
   window.saveQuestions = async function() {
 
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
     const cards =
       document.querySelectorAll(
         ".question-card"
@@ -1515,10 +1604,14 @@
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "문제 저장 오류:",
+        error
+      );
 
       alert(
-        "문제 저장 중 오류가 발생했습니다."
+        "문제 저장 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
       );
 
     }
@@ -1587,10 +1680,17 @@
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "결과 불러오기 오류:",
+        error
+      );
 
-      list.innerHTML =
-        "<p>결과를 불러오지 못했습니다.</p>";
+      list.innerHTML = `
+        <p>결과를 불러오지 못했습니다.</p>
+        <p style="color:#dc2626;font-size:13px;">
+          ${escapeHtml(error.message || error)}
+        </p>
+      `;
 
     }
 
@@ -1712,40 +1812,40 @@
   window.deleteSession =
     async function(sessionCode) {
 
-      const snap =
-        await getDoc(
-          doc(db, "sessions", sessionCode)
-        );
-
-
-      if (!snap.exists()) {
-
-        alert(
-          "이미 삭제된 퀴즈입니다."
-        );
-
-        await loadSessions();
-
-        return;
-      }
-
-
-      const session =
-        snap.data();
-
-
-      const confirmed =
-        confirm(
-          `"${session.title || "제목 없음"}" 퀴즈를 삭제할까요?\n\n참가 코드: ${sessionCode}\n\n삭제하면 되돌릴 수 없습니다.`
-        );
-
-
-      if (!confirmed) {
-        return;
-      }
-
-
       try {
+
+        const snap =
+          await getDoc(
+            doc(db, "sessions", sessionCode)
+          );
+
+
+        if (!snap.exists()) {
+
+          alert(
+            "이미 삭제된 퀴즈입니다."
+          );
+
+          await loadSessions();
+
+          return;
+        }
+
+
+        const session =
+          snap.data();
+
+
+        const confirmed =
+          confirm(
+            `"${session.title || "제목 없음"}" 퀴즈를 삭제할까요?\n\n참가 코드: ${sessionCode}\n\n삭제하면 되돌릴 수 없습니다.`
+          );
+
+
+        if (!confirmed) {
+          return;
+        }
+
 
         await deleteDoc(
           doc(
@@ -1784,10 +1884,14 @@
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "퀴즈 삭제 오류:",
+          error
+        );
 
         alert(
-          "퀴즈 삭제 중 오류가 발생했습니다."
+          "퀴즈 삭제 중 오류가 발생했습니다.\n\n" +
+          (error.message || error)
         );
 
       }
