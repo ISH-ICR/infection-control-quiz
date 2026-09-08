@@ -293,26 +293,40 @@
     }
     .result-table td { color: var(--text-hi); }
 
-    /* =========================
-       시간 제한 설정
-    ========================= */
-
-    .time-limit-row {
+    .status-picker {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
       margin-top: 6px;
     }
 
-    .time-limit-row select {
+    .status-btn {
       flex: 1;
-      margin-top: 0;
+      padding: 11px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--text-mid);
+      font-weight: 700;
+      font-size: 13.5px;
+      font-family: var(--font-sans);
+      cursor: pointer;
     }
+    .status-btn:hover { border-color: var(--mint-dim); }
 
-    .custom-time-input {
-      flex: 1;
-      margin-top: 0;
-      display: none;
+    .status-btn[data-value="draft"].active {
+      background: rgba(255,184,76,0.16);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .status-btn[data-value="open"].active {
+      background: rgba(61,220,151,0.16);
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+    .status-btn[data-value="closed"].active {
+      background: rgba(255,107,107,0.16);
+      border-color: var(--coral);
+      color: var(--coral);
     }
 
     .time-limit-help {
@@ -334,11 +348,6 @@
       .question-header {
         align-items: flex-start;
         flex-direction: column;
-      }
-
-      .time-limit-row {
-        flex-direction: column;
-        align-items: stretch;
       }
     }
   </style>
@@ -433,11 +442,12 @@
 
 
       <label>상태</label>
-      <select id="sessionStatus">
-        <option value="draft">준비중</option>
-        <option value="open">공개</option>
-        <option value="closed">종료</option>
-      </select>
+      <div class="status-picker" id="sessionStatusPicker">
+        <button type="button" class="status-btn" data-value="draft" onclick="selectSessionStatus('draft')">준비중</button>
+        <button type="button" class="status-btn" data-value="open" onclick="selectSessionStatus('open')">공개</button>
+        <button type="button" class="status-btn" data-value="closed" onclick="selectSessionStatus('closed')">종료</button>
+      </div>
+      <input type="hidden" id="sessionStatus" value="draft" />
 
 
       <div
@@ -478,12 +488,42 @@
       <div class="row" style="justify-content:space-between;">
         <h2>문제 관리</h2>
 
-        <button
-          class="btn-primary"
-          onclick="addQuestion()"
-        >
-          + 문제 추가
-        </button>
+        <div class="row">
+          <button
+            class="btn-primary"
+            onclick="addQuestion()"
+          >
+            + 문제 추가
+          </button>
+
+          <button
+            class="btn-secondary"
+            onclick="downloadQuestionsCsv()"
+          >
+            문제 엑셀(CSV) 다운로드
+          </button>
+
+          <button
+            class="btn-secondary"
+            onclick="document.getElementById('questionsImportInput').click()"
+          >
+            엑셀(CSV) 업로드로 반영
+          </button>
+
+          <input
+            type="file"
+            id="questionsImportInput"
+            accept=".csv"
+            style="display:none;"
+            onchange="handleQuestionsImport(event)"
+          />
+        </div>
+      </div>
+
+      <div class="time-limit-help" style="margin-top:-4px;">
+        업로드용 서식은 "문제 엑셀(CSV) 다운로드"로 현재 문제를 먼저 받아 형식을 확인한 뒤,
+        같은 서식으로 채워서 업로드하면 가장 안전합니다. 업로드하면 현재 문제 목록 전체가
+        교체되며, "문제 저장" 버튼을 눌러야 최종 반영됩니다.
       </div>
 
       <div id="questionList"></div>
@@ -511,9 +551,45 @@
           class="btn-success"
           onclick="downloadExcel()"
         >
-          엑셀 다운로드
+          엑셀 다운로드 (현재 목록)
         </button>
       </div>
+
+      <div class="row" style="align-items:flex-end; margin-bottom:10px;">
+
+        <div style="min-width:150px;">
+          <label>시작일</label>
+          <input type="date" id="resultDateFrom" />
+        </div>
+
+        <div style="min-width:150px;">
+          <label>종료일</label>
+          <input type="date" id="resultDateTo" />
+        </div>
+
+        <button
+          class="btn-primary small"
+          style="margin-top:15px;"
+          onclick="applyResultDateFilter()"
+        >
+          기간 적용
+        </button>
+
+        <button
+          class="btn-secondary small"
+          style="margin-top:15px;"
+          onclick="resetResultDateFilter()"
+        >
+          전체 보기
+        </button>
+
+      </div>
+
+      <div
+        id="resultFilterInfo"
+        class="time-limit-help"
+        style="margin-top:0; margin-bottom:10px;"
+      ></div>
 
       <div id="resultList"></div>
 
@@ -581,6 +657,7 @@
 
   let current = null;
   let currentResults = [];
+  let activeResults = [];
 
 
   const $ = id => document.getElementById(id);
@@ -652,6 +729,28 @@
     $("adminSection").classList.remove("hidden");
 
     loadSessions();
+  };
+
+
+  /*
+  =====================================================
+  퀴즈 상태 선택 (버튼 그룹)
+  =====================================================
+  */
+
+  window.selectSessionStatus = function(value) {
+
+    $("sessionStatus").value = value;
+
+    document
+      .querySelectorAll(".status-btn")
+      .forEach(btn => {
+        btn.classList.toggle(
+          "active",
+          btn.dataset.value === value
+        );
+      });
+
   };
 
 
@@ -1034,8 +1133,9 @@
       current.managerCode || "미설정";
 
 
-    $("sessionStatus").value =
-      current.status || "draft";
+    selectSessionStatus(
+      current.status || "draft"
+    );
 
 
     renderQuestions();
@@ -1344,111 +1444,21 @@
               ========================= -->
 
               <label>
-                시간 제한
+                시간 제한 (초)
               </label>
 
-              <div class="time-limit-row">
-
-                <select
-                  class="question-time-limit"
-                  data-current-time="${timeLimit}"
-                  onchange="handleTimeLimitChange(this)"
-                >
-
-                  <option
-                    value="0"
-                    ${timeLimit === 0 ? "selected" : ""}
-                  >
-                    제한 없음
-                  </option>
-
-                  <option
-                    value="10"
-                    ${timeLimit === 10 ? "selected" : ""}
-                  >
-                    10초
-                  </option>
-
-                  <option
-                    value="20"
-                    ${timeLimit === 20 ? "selected" : ""}
-                  >
-                    20초
-                  </option>
-
-                  <option
-                    value="30"
-                    ${timeLimit === 30 ? "selected" : ""}
-                  >
-                    30초
-                  </option>
-
-                  <option
-                    value="60"
-                    ${timeLimit === 60 ? "selected" : ""}
-                  >
-                    60초
-                  </option>
-
-                  <option
-                    value="90"
-                    ${timeLimit === 90 ? "selected" : ""}
-                  >
-                    90초
-                  </option>
-
-                  <option
-                    value="120"
-                    ${timeLimit === 120 ? "selected" : ""}
-                  >
-                    120초
-                  </option>
-
-                  <option
-                    value="custom"
-                    ${(
-                      timeLimit > 0 &&
-                      ![10,20,30,60,90,120]
-                        .includes(timeLimit)
-                    ) ? "selected" : ""}
-                  >
-                    직접 입력
-                  </option>
-
-                </select>
-
-
-                <input
-                  type="number"
-                  min="1"
-                  step="1"
-                  class="custom-time-input"
-                  placeholder="초 입력"
-                  value="${
-                    (
-                      timeLimit > 0 &&
-                      ![10,20,30,60,90,120]
-                        .includes(timeLimit)
-                    )
-                      ? timeLimit
-                      : ""
-                  }"
-                  style="${
-                    (
-                      timeLimit > 0 &&
-                      ![10,20,30,60,90,120]
-                        .includes(timeLimit)
-                    )
-                      ? "display:block;"
-                      : "display:none;"
-                  }"
-                />
-
-              </div>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                class="question-time-limit"
+                placeholder="예: 20"
+                value="${timeLimit > 0 ? timeLimit : ""}"
+              />
 
               <div class="time-limit-help">
-                제한 없음으로 설정하면 참가자가 원하는 만큼
-                문제를 풀 수 있습니다.
+                초 단위 숫자를 직접 입력하세요. 0 또는 빈칸으로 두면
+                시간 제한 없이 참가자가 원하는 만큼 문제를 풀 수 있습니다.
               </div>
 
 
@@ -1533,41 +1543,6 @@
       ).join("");
 
   }
-
-
-  /*
-  =====================================================
-  시간 제한 선택 변경
-  =====================================================
-  */
-
-  window.handleTimeLimitChange =
-    function(select) {
-
-      const customInput =
-        select.parentElement
-          .querySelector(".custom-time-input");
-
-
-      if (
-        select.value === "custom"
-      ) {
-
-        customInput.style.display =
-          "block";
-
-        customInput.focus();
-
-      } else {
-
-        customInput.style.display =
-          "none";
-
-        customInput.value = "";
-
-      }
-
-    };
 
 
   /*
@@ -1746,15 +1721,7 @@
   =====================================================
   */
 
-  window.saveQuestions = async function() {
-
-    if (!current) {
-
-      alert("먼저 퀴즈를 선택해주세요.");
-
-      return;
-    }
-
+  function syncQuestionsFromDom() {
 
     const cards =
       document.querySelectorAll(
@@ -1797,38 +1764,16 @@
       =================================================
       */
 
-      const timeLimitSelect =
+      const timeLimitInput =
         card.querySelector(
           ".question-time-limit"
         );
 
 
-      const customTimeInput =
-        card.querySelector(
-          ".custom-time-input"
+      let timeLimit =
+        Number(
+          timeLimitInput.value || 0
         );
-
-
-      let timeLimit = 0;
-
-
-      if (
-        timeLimitSelect.value === "custom"
-      ) {
-
-        timeLimit =
-          Number(
-            customTimeInput.value || 0
-          );
-
-      } else {
-
-        timeLimit =
-          Number(
-            timeLimitSelect.value || 0
-          );
-
-      }
 
 
       /*
@@ -1918,6 +1863,21 @@
 
     });
 
+  }
+
+
+  window.saveQuestions = async function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
+    syncQuestionsFromDom();
+
 
     try {
 
@@ -1955,8 +1915,287 @@
 
   /*
   =====================================================
+  문제 엑셀(CSV) 다운로드
+  =====================================================
+  */
+
+  window.downloadQuestionsCsv = function() {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      return;
+    }
+
+
+    syncQuestionsFromDom();
+
+
+    if (!current.questions.length) {
+
+      alert("다운로드할 문제가 없습니다.");
+
+      return;
+    }
+
+
+    const maxOptions =
+      current.questions.reduce(
+        (max, q) =>
+          Math.max(max, q.options.length),
+        0
+      );
+
+
+    const headers = ["문제", "배점", "시간제한(초)"];
+
+    for (let i = 1; i <= maxOptions; i++) {
+      headers.push("보기" + i);
+    }
+
+    headers.push("정답번호");
+    headers.push("해설");
+
+
+    const rows =
+      current.questions.map(q => {
+
+        const row = [
+          q.text || "",
+          q.points || 0,
+          q.timeLimit || 0
+        ];
+
+        for (let i = 0; i < maxOptions; i++) {
+          row.push(
+            q.options[i] ? q.options[i].text : ""
+          );
+        }
+
+        const answerIndex =
+          q.options.findIndex(
+            o => o.id === q.answerId
+          ) + 1;
+
+        row.push(answerIndex || "");
+        row.push(q.explain || "");
+
+        return row;
+
+      });
+
+
+    downloadCsvFile(
+      toCsv([headers, ...rows]),
+      `${current.title || "퀴즈"}_문제.csv`
+    );
+
+  };
+
+
+  /*
+  =====================================================
+  문제 엑셀(CSV) 업로드로 반영
+  =====================================================
+  */
+
+  window.handleQuestionsImport = async function(event) {
+
+    if (!current) {
+
+      alert("먼저 퀴즈를 선택해주세요.");
+
+      event.target.value = "";
+
+      return;
+    }
+
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+
+    try {
+
+      const text = await file.text();
+
+      const rows = parseCsv(text);
+
+
+      if (rows.length < 2) {
+
+        alert(
+          "업로드할 문제 데이터를 찾을 수 없습니다."
+        );
+
+        event.target.value = "";
+
+        return;
+      }
+
+
+      const header = rows[0];
+
+      const idxText = header.indexOf("문제");
+      const idxPoints = header.indexOf("배점");
+      const idxTime = header.indexOf("시간제한(초)");
+      const idxAnswer = header.indexOf("정답번호");
+      const idxExplain = header.indexOf("해설");
+
+      const optionIdxs =
+        header
+          .map((h, i) => (h && h.indexOf("보기") === 0) ? i : -1)
+          .filter(i => i >= 0);
+
+
+      if (
+        idxText === -1 ||
+        idxAnswer === -1 ||
+        optionIdxs.length === 0
+      ) {
+
+        alert(
+          "CSV 형식이 올바르지 않습니다.\n\n" +
+          "\"문제 엑셀(CSV) 다운로드\"로 받은 서식을 기준으로 작성해주세요."
+        );
+
+        event.target.value = "";
+
+        return;
+
+      }
+
+
+      const newQuestions = [];
+
+      for (let r = 1; r < rows.length; r++) {
+
+        const row = rows[r];
+
+        const text = (row[idxText] || "").trim();
+
+        if (!text) continue;
+
+
+        const optionTexts =
+          optionIdxs
+            .map(i => (row[i] || "").trim())
+            .filter(t => t !== "");
+
+
+        if (optionTexts.length < 2) continue;
+
+
+        const options =
+          optionTexts.map(t => ({
+            id: makeId("o"),
+            text: t
+          }));
+
+
+        const answerIndex =
+          Number(row[idxAnswer] || 0);
+
+        const answerOption =
+          options[answerIndex - 1] || options[0];
+
+
+        newQuestions.push({
+
+          id: makeId("q"),
+
+          text,
+
+          options,
+
+          answerId: answerOption.id,
+
+          correct: answerOption.text,
+
+          points:
+            idxPoints >= 0
+              ? (Number(row[idxPoints]) || 100)
+              : 100,
+
+          explain:
+            idxExplain >= 0
+              ? (row[idxExplain] || "").trim()
+              : "",
+
+          timeLimit:
+            idxTime >= 0
+              ? (Number(row[idxTime]) || 0)
+              : 0
+
+        });
+
+      }
+
+
+      if (newQuestions.length === 0) {
+
+        alert(
+          "불러올 수 있는 문제가 없습니다. CSV 내용을 확인해주세요."
+        );
+
+        event.target.value = "";
+
+        return;
+
+      }
+
+
+      const confirmed =
+        confirm(
+          `${newQuestions.length}개의 문제를 불러와 현재 문제 목록 전체를 대체합니다.\n\n계속할까요?`
+        );
+
+
+      if (!confirmed) {
+
+        event.target.value = "";
+
+        return;
+
+      }
+
+
+      current.questions = newQuestions;
+
+      renderQuestions();
+
+      event.target.value = "";
+
+      alert(
+        "문제를 불러왔습니다. 내용을 확인한 후 \"문제 저장\" 버튼을 눌러야 최종 반영됩니다."
+      );
+
+    } catch (error) {
+
+      console.error(
+        "문제 업로드 오류:",
+        error
+      );
+
+      alert(
+        "문제를 불러오는 중 오류가 발생했습니다.\n\n" +
+        (error.message || error)
+      );
+
+      event.target.value = "";
+
+    }
+
+  };
+
+
+  /*
+  =====================================================
   결과 불러오기
   =====================================================
+
   */
 
   async function loadResults(code) {
@@ -2001,13 +2240,22 @@
       currentResults.sort(
         (a, b) =>
           String(
-            b.createdAt || ""
+            b.submittedAt || ""
           ).localeCompare(
             String(
-              a.createdAt || ""
+              a.submittedAt || ""
             )
           )
       );
+
+
+      activeResults =
+        currentResults.slice();
+
+
+      $("resultDateFrom").value = "";
+      $("resultDateTo").value = "";
+      $("resultFilterInfo").textContent = "";
 
 
       renderResults();
@@ -2037,6 +2285,30 @@
   =====================================================
   */
 
+  function formatSubmittedAt(value) {
+
+    if (!value) return "-";
+
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+      return escapeHtml(String(value));
+    }
+
+    return date.toLocaleString(
+      "ko-KR",
+      {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
   function renderResults() {
 
     const list =
@@ -2047,6 +2319,15 @@
 
       list.innerHTML =
         "<p>아직 참가 결과가 없습니다.</p>";
+
+      return;
+    }
+
+
+    if (!activeResults.length) {
+
+      list.innerHTML =
+        "<p>선택한 기간에 해당하는 참가 결과가 없습니다.</p>";
 
       return;
     }
@@ -2075,7 +2356,7 @@
         <tbody>
 
           ${
-            currentResults.map(
+            activeResults.map(
               result => `
 
                 <tr>
@@ -2099,8 +2380,8 @@
                   </td>
 
                   <td>
-                    ${escapeHtml(
-                      result.createdAt || ""
+                    ${formatSubmittedAt(
+                      result.submittedAt
                     )}
                   </td>
 
@@ -2117,6 +2398,65 @@
     `;
 
   }
+
+
+  /*
+  =====================================================
+  참가 결과 날짜 필터
+  =====================================================
+  */
+
+  window.applyResultDateFilter = function() {
+
+    const fromVal = $("resultDateFrom").value;
+    const toVal = $("resultDateTo").value;
+
+    if (!fromVal && !toVal) {
+      alert("시작일 또는 종료일을 먼저 선택해주세요.");
+      return;
+    }
+
+    const fromDate =
+      fromVal ? new Date(fromVal + "T00:00:00") : null;
+
+    const toDate =
+      toVal ? new Date(toVal + "T23:59:59") : null;
+
+    activeResults =
+      currentResults.filter(result => {
+
+        if (!result.submittedAt) return false;
+
+        const t = new Date(result.submittedAt);
+
+        if (isNaN(t.getTime())) return false;
+
+        if (fromDate && t < fromDate) return false;
+
+        if (toDate && t > toDate) return false;
+
+        return true;
+
+      });
+
+    $("resultFilterInfo").textContent =
+      `전체 ${currentResults.length}건 중 ${activeResults.length}건 표시 중 (선택한 기간 기준)`;
+
+    renderResults();
+
+  };
+
+  window.resetResultDateFilter = function() {
+
+    $("resultDateFrom").value = "";
+    $("resultDateTo").value = "";
+    $("resultFilterInfo").textContent = "";
+
+    activeResults = currentResults.slice();
+
+    renderResults();
+
+  };
 
 
   /*
@@ -2242,10 +2582,10 @@
   window.downloadExcel =
     function() {
 
-      if (!currentResults.length) {
+      if (!activeResults.length) {
 
         alert(
-          "다운로드할 결과가 없습니다."
+          "다운로드할 결과가 없습니다. 기간 필터를 확인해주세요."
         );
 
         return;
@@ -2261,7 +2601,7 @@
 
 
       const rows =
-        currentResults.map(
+        activeResults.map(
           result => [
 
             result.name || "",
@@ -2270,57 +2610,25 @@
 
             result.score || 0,
 
-            result.createdAt || ""
+            formatSubmittedAt(result.submittedAt)
 
           ]
         );
 
 
-      const csv = [
-
-        headers,
-
-        ...rows
-
-      ]
-      .map(
-        row =>
-          row.map(
-            value =>
-              `"${String(value)
-                .replace(/"/g, '""')}"`
-          ).join(",")
-      )
-      .join("\n");
+      const filterSuffix =
+        (
+          $("resultDateFrom").value ||
+          $("resultDateTo").value
+        )
+          ? `_${$("resultDateFrom").value || "전체"}~${$("resultDateTo").value || "전체"}`
+          : "";
 
 
-      const blob =
-        new Blob(
-          ["\ufeff" + csv],
-          {
-            type:
-              "text/csv;charset=utf-8;"
-          }
-        );
-
-
-      const url =
-        URL.createObjectURL(blob);
-
-
-      const a =
-        document.createElement("a");
-
-
-      a.href = url;
-
-      a.download =
-        `${current.title || "퀴즈"}_결과.csv`;
-
-      a.click();
-
-
-      URL.revokeObjectURL(url);
+      downloadCsvFile(
+        toCsv([headers, ...rows]),
+        `${current.title || "퀴즈"}_결과${filterSuffix}.csv`
+      );
 
     };
 
@@ -2346,6 +2654,129 @@
   function escapeAttr(value) {
 
     return escapeHtml(value);
+
+  }
+
+
+  /*
+  =====================================================
+  CSV 빌드 / 다운로드 / 파싱 공용 함수
+  =====================================================
+  */
+
+  function toCsv(rows) {
+
+    return rows
+      .map(
+        row =>
+          row.map(
+            value =>
+              `"${String(value ?? "")
+                .replace(/"/g, '""')}"`
+          ).join(",")
+      )
+      .join("\n");
+
+  }
+
+
+  function downloadCsvFile(csv, filename) {
+
+    const blob =
+      new Blob(
+        ["\ufeff" + csv],
+        {
+          type:
+            "text/csv;charset=utf-8;"
+        }
+      );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+    a.download = filename;
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+  }
+
+
+  function parseCsv(text) {
+
+    text =
+      text
+        .replace(/^\uFEFF/, "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n");
+
+    const rows = [];
+
+    let row = [];
+    let field = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+
+      const char = text[i];
+
+      if (inQuotes) {
+
+        if (char === '"') {
+
+          if (text[i + 1] === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+
+        } else {
+
+          field += char;
+
+        }
+
+      } else {
+
+        if (char === '"') {
+
+          inQuotes = true;
+
+        } else if (char === ",") {
+
+          row.push(field);
+          field = "";
+
+        } else if (char === "\n") {
+
+          row.push(field);
+          rows.push(row);
+          row = [];
+          field = "";
+
+        } else {
+
+          field += char;
+
+        }
+
+      }
+
+    }
+
+    if (field.length > 0 || row.length > 0) {
+      row.push(field);
+      rows.push(row);
+    }
+
+    return rows.filter(
+      r => r.some(cell => String(cell || "").trim() !== "")
+    );
 
   }
 
